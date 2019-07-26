@@ -14,9 +14,5 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RetrofitManager manager = RetrofitManager.getInstance();
-        HttpService service = manager.getHttpService();
-
-        int a;
     }
 }
