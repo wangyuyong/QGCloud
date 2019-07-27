@@ -67,8 +67,8 @@ public class DownLoadTest extends AppCompatActivity {
         }
         switch (view.getId()) {
             case R.id.start_download:
-                String url = "https://raw.githubusercontent.com/guolindev/eclipse/master/eclipse-inst-win64.exe";
-                downloadBinder.startDownload(url,"/eclipse-inst-win64.exe");
+                String url = "http://b4e2590a.ngrok.io/downloadServlet";
+                downloadBinder.startDownload(url,"/downloadServlet");
                 break;
             case R.id.pause_download:
                 downloadBinder.pauseDownload();

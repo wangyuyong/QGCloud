@@ -2,6 +2,7 @@ package com.wyy.qgcloud.net;
 
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.enity.MakeDirInfo;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -41,4 +42,15 @@ public interface HttpService {
     @FormUrlEncoded
     @POST(".")
     Observable<LoginInfo> getRWInfo(@Field("userId")String userId, @Field("fileId")String fileId, @Field("operation")String operation, @Field("filePath")String filePath);
+
+    /**
+     * 请求创建文件
+     * @param userId 用户Id
+     * @param filePath 文件全路径
+     * @param fileName 文件夹名称
+     * @return Observable<MakeDirInfo>
+     */
+    @FormUrlEncoded
+    @POST(".")
+    Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
 }

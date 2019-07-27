@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -66,7 +67,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
             }
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .addHeader("RANGE","bytes=" + downloadedLength + "-")
+                    .addHeader("Range","bytes=" + downloadedLength + "-")
                     .url(downloadUrl)
                     .build();
             Response response = client.newCall(request).execute();
@@ -165,7 +166,9 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
         //http响应
         Response response = null;
         //建立httpclient
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .build();
+
         Request request = new Request.Builder()
                 .url(downloadUrl)
                 .build();
