@@ -1,16 +1,17 @@
 package com.wyy.qgcloud.enity;
 
-public class StatusInfo {
+/**
+ * 用户输入邮箱后返回的信息
+ */
+public class EmailInfo {
 
     /**
-     * status : 登录状态
-     * message : 失败的原因，成功则为null
-     * data : 返回null
+     * status : 用户输入的邮箱
+     * message : 客户端处理
      */
 
     private String status;
     private String message;
-    private String data;
 
     public String getStatus() {
         return status;
@@ -26,13 +27,5 @@ public class StatusInfo {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 }

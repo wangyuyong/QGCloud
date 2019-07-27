@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.net;
 
-import com.wyy.qgcloud.enity.StatusInfo;
+import com.wyy.qgcloud.enity.EmailInfo;
+import com.wyy.qgcloud.enity.LoginInfo;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -10,13 +11,34 @@ import retrofit2.http.POST;
 public interface HttpService {
 
     /**
-     *
-     * @param email 登录邮箱
-     * @param password 登录密码
-     * @param code 验证码
-     * @return rxjava的被观察者，携带MessageInfo实体类
+     * 用户输入邮箱后，用getEmailInfo发送网络请求，判断用户邮箱是否存在
+     * @param email 用户邮箱
+     * @return Observable<EmailInfo>
      */
     @FormUrlEncoded
     @POST(".")
-    Observable<StatusInfo> getLoginInfo(@Field("email")String email, @Field("password")String password, @Field("code")String code);
+    Observable<EmailInfo> getEmailInfo(@Field("email")String email);
+
+    /**
+     * 用户输入所有信息后，用getLoginInfo发送网络请求，判断用户信息是否正确
+     * @param email 登录邮箱
+     * @param password 登录密码
+     * @param code 验证码
+     * @return Observable<LoginInfo>
+     */
+    @FormUrlEncoded
+    @POST(".")
+    Observable<LoginInfo> getLoginInfo(@Field("email")String email, @Field("password")String password, @Field("code")String code);
+
+    /**
+     * 询问是否有对文件进行读或写的权限
+     * @param userId 用户Id
+     * @param fileId 文件Id
+     * @param operation 操作类型
+     * @param filePath 文件路径
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(".")
+    Observable<LoginInfo> getRWInfo(@Field("userId")String userId, @Field("fileId")String fileId, @Field("operation")String operation, @Field("filePath")String filePath);
 }
