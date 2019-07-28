@@ -1,17 +1,17 @@
 package com.wyy.qgcloud.enity;
 
-/**
- * 用户输入邮箱后返回的信息
- */
-public class EmailInfo {
+public class RegisterInfo {
+
 
     /**
-     * status : 用户输入的邮箱
-     * message : 客户端处理
+     * status : 注册的状态
+     * message : 失败的原因，注册成功返回为null
+     * data : null
      */
 
     private boolean status;
     private String message;
+    private Object data;
 
     public boolean getStatus() {
         return status;
@@ -27,5 +27,13 @@ public class EmailInfo {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

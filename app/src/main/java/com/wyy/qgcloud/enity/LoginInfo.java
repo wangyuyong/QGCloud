@@ -5,15 +5,22 @@ package com.wyy.qgcloud.enity;
  */
 public class LoginInfo {
 
-    private String status;
+
+    /**
+     * status : 登录状态
+     * message : 失败的原因，成功则为null
+     * data : {"userId":"用户id","email":"用户邮箱","password":"用户密码","icon":"用户头像(IO流数据)","userName":"用户姓名","phone":"手机号","role":"用户权限","groupId":"群组Id"}
+     */
+
+    private boolean status;
     private String message;
     private DataBean data;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -45,20 +52,20 @@ public class LoginInfo {
          * groupId : 群组Id
          */
 
-        private String userId;
+        private int userId;
         private String email;
         private String password;
         private String icon;
         private String userName;
         private String phone;
-        private String role;
-        private String groupId;
+        private int role;
+        private int groupId;
 
-        public String getUserId() {
+        public int getUserId() {
             return userId;
         }
 
-        public void setUserId(String userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
 
@@ -102,19 +109,19 @@ public class LoginInfo {
             this.phone = phone;
         }
 
-        public String getRole() {
+        public int getRole() {
             return role;
         }
 
-        public void setRole(String role) {
+        public void setRole(int role) {
             this.role = role;
         }
 
-        public String getGroupId() {
+        public int getGroupId() {
             return groupId;
         }
 
-        public void setGroupId(String groupId) {
+        public void setGroupId(int groupId) {
             this.groupId = groupId;
         }
     }

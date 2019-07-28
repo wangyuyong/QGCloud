@@ -20,7 +20,7 @@
             android:name=".ui.download.DownloadService"
             android:enabled="true"
             android:exported="true" />
-
+        <activity android:name=".ui.register.RegisterActivity"></activity>
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
