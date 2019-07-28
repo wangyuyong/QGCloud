@@ -22,7 +22,7 @@ public interface HttpService {
      * @return Observable<EmailInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @POST("user/findUserEmail")
     Observable<EmailInfo> getEmailInfo(@Field("email")String email);
 
     /**
@@ -32,15 +32,15 @@ public interface HttpService {
      * @return Observable<LoginInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @POST("user/login")
     Observable<LoginInfo> getLoginInfo(@Field("email")String email, @Field("password")String password);
 
     /**
      * 用户注册时点击右侧框，发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
-    @FormUrlEncoded
-    @POST(".")
+
+    @POST("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
     /**
@@ -56,7 +56,7 @@ public interface HttpService {
      * @return Observable<RegisterInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @POST("user/register")
     Observable<RegisterInfo> getRegisterInfo(Context context, @Field("email") String email,
                                              @Field("password") String password,
                                              @Field("icon") File icon,

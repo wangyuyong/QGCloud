@@ -16,7 +16,13 @@ public interface RegisterContract {
 
     interface RegisterView extends BaseView{
         String getEdt(EditText editText);
-        void displayIcon(File icon);
+
+        void displayCode(byte[] icon);
+
+        //参数kind若为1则为爆红提示，若为2则为弹窗提示
+        void showError(String msg, int kind);
+
+        void showSuccess(String msg);  //均为弹窗提示
     }
 
     interface RegisterPresent extends BasePresent<RegisterView>{

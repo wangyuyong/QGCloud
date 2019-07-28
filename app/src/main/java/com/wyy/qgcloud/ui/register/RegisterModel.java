@@ -1,15 +1,13 @@
 package com.wyy.qgcloud.ui.register;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 import com.wyy.qgcloud.net.RetrofitManager;
-
 import java.io.File;
-
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -33,4 +31,6 @@ public class RegisterModel implements RegisterContract.RegisterModel{
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
 }

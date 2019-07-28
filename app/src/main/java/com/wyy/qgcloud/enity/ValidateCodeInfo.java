@@ -6,7 +6,7 @@ public class ValidateCodeInfo {
 
 
     /**
-     * image : file类型的图片
+     * image : byte[]类型的图片
      */
 
     private byte[] image;

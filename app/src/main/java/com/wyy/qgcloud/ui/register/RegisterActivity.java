@@ -21,10 +21,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.base.BaseActivity;
+import com.wyy.qgcloud.ui.login.LoginActivity;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -50,7 +58,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     @BindView(R.id.imv_icon)
     ImageView imvIcon;
 
-    private RegisterContract.RegisterPresent registerPresent;
+    private RegisterContract.RegisterPresent registerPresent = new RegisterPresent();
     private static final int OPEN_ALBUM = 1;
     private static final int CUT_PHOTO = 2;
 
@@ -59,6 +67,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        registerPresent.bindView(this);
         nameEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,10 +84,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(nameEdt);
                 String regex = "^[\\u4e00-\\u9fa5]{2,4}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    nameEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    nameEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -98,10 +108,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(phoneNumberEdt);
                 String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -121,10 +132,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(registerEmailEdt);
                 String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -144,16 +156,17 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(registerPasswordEdt);
                 String regex = "^[^[x00-xff]]{6,15}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
     }
 
-    @OnClick({R.id.imv_validate_code, R.id.btn_login})
+    @OnClick({R.id.imv_validate_code, R.id.btn_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imv_validate_code:
@@ -173,30 +186,49 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         }
     }
 
-    @Override
+    @Override//获取输入内容
     public String getEdt(EditText editText) {
         String editMsg = editText.getText().toString();
         return editMsg;
     }
 
+    @Override//展示验证码
+    public void displayCode(byte[] icon) {
+            Glide.with(this)
+                    .load(icon)
+                    .into(imvIcon);
+
+    }
+
+    @Override
+    public void showError(String msg, int kind) {
+        switch (kind){
+            //爆红提示
+            case 1:
+                break;
+             //弹窗提示
+            case 2:
+                MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.error, msg);
+                break;
+                default:
+                    break;
+        }
+    }
+
+    @Override
+    public void showSuccess(String msg) {
+        MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.success, msg);
+    }
+
+    //注册
     private void register() {
         String email = getEdt(registerEmailEdt);
         String password = getEdt(registerPasswordEdt);
         String userName = getEdt(nameEdt);
         String phone = getEdt(phoneNumberEdt);
         String code = getEdt(editValidateCode);
-        //registerPresent.getRegisterInfo(this, email, password, , userName, phone, code);
-    }
-
-    @Override
-    public void displayIcon(File icon) {
-        if(icon != null){
-            Glide.with(this)
-                    .load(icon)
-                    .into(imvIcon);
-        }else{
-            //提示用户照片不存在
-        }
+        File icon = new File("qgcloudicon.jpg");
+        registerPresent.getRegisterInfo(this, email, password, icon, userName, phone, code);
     }
 
     @Override  //权限回调
@@ -299,7 +331,22 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
             Glide.with(this)
                     .load(bitmap)
                     .into(imvIcon);
+            //String path = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
+            File file = new File("qgcloudicon.jpg");
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
+                bos.flush();
+                bos.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
+    @Override
+    protected void onDestroy(){
+        registerPresent.unbindView();
+        super.onDestroy();
+    }
 }

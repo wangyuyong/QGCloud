@@ -24,8 +24,6 @@ public class RetrofitManager {
     private RetrofitManager(){
         //创建okHttpCilent
         OkHttpClient cilent = new OkHttpClient.Builder()
-                .callTimeout(8000, TimeUnit.MILLISECONDS)
-                .writeTimeout(8000,TimeUnit.MILLISECONDS)
                 .build();
 
         //创建Retrofit

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.ui.register.RegisterActivity;
 
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     @BindView(R.id.btn_login)
     Button loginBtn;
 
-    private LoginContract.LoginPresent loginPresent;
+    private LoginContract.LoginPresent loginPresent = new LoginPresent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +57,23 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 String email = getEdt(loginEmailEdt);
                 String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
                 boolean format = Pattern.matches(regex, email);
-                if(format){
-                    //格式正确则发送网络请求判断是否存在
-                }else {
-                    //格式不正确则提示用户
+                if(!format){
+                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+                }
+            }
+        });
+        loginEmailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String email = getEdt(loginEmailEdt);
+                    String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+                    boolean format = Pattern.matches(regex, email);
+                    if(format) {
+                        loginPresent.getEmailInfo(LoginActivity.this, email);
+                    }
                 }
             }
         });
@@ -94,9 +108,32 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         super.onDestroy();
     }
 
+    @Override
+    public void showError(String msg, int kind) {
+        switch (kind){
+            //爆红提示
+            case 1:
+                loginEmailEdt.setBackgroundColor(getResources().getColor(R.color.colorError));
+                Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                break;
+            //弹窗提示
+            case 2:
+                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.error, msg);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void showSuccess(String msg) {
+        MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.success, msg);
+    }
+
     private void login(){
         String email = getEdt(loginEmailEdt);
         String password = getEdt(loginPasswordEdt);
         loginPresent.getLoginInfo(this, email, password);
     }
+
 }
