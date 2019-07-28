@@ -4,14 +4,14 @@
     android:useLevel="true">
 
     <size
-        android:width="50dp"
-        android:height="10dp"
+        android:width="320dp"
+        android:height="210dp"
         />
     <solid
-        android:color="@color/colorBtn"/>
+        android:color="@color/colorToast"/>
 
     <corners
-        android:radius="24dp"
+        android:radius="30dp"
         />
 
 

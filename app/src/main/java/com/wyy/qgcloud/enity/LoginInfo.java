@@ -1,9 +1,11 @@
 package com.wyy.qgcloud.enity;
 
+import java.io.Serializable;
+
 /**
  * 用户登录后的验证信息
  */
-public class LoginInfo {
+public class LoginInfo  {
 
 
     /**
@@ -40,7 +42,7 @@ public class LoginInfo {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * userId : 用户id
          * email : 用户邮箱

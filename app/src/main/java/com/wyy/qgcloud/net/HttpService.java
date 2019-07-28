@@ -10,13 +10,18 @@ import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
 import java.io.File;
+import java.util.List;
 
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface HttpService {
 
@@ -26,7 +31,7 @@ public interface HttpService {
      * @return Observable<EmailInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @POST("user/findUserEmail")
     Observable<EmailInfo> getEmailInfo(@Field("email")String email);
 
     /**
@@ -36,37 +41,22 @@ public interface HttpService {
      * @return Observable<LoginInfo>
      */
     @FormUrlEncoded
-    @POST(".")
-    Observable<LoginInfo> getLoginInfo(@Field("email")String email, @Field("password")String password);
+    @POST("user/login")
+    Observable<LoginInfo> getLoginInfo(@Field("email")String email,
+                                       @Field("password")String password);
 
     /**
      * 用户注册时点击右侧框，发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
-    @FormUrlEncoded
-    @POST(".")
+
+    @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
-    /**
-     * 用户输入所有信息后点击进行注册，发送请求获取数据
-     *
-     * @param context
-     * @param email  注册邮箱
-     * @param password 注册密码
-     * @param icon 用户头像
-     * @param userName 用户姓名
-     * @param phone 用户手机号
-     * @param code 注册验证码
-     * @return Observable<RegisterInfo>
-     */
-    @FormUrlEncoded
-    @POST(".")
-    Observable<RegisterInfo> getRegisterInfo(Context context, @Field("email") String email,
-                                             @Field("password") String password,
-                                             @Field("icon") File icon,
-                                             @Field("userName") String userName,
-                                             @Field("phone") String phone,
-                                             @Field("code") String code);
+
+    @Multipart
+    @POST("user/register")
+    Observable<RegisterInfo> getRegisterInfo(@Part List<MultipartBody.Part> partList);
 
 
 

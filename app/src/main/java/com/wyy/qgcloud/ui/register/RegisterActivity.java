@@ -3,11 +3,15 @@ package com.wyy.qgcloud.ui.register;
 import android.Manifest;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.base.BaseActivity;
 
@@ -51,15 +57,19 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     @BindView(R.id.imv_icon)
     ImageView imvIcon;
 
-    private RegisterContract.RegisterPresent registerPresent;
+    private RegisterContract.RegisterPresent registerPresent = new RegisterPresent();
     private static final int OPEN_ALBUM = 1;
     private static final int CUT_PHOTO = 2;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        registerPresent.bindView(this);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         nameEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -76,10 +86,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(nameEdt);
                 String regex = "^[\\u4e00-\\u9fa5]{2,4}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    nameEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    nameEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -99,10 +110,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(phoneNumberEdt);
                 String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -122,10 +134,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(registerEmailEdt);
                 String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
@@ -145,16 +158,17 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 String email = getEdt(registerPasswordEdt);
                 String regex = "^[^[x00-xff]]{6,15}$";
                 boolean format = Pattern.matches(regex, email);
-                if (format) {
-                    //格式正确则发送网络请求判断是否存在
-                } else {
-                    //格式不正确则提示用户
+                if (!format) {
+                    //格式不正确，底边变色
+                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
+                }else{
+                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
     }
 
-    @OnClick({R.id.imv_validate_code, R.id.btn_login})
+    @OnClick({R.id.imv_validate_code, R.id.btn_register,R.id.imv_icon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imv_validate_code:
@@ -174,30 +188,52 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         }
     }
 
-    @Override
+    @Override//获取输入内容
     public String getEdt(EditText editText) {
         String editMsg = editText.getText().toString();
         return editMsg;
     }
 
+    @Override//展示验证码
+    public void displayCode(String icon) {
+        byte[] iconByte = Base64.decode(icon.getBytes(), Base64.DEFAULT);
+            Glide.with(this)
+                    .load(iconByte)
+                    .into(validateCodeImv);
+
+    }
+
+    @Override
+    public void showError(String msg, int kind) {
+        switch (kind){
+            //爆红提示
+            case 1:
+                break;
+             //弹窗提示
+            case 2:
+                MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.sad, msg);
+                break;
+                default:
+                    break;
+        }
+    }
+
+    @Override
+    public void showSuccess(String msg) {
+        MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.happy, msg);
+    }
+
+    //注册
     private void register() {
         String email = getEdt(registerEmailEdt);
         String password = getEdt(registerPasswordEdt);
         String userName = getEdt(nameEdt);
         String phone = getEdt(phoneNumberEdt);
         String code = getEdt(editValidateCode);
-        //registerPresent.getRegisterInfo(this, email, password, , userName, phone, code);
-    }
-
-    @Override
-    public void displayIcon(File icon) {
-        if(icon != null){
-            Glide.with(this)
-                    .load(icon)
-                    .into(imvIcon);
-        }else{
-            //提示用户照片不存在
-        }
+        String path = pref.getString("path","");
+        Log.d("wx", path);
+        File icon = new File(path);
+        registerPresent.getRegisterInfo(this, email, password, icon, userName, phone, code);
     }
 
     @Override  //权限回调
@@ -226,9 +262,9 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                     handleImageBeforeKitKat(data);
                 }
                 break;
-            case CUT_PHOTO:
-                setView(data);
-                break;
+//            case CUT_PHOTO:
+//                setView(data);
+//                break;
             default:
                 break;
         }
@@ -238,69 +274,124 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     private void openAlbum(){
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("*/*");
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, 1);
     }
 
     //4.4以下系统
     private void handleImageBeforeKitKat(Intent data){
         Uri uri = data.getData();
-        photoCut(uri);
+        String imagePath = getImagepath(uri, null);
+        displayImage(imagePath);
     }
 
     //4.4及以上系统
     private void handleImageOnKitKat(Intent data){
+        String imagePath = null;
         Uri uri = data.getData();
         //返回Uri为document类型
         if(DocumentsContract.isDocumentUri(this,uri)){
             String docId = DocumentsContract.getDocumentId(uri);  //取出document id处理
             //uri的authority为media格式时需进行再次解析
             if("com.android.providers.media.documents".equals(uri.getAuthority())){
-                Uri uri1 = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                photoCut(uri1);
+                //分割字符串得到真正的id
+                String id = docId.split(":")[1];
+                //构建新的条件语句
+                String selection = MediaStore.Images.Media._ID+"="+id;
+                //传入新的Uri和条件语句
+                imagePath = getImagepath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
             }
             else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
-                Uri uri2 = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
-                photoCut(uri2);
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagepath(contentUri, null);
             }
         }
         //Uri为content类型
         else if("content".equalsIgnoreCase(uri.getScheme())){
-            photoCut(uri);
+            imagePath = getImagepath(uri, null);
         }
         //Uri为file类型直接获取
         else if("file".equalsIgnoreCase(uri.getScheme())){
-            photoCut(uri);
+            imagePath = uri.getPath();
         }
+        //传入路径来进行展示
+        displayImage(imagePath);
     }
 
-    //对选择的照片进行裁剪
-    private void photoCut(Uri uri){
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        //裁剪比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        //裁剪后输出图片大小
-        intent.putExtra("outputX", 151);
-        intent.putExtra("outputY", 151);
-//        //tup格式
-//        intent.putExtra("outputFormat", "JPEG");
-//        //取消人脸识别
-//        intent.putExtra("noFaceDetection", true);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, CUT_PHOTO);
+//    //对选择的照片进行裁剪
+//    private void photoCut(Uri uri){
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(uri, "image/*");
+//        intent.putExtra("crop", "true");
+//        //裁剪比例
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        //裁剪后输出图片大小
+//        intent.putExtra("outputX", 151);
+//        intent.putExtra("outputY", 151);
+////        //tup格式
+////        intent.putExtra("outputFormat", "JPEG");
+////        //取消人脸识别
+////        intent.putExtra("noFaceDetection", true);
+//        intent.putExtra("return-data", true);
+//        startActivityForResult(intent, CUT_PHOTO);
+//    }
+
+//    //将裁剪后的图片设置为头像
+//    private void setView(Intent data){
+//        Bundle extras = data.getExtras();
+//        if (extras != null) {
+//            Bitmap bitmap = extras.getParcelable("data");
+//            Glide.with(this)
+//                    .load(bitmap)
+//                    .into(imvIcon);
+//            //String path = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
+//            File file = new File("qgcloudicon.jpg");
+//            try {
+//                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//                bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
+//                bos.flush();
+//                bos.close();
+//            }catch (IOException e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    //获取图片真实路径
+    private String getImagepath(Uri uri, String selection){
+        String path = null;
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
     }
 
-    //将裁剪后的图片设置为头像
-    private void setView(Intent data){
-        Bundle extras = data.getExtras();
-        if (extras != null) {
-            Bitmap bitmap = extras.getParcelable("data");
+    //将图片进行展示
+    private void displayImage(String imagePath){
+        if(imagePath!= null){
+            editor = pref.edit();
+            editor.putString("path",imagePath);
+            Log.d("wx",imagePath);
+            editor.apply();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            //设置图片
             Glide.with(this)
                     .load(bitmap)
+                    .centerCrop()
                     .into(imvIcon);
+        }else {
+            Toast.makeText(this, "failed",Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    @Override
+    protected void onDestroy(){
+        registerPresent.unbindView();
+        super.onDestroy();
+    }
 }

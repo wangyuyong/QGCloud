@@ -10,6 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
         />
 
     <LinearLayout
@@ -20,12 +21,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"/>
+            android:text="@string/name"
+            />
 
         <EditText
             android:id="@+id/edt_name"
             android:layout_width="300dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:hint="@string/name_limit"/>
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +44,7 @@
         <EditText
             android:id="@+id/edt_phone_number"
             android:layout_width="300dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -57,7 +60,7 @@
         <EditText
             android:id="@+id/edt_register_email"
             android:layout_width="300dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +76,9 @@
         <EditText
             android:id="@+id/edt_register_password"
             android:layout_width="300dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            android:hint="@string/password_limit"/>
     </LinearLayout>
 
     <LinearLayout
@@ -88,14 +93,13 @@
 
         <EditText
             android:id="@+id/edit_validate_code"
-            android:layout_width="200dp"
-            android:layout_height="50dp" />
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
 
         <ImageView
             android:id="@+id/imv_validate_code"
             android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:background="@color/colorPrimary"/>
+            android:layout_height="45dp"/>
 
     </LinearLayout>
 
