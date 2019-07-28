@@ -52,6 +52,7 @@ public class LoginPresent implements LoginContract.LoginPresent {
                     loginView.showSuccess("登录成功!");
                     Intent intent = new Intent(context, HomePageActivity.class);
                     intent.putExtra("data", loginInfo.getData());
+                    context.startActivity(intent);
                 }else{
                     //登录失败，弹窗提示
                     loginView.showError(loginInfo.getMessage(),2);

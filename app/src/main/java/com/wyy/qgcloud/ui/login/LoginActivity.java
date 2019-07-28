@@ -1,8 +1,8 @@
 package com.wyy.qgcloud.ui.login;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
+
 import com.wyy.qgcloud.ui.register.RegisterActivity;
 
 import java.util.regex.Pattern;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        loginPresent = new LoginPresent();
         loginPresent.bindView(this);
         loginEmailEdt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 break;
             //弹窗提示
             case 2:
-                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.error, msg);
+                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.sad, msg);
                 break;
             default:
                 break;
@@ -127,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
     @Override
     public void showSuccess(String msg) {
-        MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.success, msg);
+        MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.happy, msg);
     }
 
     private void login(){

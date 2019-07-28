@@ -4,15 +4,20 @@ import android.content.Context;
 
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
 import java.io.File;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface HttpService {
 
@@ -33,20 +38,20 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("user/login")
-    Observable<LoginInfo> getLoginInfo(@Field("email")String email, @Field("password")String password);
+    Observable<LoginInfo> getLoginInfo(@Field("email")String email,
+                                       @Field("password")String password);
 
     /**
      * 用户注册时点击右侧框，发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
 
-    @POST("user/requestCode")
+    @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
     /**
      * 用户输入所有信息后点击进行注册，发送请求获取数据
      *
-     * @param context
      * @param email  注册邮箱
      * @param password 注册密码
      * @param icon 用户头像
@@ -55,11 +60,12 @@ public interface HttpService {
      * @param code 注册验证码
      * @return Observable<RegisterInfo>
      */
-    @FormUrlEncoded
+
+    @Multipart
     @POST("user/register")
-    Observable<RegisterInfo> getRegisterInfo(Context context, @Field("email") String email,
+    Observable<RegisterInfo> getRegisterInfo(@Field("email") String email,
                                              @Field("password") String password,
-                                             @Field("icon") File icon,
+                                             @Part MultipartBody.Part icon,
                                              @Field("userName") String userName,
                                              @Field("phone") String phone,
                                              @Field("code") String code);
@@ -80,5 +86,14 @@ public interface HttpService {
                                     @Field("fileId")String fileId,
                                     @Field("operation")String operation,
                                     @Field("filePath")String filePath);
-
+    /**
+     * 请求创建文件
+     * @param userId 用户Id
+     * @param filePath 文件全路径
+     * @param fileName 文件夹名称
+     * @return Observable<MakeDirInfo>
+     */
+    @FormUrlEncoded
+    @POST(".")
+    Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
 }

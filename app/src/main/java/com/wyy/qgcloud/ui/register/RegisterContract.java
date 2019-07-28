@@ -11,13 +11,14 @@ import com.wyy.qgcloud.enity.ValidateCodeInfo;
 import java.io.File;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 
 public interface RegisterContract {
 
     interface RegisterView extends BaseView{
         String getEdt(EditText editText);
 
-        void displayCode(byte[] icon);
+        void displayCode(String icon);
 
         //参数kind若为1则为爆红提示，若为2则为弹窗提示
         void showError(String msg, int kind);

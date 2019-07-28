@@ -7,7 +7,7 @@
     <string name="forget_password">忘记密码?</string>
     <string name="name">姓名</string>
     <string name="phone_number">手机</string>
-    <string name="name_limit">此处只支持格式</string>
+    <string name="name_limit">此处只支持中文</string>
     <string name="validate_code">验证码</string>
     <string name="password_limit">支持6~15位数字、字母和符号组合</string>
 </resources>
