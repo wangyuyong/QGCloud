@@ -23,6 +23,12 @@ public interface CloudContract {
          * @param message 错误信息
          */
         void showError(String message);
+
+        /**
+         * 新建一个文件夹
+         * @param dir 文件夹信息
+         */
+        void makeDir(FileInfo.DataBean dir);
     }
 
     interface CloudPresent extends BasePresent<CloudView>{

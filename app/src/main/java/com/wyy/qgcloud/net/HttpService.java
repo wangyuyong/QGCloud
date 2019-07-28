@@ -11,9 +11,11 @@ import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
 import java.io.File;
 
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface HttpService {
@@ -100,6 +102,9 @@ public interface HttpService {
      * @return Observable<FileInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @GET(".")
     Observable<FileInfo> getFileInfi(@Field("userId")int userId,@Field("fileId")int fileId);
+
+
 }
+
