@@ -3,6 +3,7 @@ package com.wyy.qgcloud.net;
 import android.content.Context;
 
 import com.wyy.qgcloud.enity.EmailInfo;
+import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
@@ -91,4 +92,14 @@ public interface HttpService {
     @FormUrlEncoded
     @POST(".")
     Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
+
+    /**
+     * 获取是否可以打开用户文件夹的信息
+     * @param userId
+     * @param fileId
+     * @return Observable<FileInfo>
+     */
+    @FormUrlEncoded
+    @POST(".")
+    Observable<FileInfo> getFileInfi(@Field("userId")int userId,@Field("fileId")int fileId);
 }
