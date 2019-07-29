@@ -17,11 +17,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.forgetPassword.ForgetPasswordActivity"></activity>
         <activity android:name=".app.DemoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.homePage.HomePageActivity" />
         <activity android:name=".ui.download.DownLoadTest" />
@@ -32,6 +27,11 @@
             android:exported="true" />
         <activity android:name=".ui.register.RegisterActivity" />
         <activity android:name=".ui.login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
