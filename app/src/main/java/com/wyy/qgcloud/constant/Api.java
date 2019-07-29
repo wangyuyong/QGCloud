@@ -9,6 +9,6 @@ public interface Api {
     /**
      * Retrofit的baseUrl
      */
-    String CONST_BASE_URL = "http://192.168.1.129:8080/";
+    String CONST_BASE_URL = " http://2030f661.ngrok.io/";
 
 }

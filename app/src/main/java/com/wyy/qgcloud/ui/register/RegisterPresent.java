@@ -2,6 +2,7 @@ package com.wyy.qgcloud.ui.register;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.wyy.qgcloud.enity.RegisterInfo;
@@ -9,6 +10,9 @@ import com.wyy.qgcloud.enity.ValidateCodeInfo;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
 
 import java.io.File;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import okhttp3.MultipartBody;
 
@@ -42,9 +46,14 @@ public class RegisterPresent implements RegisterContract.RegisterPresent {
     @Override
     public void getRegisterInfo(final Context context, String email, String password, File icon, String userName, String phone, String code) {
 
-        registerModel.getRegisterInfo(context, email, password, icon, userName, phone, code).subscribe(new Consumer<RegisterInfo>() {
+        registerModel.getRegisterInfo(context, email, password, icon, userName, phone, code).subscribe(new Observer<RegisterInfo>() {
             @Override
-            public void accept(RegisterInfo registerInfo) throws Exception {
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(RegisterInfo registerInfo) {
                 //对用户进行相关提示
                 if(registerInfo.getStatus()){
                     //注册成功
@@ -56,8 +65,17 @@ public class RegisterPresent implements RegisterContract.RegisterPresent {
                     registerView.showError(registerInfo.getMessage(),2);
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
         });
+
     }
-
-
 }
