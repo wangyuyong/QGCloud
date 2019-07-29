@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitManager {
 
     private Retrofit retrofit;
+    private HttpService service;
 
     private static class ManagerHolder{
         public final static RetrofitManager manager = new RetrofitManager();
@@ -70,6 +71,10 @@ public class RetrofitManager {
      * @return HttpService
      */
     public HttpService getHttpService() {
-        return retrofit.create(HttpService.class);
+        if (service == null){
+            service = retrofit.create(HttpService.class);
+        }
+
+        return service;
     }
 }
