@@ -7,6 +7,8 @@ import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 import com.wyy.qgcloud.net.RetrofitManager;
 import java.io.File;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -27,12 +29,20 @@ public class RegisterModel implements RegisterContract.RegisterModel{
     }
 
     @Override
-    public Observable<RegisterInfo> getRegisterInfo(Context context, String email, String password, File icon, String userName, String phone, String code) {
-        RequestBody iconFile = RequestBody.create(MediaType.parse("multipart/form-data"), icon);
-        MultipartBody.Part iconPart = MultipartBody.Part.createFormData("icon", icon.getName(), iconFile);
+    public Observable<RegisterInfo> getRegisterInfo(Context context, String email, String password, File head, String userName, String phone, String code) {
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM);
+        RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"),head);
+        builder.addFormDataPart("email",email);
+        builder.addFormDataPart("password",password);
+        builder.addFormDataPart("userName",userName);
+        builder.addFormDataPart("phone",phone);
+        builder.addFormDataPart("code",code);
+        builder.addFormDataPart("head",head.getName(),body);
+        List<MultipartBody.Part> parts = builder.build().parts();
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getRegisterInfo(email, password, iconPart, userName, phone, code)
+                .getRegisterInfo(parts)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

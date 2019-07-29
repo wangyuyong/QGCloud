@@ -3,12 +3,15 @@ package com.wyy.qgcloud.net;
 import android.content.Context;
 
 import com.wyy.qgcloud.enity.EmailInfo;
+import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
 import java.io.File;
+import java.util.List;
+
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -18,6 +21,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface HttpService {
 
@@ -49,26 +53,10 @@ public interface HttpService {
     @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
-    /**
-     * 用户输入所有信息后点击进行注册，发送请求获取数据
-     *
-     * @param email  注册邮箱
-     * @param password 注册密码
-     * @param icon 用户头像
-     * @param userName 用户姓名
-     * @param phone 用户手机号
-     * @param code 注册验证码
-     * @return Observable<RegisterInfo>
-     */
 
     @Multipart
     @POST("user/register")
-    Observable<RegisterInfo> getRegisterInfo(@Field("email") String email,
-                                             @Field("password") String password,
-                                             @Part MultipartBody.Part icon,
-                                             @Field("userName") String userName,
-                                             @Field("phone") String phone,
-                                             @Field("code") String code);
+    Observable<RegisterInfo> getRegisterInfo(@Part List<MultipartBody.Part> partList);
 
 
 
@@ -96,4 +84,17 @@ public interface HttpService {
     @FormUrlEncoded
     @POST(".")
     Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
+
+    /**
+     * 获取是否可以打开用户文件夹的信息
+     * @param userId
+     * @param fileId
+     * @return Observable<FileInfo>
+     */
+    @FormUrlEncoded
+    @GET(".")
+    Observable<FileInfo> getFileInfi(@Field("userId")int userId,@Field("fileId")int fileId);
+
+
 }
+

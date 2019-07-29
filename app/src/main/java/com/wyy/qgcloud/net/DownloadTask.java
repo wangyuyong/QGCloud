@@ -170,6 +170,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
                 .build();
 
         Request request = new Request.Builder()
+                .get()
                 .url(downloadUrl)
                 .build();
         try {
