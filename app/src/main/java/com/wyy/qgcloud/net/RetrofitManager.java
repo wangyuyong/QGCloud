@@ -3,8 +3,16 @@ package com.wyy.qgcloud.net;
 import com.google.gson.Gson;
 import com.wyy.qgcloud.constant.Api;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -24,6 +32,20 @@ public class RetrofitManager {
     private RetrofitManager(){
         //创建okHttpCilent
         OkHttpClient cilent = new OkHttpClient.Builder()
+                .cookieJar(new CookieJar() {
+                    private final HashMap<String,List<Cookie>> cookieStore = new HashMap<>();
+                    @Override
+                    public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
+                        cookieStore.put(httpUrl.host(),list);
+                    }
+
+                    @NotNull
+                    @Override
+                    public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
+                        List<Cookie> cookies = cookieStore.get(httpUrl.host());
+                        return cookies != null ? cookies : new ArrayList<Cookie>();
+                    }
+                })
                 .build();
 
         //创建Retrofit
