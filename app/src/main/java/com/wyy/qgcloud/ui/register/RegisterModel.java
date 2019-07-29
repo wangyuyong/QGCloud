@@ -33,7 +33,6 @@ public class RegisterModel implements RegisterContract.RegisterModel{
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
         RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"),head);
-
         builder.addFormDataPart("email",email);
         builder.addFormDataPart("password",password);
         builder.addFormDataPart("userName",userName);
