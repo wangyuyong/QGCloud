@@ -49,7 +49,6 @@ public interface HttpService {
      * 用户注册时点击右侧框，发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
-
     @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
