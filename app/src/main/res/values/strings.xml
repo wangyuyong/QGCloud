@@ -10,4 +10,7 @@
     <string name="name_limit">此处只支持中文</string>
     <string name="validate_code">验证码</string>
     <string name="password_limit">支持6~15位数字、字母和符号组合</string>
+    <string name="new_password">新密码</string>
+    <string name="finish_set_new_password">完成</string>
+    <string name="get_code">点击获取验证码</string>
 </resources>
