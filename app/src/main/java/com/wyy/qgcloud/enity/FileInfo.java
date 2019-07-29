@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class FileInfo {
 
-    private String status;
+    private boolean status;
     private String message;
     private List<DataBean> data;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

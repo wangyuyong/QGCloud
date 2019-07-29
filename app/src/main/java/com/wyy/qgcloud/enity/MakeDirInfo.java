@@ -12,15 +12,15 @@ public class MakeDirInfo {
      * data : {"fileId":"创建的文件夹ID","uploadTime":"文件夹上传的时间"}
      */
 
-    private String status;
+    private boolean status;
     private String message;
     private DataBean data;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

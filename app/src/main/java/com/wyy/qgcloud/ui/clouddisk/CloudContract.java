@@ -29,6 +29,16 @@ public interface CloudContract {
          * @param dir 文件夹信息
          */
         void makeDir(FileInfo.DataBean dir);
+
+        /**
+         * 隐藏返回键
+         */
+        void hideHomePage();
+
+        /**
+         * 显示返回按钮
+         */
+        void showHomePage();
     }
 
     interface CloudPresent extends BasePresent<CloudView>{
@@ -54,10 +64,10 @@ public interface CloudContract {
         void makeDir(int userId,String fileName);
 
         /**
-         * 设置顶部全路径
-         * @param file 返回的文件夹信息
+         * 返回上一级目录
+         * @param userId 用户Id
          */
-        void setDirPath(FileInfo file);
+        void back(int userId);
     }
 
     interface CloudModel{

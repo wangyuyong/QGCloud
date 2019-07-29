@@ -47,6 +47,8 @@ public class RetrofitManager {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
+                .writeTimeout(8000,TimeUnit.MILLISECONDS)
+                .readTimeout(8000,TimeUnit.MILLISECONDS)
                 .build();
 
         //创建Retrofit

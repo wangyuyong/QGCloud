@@ -147,4 +147,6 @@
     <dimen name="sp_36">36sp</dimen>
     <dimen name="sp_48">48sp</dimen>
 
+    <dimen name="action_bar">60dp</dimen>
+
 </resources>

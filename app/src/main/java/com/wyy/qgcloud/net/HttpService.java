@@ -82,19 +82,17 @@ public interface HttpService {
      * @return Observable<MakeDirInfo>
      */
     @FormUrlEncoded
-    @POST(".")
+    @POST("file/createFile")
     Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
 
     /**
      * 获取是否可以打开用户文件夹的信息
-     * @param userId
-     * @param fileId
+     * @param userId 用户ID
+     * @param fileId 文件夹Id
      * @return Observable<FileInfo>
      */
-    @FormUrlEncoded
-    @GET(".")
-    Observable<FileInfo> getFileInfi(@Field("userId")int userId,@Field("fileId")int fileId);
 
-
+    @GET("file/findAll")
+    Observable<FileInfo> getFileInfi(@Query("userId") int userId,@Query("fileId") int fileId);
 }
 

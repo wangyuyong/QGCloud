@@ -1,7 +1,7 @@
 package com.wyy.qgcloud.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +28,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         ImageView menuIv;
         LinearLayout fileLl;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             fileIconIv = itemView.findViewById(R.id.iv_item_icon);
@@ -43,9 +43,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         this.fileLists = fileLists;
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_adapter_file,viewGroup,false);
         ViewHolder holder = new ViewHolder(itemView);
 
@@ -53,15 +52,15 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        String fileName = fileLists.get(i).getFileName();
-        String fileTime = fileLists.get(i).getUploadTime();
+    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+
+        FileInfo.DataBean file = fileLists.get(i);
+        Log.d("adapter","" + i);
+        String fileName = file.getFileName();
+        String fileTime = file.getUploadTime();
 
         viewHolder.fileNameTv.setText(fileName);
         viewHolder.fileTimeTv.setText(fileTime);
-
-        //待更改
-        viewHolder.fileIconIv.setImageResource(R.mipmap.ic_launcher);
 
         viewHolder.menuIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +81,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        Log.d("CloudFragment",""+fileLists.size());
         return fileLists.size();
     }
 

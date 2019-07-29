@@ -1,12 +1,15 @@
 package com.wyy.qgcloud.ui.clouddisk;
 
+import android.util.Log;
+
 import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;;
 
 public class CloudPresent implements CloudContract.CloudPresent {
 
@@ -29,11 +32,17 @@ public class CloudPresent implements CloudContract.CloudPresent {
     @Override
     public void displayRoot(int userId) {
         model.requestOpenDir(userId,0)
-                .subscribe(new Consumer<FileInfo>() {
+                .subscribe(new Observer<FileInfo>() {
                     @Override
-                    public void accept(FileInfo fileInfo) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FileInfo fileInfo) {
                         //有权限
-                        if (fileInfo.getMessage() == null){
+                        if (fileInfo.getStatus()){
+                            view.hideHomePage();
                             if (fileInfoList.size() == 0){
                                 fileInfoList.add(fileInfo);
                             }else {
@@ -46,6 +55,16 @@ public class CloudPresent implements CloudContract.CloudPresent {
                             //无权限
                             view.showError(fileInfo.getMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -60,26 +79,42 @@ public class CloudPresent implements CloudContract.CloudPresent {
 
         model.requestOpenDir(userId,fileId)
                 //更新界面
-                .subscribe(new Consumer<FileInfo>() {
+                .subscribe(new Observer<FileInfo>() {
                     @Override
-                    public void accept(FileInfo fileInfo) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FileInfo fileInfo) {
                         //有权限
-                        if (fileInfo.getMessage() == null){
+                        if (fileInfo.getStatus()){
                             fileInfoList.add(fileInfo);
                             positionList.add(position);
                             view.updataDir(fileInfo.getData());
+                            view.showHomePage();
                         }else {
                             //无权限
                             view.showError(fileInfo.getMessage());
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
     }
 
     @Override
-    public void makeDir(int userId, final String fileName) {
+    public void makeDir(final int userId, final String fileName) {
         //获取文件的全路径
-        StringBuffer filePath = new StringBuffer();
+        StringBuffer filePath = new StringBuffer("/");
         for (int i = 0; i < positionList.size(); i++){
             //获取i级目录
             FileInfo.DataBean file = fileInfoList.get(i).getData().get(positionList.get(i));
@@ -89,28 +124,106 @@ public class CloudPresent implements CloudContract.CloudPresent {
         //去掉最后一个'/'
         filePath.deleteCharAt(filePath.length() - 1);
         String path = filePath.toString();
+        Log.d("CloudPresent",path);
         model.requestMakeDir(userId,path,fileName)
-                .subscribe(new Consumer<MakeDirInfo>() {
+                .subscribe(new Observer<MakeDirInfo>() {
                     @Override
-                    public void accept(MakeDirInfo makeDirInfo) throws Exception {
-                        if (makeDirInfo.getMessage() == null){
-                            //有权限，则将FileInfo.Databean添加到容器中
-                            FileInfo.DataBean newDir = new FileInfo.DataBean();
-                            newDir.setFileName(fileName);
-                            newDir.setFileId(makeDirInfo.getData().getFileId());
-                            newDir.setUploadTime(makeDirInfo.getData().getUploadTime());
-                            //添加至databean容器中
-                            fileInfoList.get(positionList.get(positionList.size() - 1)).getData().add(newDir);
-                            view.makeDir(newDir);
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MakeDirInfo makeDirInfo) {
+                        if (makeDirInfo.getStatus()){
+                            //有权限，则刷新文件列表
+                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.size() - 1).getFolderId())
+                                    .subscribe(new Observer<FileInfo>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(FileInfo fileInfo) {
+                                            view.updataDir(fileInfo.getData());
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    });
                         }else {
                             view.showError(makeDirInfo.getMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
 
     @Override
-    public void setDirPath(FileInfo file) {
+    public void back(final int userId) {
+        if (fileInfoList.size() > 1){
+            //取出上一级文件信息
+            FileInfo file = fileInfoList.get(fileInfoList.size() - 2);
+            for (int temp : positionList){
+                Log.d("CloudPresent","" + temp);
+            }
+            //获取上一级目录Id
+            int folderId = file.getData().get(positionList.get(positionList.size() - 1)).getFolderId();
+            final int level = file.getData().get(positionList.get(positionList.size() - 1)).getLevel();
+            Log.d("CloudPresent","父目录:" + folderId);
+            //移除记录
+            fileInfoList.remove(fileInfoList.size() - 1);
+            positionList.remove(positionList.size() - 1);
+            //发送网络请求
+            model.requestOpenDir(userId,folderId)
+                    .subscribe(new Observer<FileInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(FileInfo fileInfo) {
+                            //如果有权限，返回上一级目录
+                            if (fileInfo.getStatus()){
+                                if (level == 2){
+                                    view.hideHomePage();
+                                }
+                                view.updataDir(fileInfo.getData());
+                            }else {
+                                //没有权限，返回根目录并提示用户
+                                displayRoot(userId);
+                                view.showError(fileInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        }
 
     }
 
