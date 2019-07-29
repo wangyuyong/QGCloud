@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -27,9 +28,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
+import com.wyy.qgcloud.adapter.OnMultiClickListener;
 import com.wyy.qgcloud.base.BaseActivity;
+import com.wyy.qgcloud.ui.login.LoginActivity;
+import com.wyy.qgcloud.util.MyToast;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -56,6 +59,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     Button registerBtn;
     @BindView(R.id.imv_icon)
     ImageView imvIcon;
+    @BindView(R.id.imv_register_back)
+    ImageView imvRegisterBack;
 
     private RegisterContract.RegisterPresent registerPresent = new RegisterPresent();
     private static final int OPEN_ALBUM = 1;
@@ -69,7 +74,9 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         registerPresent.bindView(this);
+        registerPresent.getValidateCodeInfo(RegisterActivity.this);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        registerPasswordEdt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         nameEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +96,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 if (!format) {
                     //格式不正确，底边变色
                     nameEdt.setTextColor(getResources().getColor(R.color.colorError));
-                }else{
+                } else {
                     nameEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
@@ -113,7 +120,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 if (!format) {
                     //格式不正确，底边变色
                     phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
-                }else{
+                } else {
                     phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
@@ -137,7 +144,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 if (!format) {
                     //格式不正确，底边变色
                     registerEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
-                }else{
+                } else {
                     registerEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
@@ -161,66 +168,77 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 if (!format) {
                     //格式不正确，底边变色
                     registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
-                }else{
+                } else {
                     registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
                 }
             }
         });
+        registerBtn.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                register();
+            }
+        });
+        validateCodeImv.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                registerPresent.getValidateCodeInfo(RegisterActivity.this);
+            }
+        });
     }
 
-    @OnClick({R.id.imv_validate_code, R.id.btn_register,R.id.imv_icon})
+    @OnClick({R.id.imv_icon, R.id.imv_register_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.imv_validate_code:
-                registerPresent.getValidateCodeInfo(this);
-                break;
-            case R.id.btn_register:
-                register();
-                break;
             case R.id.imv_icon:
                 //权限处理
                 if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                }else {
+                } else {
                     openAlbum();
                 }
                 break;
+            case R.id.imv_register_back:
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
         }
     }
 
-    @Override//获取输入内容
+    //获取输入内容
+    @Override
     public String getEdt(EditText editText) {
         String editMsg = editText.getText().toString();
         return editMsg;
     }
 
-    @Override//展示验证码
+    //展示验证码
+    @Override
     public void displayCode(String icon) {
         byte[] iconByte = Base64.decode(icon.getBytes(), Base64.DEFAULT);
-            Glide.with(this)
-                    .load(iconByte)
-                    .into(validateCodeImv);
+        Glide.with(this)
+                .load(iconByte)
+                .into(validateCodeImv);
 
     }
 
     @Override
     public void showError(String msg, int kind) {
-        switch (kind){
+        switch (kind) {
             //爆红提示
             case 1:
                 break;
-             //弹窗提示
+            //弹窗提示
             case 2:
-                MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.sad, msg);
+                MyToast.getMyToast().ToastShow(RegisterActivity.this, null, R.drawable.ic_sad, msg);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     @Override
     public void showSuccess(String msg) {
-        MyToast.getMyToast().ToastShow(RegisterActivity.this,null, R.drawable.happy, msg);
+        MyToast.getMyToast().ToastShow(RegisterActivity.this, null, R.drawable.ic_happy, msg);
     }
 
     //注册
@@ -230,20 +248,21 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         String userName = getEdt(nameEdt);
         String phone = getEdt(phoneNumberEdt);
         String code = getEdt(editValidateCode);
-        String path = pref.getString("path","");
+        String path = pref.getString("path", "");
         Log.d("wx", path);
         File icon = new File(path);
         registerPresent.getRegisterInfo(this, email, password, icon, userName, phone, code);
     }
 
-    @Override  //权限回调
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        switch (requestCode){
+    //权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
             case 1:
-                if(grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAlbum();
-                }else {
-                    Toast.makeText(this, "请打开权限。",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "请打开权限。", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -252,13 +271,13 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        switch (requestCode){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case OPEN_ALBUM:
                 //根据不同的版本进行不同的操作
-                if(Build.VERSION.SDK_INT>=19){
+                if (Build.VERSION.SDK_INT >= 19) {
                     handleImageOnKitKat(data);
-                }else{
+                } else {
                     handleImageBeforeKitKat(data);
                 }
                 break;
@@ -271,46 +290,45 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     }
 
     //打开相册选择照片
-    private void openAlbum(){
+    private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("*/*");
         startActivityForResult(intent, 1);
     }
 
     //4.4以下系统
-    private void handleImageBeforeKitKat(Intent data){
+    private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         String imagePath = getImagepath(uri, null);
         displayImage(imagePath);
     }
 
     //4.4及以上系统
-    private void handleImageOnKitKat(Intent data){
+    private void handleImageOnKitKat(Intent data) {
         String imagePath = null;
         Uri uri = data.getData();
         //返回Uri为document类型
-        if(DocumentsContract.isDocumentUri(this,uri)){
+        if (DocumentsContract.isDocumentUri(this, uri)) {
             String docId = DocumentsContract.getDocumentId(uri);  //取出document id处理
             //uri的authority为media格式时需进行再次解析
-            if("com.android.providers.media.documents".equals(uri.getAuthority())){
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 //分割字符串得到真正的id
                 String id = docId.split(":")[1];
                 //构建新的条件语句
-                String selection = MediaStore.Images.Media._ID+"="+id;
+                String selection = MediaStore.Images.Media._ID + "=" + id;
                 //传入新的Uri和条件语句
-                imagePath = getImagepath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
-            }
-            else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagepath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
                 imagePath = getImagepath(contentUri, null);
             }
         }
         //Uri为content类型
-        else if("content".equalsIgnoreCase(uri.getScheme())){
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
             imagePath = getImagepath(uri, null);
         }
         //Uri为file类型直接获取
-        else if("file".equalsIgnoreCase(uri.getScheme())){
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
             imagePath = uri.getPath();
         }
         //传入路径来进行展示
@@ -358,11 +376,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
 //    }
 
     //获取图片真实路径
-    private String getImagepath(Uri uri, String selection){
+    private String getImagepath(Uri uri, String selection) {
         String path = null;
         Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
-        if(cursor != null){
-            if(cursor.moveToFirst()){
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
             }
             cursor.close();
@@ -371,11 +389,11 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     }
 
     //将图片进行展示
-    private void displayImage(String imagePath){
-        if(imagePath!= null){
+    private void displayImage(String imagePath) {
+        if (imagePath != null) {
             editor = pref.edit();
-            editor.putString("path",imagePath);
-            Log.d("wx",imagePath);
+            editor.putString("path", imagePath);
+            Log.d("wx", imagePath);
             editor.apply();
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //设置图片
@@ -383,15 +401,19 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                     .load(bitmap)
                     .centerCrop()
                     .into(imvIcon);
-        }else {
-            Toast.makeText(this, "failed",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         registerPresent.unbindView();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.imv_register_back)
+    public void onViewClicked() {
     }
 }

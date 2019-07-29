@@ -5,7 +5,7 @@ import android.view.View;
 public abstract class OnMultiClickListener implements View.OnClickListener {
 
     //两次按钮点击间隔不小于2000毫秒
-    private static final int MIN_CLICK_DELAY_TIME = 2000;
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
     private static long lastClickTime;
 
     public abstract void onMultiClick(View v);

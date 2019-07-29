@@ -4,7 +4,7 @@
     android:layout_width="213dp"
     android:layout_height="150dp"
     android:gravity="center"
-    android:background="@drawable/toast"
+    android:background="@drawable/bg_toast"
     android:orientation="vertical">
 
     <ImageView

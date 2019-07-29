@@ -1,4 +1,4 @@
-package com.wyy.qgcloud;
+package com.wyy.qgcloud.util;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wyy.qgcloud.R;
 
 public class MyToast {
     public static MyToast myToast;
