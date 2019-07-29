@@ -22,24 +22,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 线程安全的单例类,用于请求网络
  */
 public class RetrofitManager {
-
+    private static RetrofitManager retrofitManager;
     private Retrofit retrofit;
     private HttpService service;
 
-    private static class ManagerHolder{
-        public final static RetrofitManager manager = new RetrofitManager();
-    }
+//    private static class ManagerHolder{
+//        public final static RetrofitManager manager = new RetrofitManager();
+//    }
 
     private RetrofitManager(){
-        //创建okHttpCilent
-        OkHttpClient cilent = new OkHttpClient.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
                     private final HashMap<String,List<Cookie>> cookieStore = new HashMap<>();
                     @Override
                     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
                         cookieStore.put(httpUrl.host(),list);
                     }
-
                     @NotNull
                     @Override
                     public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
@@ -48,16 +46,16 @@ public class RetrofitManager {
                     }
                 })
                 .writeTimeout(8000,TimeUnit.MILLISECONDS)
-                .readTimeout(8000,TimeUnit.MILLISECONDS)
-                .build();
+                .readTimeout(8000,TimeUnit.MILLISECONDS);
 
         //创建Retrofit
         retrofit = new Retrofit.Builder()
                 .baseUrl(Api.CONST_BASE_URL)
-                .client(cilent)
+                .client(builder.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        service = retrofit.create(HttpService.class);
     }
 
     /**
@@ -65,7 +63,14 @@ public class RetrofitManager {
      * @return 该单例类
      */
     public static RetrofitManager getInstance(){
-        return ManagerHolder.manager;
+        if(retrofitManager == null){
+            synchronized (Object.class){
+                if(retrofitManager == null){
+                    retrofitManager = new RetrofitManager();
+                }
+            }
+        }
+        return retrofitManager;
     }
 
     /**
@@ -73,10 +78,6 @@ public class RetrofitManager {
      * @return HttpService
      */
     public HttpService getHttpService() {
-        if (service == null){
-            service = retrofit.create(HttpService.class);
-        }
-
         return service;
     }
 }

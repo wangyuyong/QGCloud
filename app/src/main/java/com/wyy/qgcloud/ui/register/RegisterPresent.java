@@ -8,13 +8,12 @@ import android.util.Log;
 import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
+import com.wyy.qgcloud.ui.login.LoginActivity;
 
 import java.io.File;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import okhttp3.MultipartBody;
 
 public class RegisterPresent implements RegisterContract.RegisterPresent {
 
@@ -35,10 +34,25 @@ public class RegisterPresent implements RegisterContract.RegisterPresent {
 
     @Override
     public void getValidateCodeInfo(Context context) {
-        registerModel.getValidateCodeInfo(context).subscribe(new Consumer<ValidateCodeInfo>() {
+        registerModel.getValidateCodeInfo(context).subscribe(new Observer<ValidateCodeInfo>() {
             @Override
-            public void accept(ValidateCodeInfo validateCodeInfo) throws Exception {
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ValidateCodeInfo validateCodeInfo) {
                 registerView.displayCode(validateCodeInfo.getImage());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
     }
@@ -58,7 +72,7 @@ public class RegisterPresent implements RegisterContract.RegisterPresent {
                 if(registerInfo.getStatus()){
                     //注册成功
                     registerView.showSuccess(registerInfo.getMessage());
-                    Intent intent = new Intent(context, HomePageActivity.class);
+                    Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
                 }else{
                     //注册失败

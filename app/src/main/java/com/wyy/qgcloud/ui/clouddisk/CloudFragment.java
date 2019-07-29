@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import com.wyy.qgcloud.MyToast;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.FileAdapter;
 import com.wyy.qgcloud.adapter.OnItemClickedListener;
@@ -21,6 +19,7 @@ import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.ui.dialog.ConfigOnClickedListener;
 import com.wyy.qgcloud.ui.dialog.TransferFileDialog;
+import com.wyy.qgcloud.util.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
 
     @Override
     public void showError(String message) {
-        MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.sad,message);
+        MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,message);
     }
 
     @Override

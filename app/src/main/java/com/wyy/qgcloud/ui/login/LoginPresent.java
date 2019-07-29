@@ -7,6 +7,8 @@ import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class LoginPresent implements LoginContract.LoginPresent {
@@ -28,9 +30,14 @@ public class LoginPresent implements LoginContract.LoginPresent {
 
     @Override
     public void getEmailInfo(Context context, final String email) {
-        loginModel.getEmailInfo(context, email).subscribe(new Consumer<EmailInfo>() {
+        loginModel.getEmailInfo(context, email).subscribe(new Observer<EmailInfo>() {
             @Override
-            public void accept(EmailInfo emailInfo) throws Exception {
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(EmailInfo emailInfo) {
                 //根据返回数据在view层操作
                 if(!emailInfo.getStatus()){
                     //邮箱不存在
@@ -38,14 +45,29 @@ public class LoginPresent implements LoginContract.LoginPresent {
                 }
                 //邮箱存在不做提示
             }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
         });
     }
 
     @Override
     public void getLoginInfo(final Context context, String email, String password) {
-        loginModel.getLoginInfo(context, email, password).subscribe(new Consumer<LoginInfo>() {
+        loginModel.getLoginInfo(context, email, password).subscribe(new Observer<LoginInfo>() {
             @Override
-            public void accept(LoginInfo loginInfo) throws Exception {
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LoginInfo loginInfo) {
                 //根据返回数据在view层操作
                 if(loginInfo.getStatus()){
                     //登录成功
@@ -57,6 +79,15 @@ public class LoginPresent implements LoginContract.LoginPresent {
                     //登录失败，弹窗提示
                     loginView.showError(loginInfo.getMessage(),2);
                 }
+
+            }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
 
             }
         });

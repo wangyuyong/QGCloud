@@ -2,11 +2,14 @@ package com.wyy.qgcloud.net;
 
 import android.content.Context;
 
+import com.wyy.qgcloud.enity.ChangePasswordInfo;
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.FileInfo;
+import com.wyy.qgcloud.enity.GetEmailCodeInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
+import com.wyy.qgcloud.enity.SetNewPasswordInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
 import java.io.File;
@@ -49,7 +52,6 @@ public interface HttpService {
      * 用户注册时点击右侧框，发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
-
     @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
@@ -59,6 +61,33 @@ public interface HttpService {
     Observable<RegisterInfo> getRegisterInfo(@Part List<MultipartBody.Part> partList);
 
 
+    /**
+     * 用户忘记密码时输入邮箱，发送请求以获得验证码
+     * @param email
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/forgetPassword")
+    Observable<GetEmailCodeInfo> getEmailCodeInfo(@Field("email")String email);
+
+
+    @FormUrlEncoded
+    @POST("user/doForget")
+    Observable<SetNewPasswordInfo> getNewPasswordInfo(@Field("code")String code,
+                                                      @Field("email")String email,
+                                                      @Field("password")String password);
+
+
+    @FormUrlEncoded
+    @POST
+    Observable<ChangePasswordInfo> getChangePasswordInfo(@Field("password")String password,
+                                                         @Field("email")String email,
+                                                         @Field("userId")String userId);
+
+
+    @FormUrlEncoded
+    @POST
+    Observable<ChangePasswordInfo> getChangeMsgInfo(@Part List<MultipartBody.Part> partList);
 
     /**
      * 询问是否有对文件进行读或写的权限
@@ -74,6 +103,7 @@ public interface HttpService {
                                     @Field("fileId")String fileId,
                                     @Field("operation")String operation,
                                     @Field("filePath")String filePath);
+
     /**
      * 请求创建文件
      * @param userId 用户Id

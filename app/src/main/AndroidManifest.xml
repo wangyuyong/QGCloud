@@ -18,6 +18,11 @@
         <activity android:name=".ui.forgetPassword.ForgetPasswordActivity"></activity>
         <activity android:name=".app.DemoActivity">
         </activity>
+        <activity android:name=".ui.personalMsg.PersonalMsgActivity"></activity>
+        <activity android:name=".ui.changePassword.ChangePasswordActivity" />
+        <activity android:name=".ui.addressList.AddressListActivity" />
+        <activity android:name=".ui.forgetPassword.ForgetPasswordActivity" />
+        <activity android:name=".app.DemoActivity" />
         <activity android:name=".ui.homePage.HomePageActivity" />
         <activity android:name=".ui.download.DownLoadTest" />
 
@@ -25,6 +30,7 @@
             android:name=".ui.download.DownloadService"
             android:enabled="true"
             android:exported="true" />
+
         <activity android:name=".ui.register.RegisterActivity" />
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>

@@ -5,14 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.wyy.qgcloud.MyToast;
+import com.wyy.qgcloud.util.MyToast;
 import com.wyy.qgcloud.R;
 
+import com.wyy.qgcloud.adapter.OnMultiClickListener;
+import com.wyy.qgcloud.ui.forgetPassword.ForgetPasswordActivity;
 import com.wyy.qgcloud.ui.register.RegisterActivity;
 
 import java.util.regex.Pattern;
@@ -43,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         ButterKnife.bind(this);
         loginPresent = new LoginPresent();
         loginPresent.bindView(this);
+        loginPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
         loginEmailEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -79,6 +84,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 }
             }
         });
+        loginBtn.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                login();
+            }
+        });
     }
 
     @Override
@@ -88,18 +99,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     }
 
 
-    @OnClick({R.id.btn_login, R.id.btn_forget_password, R.id.btn_to_register})
+    @OnClick({ R.id.btn_forget_password, R.id.btn_to_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_login:
-                login();
-                break;
             case R.id.btn_forget_password:
-
+                Intent intent1 = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.btn_to_register:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent2);
                 break;
         }
     }
@@ -120,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 break;
             //弹窗提示
             case 2:
-                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.sad, msg);
+                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.ic_sad, msg);
                 break;
             default:
                 break;
@@ -129,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
     @Override
     public void showSuccess(String msg) {
-        MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.happy, msg);
+        MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.ic_happy, msg);
     }
 
     private void login(){
