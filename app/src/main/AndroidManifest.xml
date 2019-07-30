@@ -20,9 +20,6 @@
         </activity>
         <activity android:name=".ui.personalMsg.PersonalMsgActivity"></activity>
         <activity android:name=".ui.changePassword.ChangePasswordActivity" />
-        <activity android:name=".ui.addressList.AddressListActivity" />
-        <activity android:name=".ui.forgetPassword.ForgetPasswordActivity" />
-        <activity android:name=".app.DemoActivity" />
         <activity android:name=".ui.homePage.HomePageActivity" />
         <activity android:name=".ui.download.DownLoadTest" />
 

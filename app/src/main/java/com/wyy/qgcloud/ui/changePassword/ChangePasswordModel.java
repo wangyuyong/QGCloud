@@ -12,10 +12,10 @@ import io.reactivex.schedulers.Schedulers;
 public class ChangePasswordModel implements ChangePasswordContract.ChangePasswordModel {
 
     @Override
-    public Observable<ChangePasswordInfo> getChangePasswordInfo(Context context, String password, String email, String userId) {
+    public Observable<ChangePasswordInfo> getChangePasswordInfo(Context context, int userId, String oldPassword, String newPassword) {
         return RetrofitManager.getInstance()
                 .getHttpService()
-                .getChangePasswordInfo(password, email, userId)
+                .getChangePasswordInfo(userId, oldPassword,newPassword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

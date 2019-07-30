@@ -45,10 +45,10 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imv_personal_icon"
-            android:layout_width="@dimen/dp_70"
-            android:layout_height="@dimen/dp_70"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_44"/>
 
     </RelativeLayout>
@@ -75,7 +75,7 @@
         android:textColor="@color/colorTextBlack"/>
 
     <TextView
-        android:id="@+id/tv_forget_name"
+        android:id="@+id/tv_personal_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -110,18 +110,24 @@
             android:textSize="20sp"
             android:textColor="@color/colorTextBlack"/>
 
-        <TextView
-            android:id="@+id/tv_personal_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="@dimen/dp_44"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/colorTextBlack"
-            />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="@dimen/dp_32"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/edt_change_phone"
+                    android:layout_width="170dp"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|right"
+                    android:background="@null"/>
+            </LinearLayout>
 
     </RelativeLayout>
 

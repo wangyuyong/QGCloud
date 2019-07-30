@@ -21,6 +21,8 @@
     <string name="avatar">头像</string>
     <string name="setting">设置</string>
     <string name="exit">退出</string>
+    <string name="address_list">通讯录</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

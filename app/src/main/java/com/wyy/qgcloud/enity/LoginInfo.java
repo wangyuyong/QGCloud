@@ -11,7 +11,7 @@ public class LoginInfo  {
     /**
      * status : 登录状态
      * message : 失败的原因，成功则为null
-     * data : {"userId":"用户id","email":"用户邮箱","password":"用户密码","icon":"用户头像(IO流数据)","userName":"用户姓名","phone":"手机号","role":"用户权限","groupId":"群组Id"}
+     * data : {"userId":"用户id","email":"用户邮箱","password":"用户密码","icon":"用户头像，服务器地址","userName":"用户姓名","phone":"手机号","role":"用户权限","groupId":"群组Id","groupName":"群组名称"}
      */
 
     private boolean status;
@@ -42,16 +42,17 @@ public class LoginInfo  {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * userId : 用户id
          * email : 用户邮箱
          * password : 用户密码
-         * icon : 用户头像(IO流数据)
+         * icon : 用户头像，服务器地址
          * userName : 用户姓名
          * phone : 手机号
          * role : 用户权限
          * groupId : 群组Id
+         * groupName : 群组名称
          */
 
         private int userId;
@@ -62,6 +63,7 @@ public class LoginInfo  {
         private String phone;
         private int role;
         private int groupId;
+        private String groupName;
 
         public int getUserId() {
             return userId;
@@ -125,6 +127,14 @@ public class LoginInfo  {
 
         public void setGroupId(int groupId) {
             this.groupId = groupId;
+        }
+
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
         }
     }
 }

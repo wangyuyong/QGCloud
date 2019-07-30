@@ -5,7 +5,9 @@ import android.content.Intent;
 
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.ui.changePassword.ChangePasswordActivity;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
+import com.wyy.qgcloud.ui.personalMsg.PersonalMsgActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -72,9 +74,10 @@ public class LoginPresent implements LoginContract.LoginPresent {
                 if(loginInfo.getStatus()){
                     //登录成功
                     loginView.showSuccess("登录成功!");
-                    Intent intent = new Intent(context, HomePageActivity.class);
+                    Intent intent = new Intent(context, PersonalMsgActivity.class);
                     intent.putExtra("data", loginInfo.getData());
                     context.startActivity(intent);
+                    LoginActivity.mLoginActivity.finish();
                 }else{
                     //登录失败，弹窗提示
                     loginView.showError(loginInfo.getMessage(),2);

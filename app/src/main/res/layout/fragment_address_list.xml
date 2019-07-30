@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/change_password_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/colorBtn">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/address_list"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="25sp"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
+        android:id="@+id/address_list"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"/>
+
+</LinearLayout>

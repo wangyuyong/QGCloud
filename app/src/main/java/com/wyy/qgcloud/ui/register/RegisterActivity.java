@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.ui.register;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +69,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
     private static final int CUT_PHOTO = 2;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    public static Activity mRegisterActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +77,10 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         registerPresent.bindView(this);
+        mRegisterActivity = this;
         registerPresent.getValidateCodeInfo(RegisterActivity.this);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        registerPasswordEdt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        registerPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
         nameEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -114,9 +118,9 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
 
             @Override
             public void afterTextChanged(Editable s) {
-                String email = getEdt(phoneNumberEdt);
+                String phone = getEdt(phoneNumberEdt);
                 String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
-                boolean format = Pattern.matches(regex, email);
+                boolean format = Pattern.matches(regex, phone);
                 if (!format) {
                     //格式不正确，底边变色
                     phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
@@ -201,6 +205,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
             case R.id.imv_register_back:
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                finish();
         }
     }
 
