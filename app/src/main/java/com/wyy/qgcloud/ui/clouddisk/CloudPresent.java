@@ -136,7 +136,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     public void onNext(MakeDirInfo makeDirInfo) {
                         if (makeDirInfo.getStatus()){
                             //有权限，则刷新文件列表
-                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.size() - 1).getFolderId())
+                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
                                     .subscribe(new Observer<FileInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
@@ -146,6 +146,9 @@ public class CloudPresent implements CloudContract.CloudPresent {
                                         @Override
                                         public void onNext(FileInfo fileInfo) {
                                             view.updataDir(fileInfo.getData());
+                                            //更新fileInfo容器
+                                            fileInfoList.remove(fileInfoList.size() - 1);
+                                            fileInfoList.add(fileInfo);
                                         }
 
                                         @Override
@@ -225,6 +228,12 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     });
         }
 
+    }
+
+    @Override
+    public void queryDetail(int position) {
+        FileInfo.DataBean dataBean = fileInfoList.get(fileInfoList.size() - 1).getData().get(position);
+        view.showDetail(dataBean);
     }
 
     @Override

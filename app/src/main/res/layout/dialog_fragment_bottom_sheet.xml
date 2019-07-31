@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="340dp"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="23dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="27dp"
+            android:src="@mipmap/ic_download"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="29dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/colorTextBlack"
+            android:text="下载"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_detail"
+        android:layout_marginTop="18dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:src="@mipmap/ic_detail"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/colorTextBlack"
+            android:text="详情"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_power_manager"
+        android:layout_marginTop="18dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:src="@mipmap/ic_power_manager"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/colorTextBlack"
+            android:text="权限设置"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_rename"
+        android:layout_marginTop="19dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="27dp"
+            android:src="@mipmap/ic_rename"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="27dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/colorTextBlack"
+            android:text="重命名"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:src="@mipmap/ic_detail"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="27dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="@color/colorTextBlack"
+            android:text="删除"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

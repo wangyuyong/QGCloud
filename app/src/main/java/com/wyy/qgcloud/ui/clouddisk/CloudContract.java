@@ -25,12 +25,6 @@ public interface CloudContract {
         void showError(String message);
 
         /**
-         * 新建一个文件夹
-         * @param dir 文件夹信息
-         */
-        void makeDir(FileInfo.DataBean dir);
-
-        /**
          * 隐藏返回键
          */
         void hideHomePage();
@@ -39,6 +33,12 @@ public interface CloudContract {
          * 显示返回按钮
          */
         void showHomePage();
+
+        /**
+         * 显示详细信息
+         * @param dataBean 文件信息
+         */
+        void showDetail(FileInfo.DataBean dataBean);
     }
 
     interface CloudPresent extends BasePresent<CloudView>{
@@ -68,6 +68,12 @@ public interface CloudContract {
          * @param userId 用户Id
          */
         void back(int userId);
+
+        /**
+         * 查看文件夹的详细信息
+         * @param position 查看的位置
+         */
+        void queryDetail(int position);
     }
 
     interface CloudModel{
