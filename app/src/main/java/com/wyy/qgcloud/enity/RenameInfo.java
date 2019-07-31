@@ -8,15 +8,15 @@ public class RenameInfo {
      * data : 返回null
      */
 
-    private String status;
+    private boolean status;
     private String message;
     private String data;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

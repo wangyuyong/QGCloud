@@ -26,10 +26,6 @@ public class RetrofitManager {
     private Retrofit retrofit;
     private HttpService service;
 
-//    private static class ManagerHolder{
-//        public final static RetrofitManager manager = new RetrofitManager();
-//    }
-
     private RetrofitManager(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {

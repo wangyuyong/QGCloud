@@ -9,6 +9,7 @@ import com.wyy.qgcloud.enity.GetEmailCodeInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
+import com.wyy.qgcloud.enity.RenameInfo;
 import com.wyy.qgcloud.enity.SetNewPasswordInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
@@ -136,5 +137,16 @@ public interface HttpService {
 
     @GET("file/findAll")
     Observable<FileInfo> getFileInfi(@Query("userId") int userId,@Query("fileId") int fileId);
+
+    /**
+     * 重新命名文件夹
+     * @param userId 用户Id
+     * @param fileId 文件Id
+     * @param fileName 文件名
+     * @return Observable<RenameInfo>
+     */
+    @FormUrlEncoded
+    @POST("file/updateFile")
+    Observable<RenameInfo> getRenameInfo(@Field("userId")int userId,@Field("fileId")int fileId,@Field("fileName")String fileName);
 }
 
