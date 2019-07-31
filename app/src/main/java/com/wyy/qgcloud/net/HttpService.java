@@ -78,15 +78,27 @@ public interface HttpService {
                                                       @Field("password")String password);
 
 
+    /**
+     *用户登录后修改密码
+     * @param userId  用户ID
+     * @param oldPassword  用户旧密码
+     * @param newPassword  用户新密码
+     * @return  修改是否成功
+     */
     @FormUrlEncoded
-    @POST
-    Observable<ChangePasswordInfo> getChangePasswordInfo(@Field("password")String password,
-                                                         @Field("email")String email,
-                                                         @Field("userId")String userId);
+    @POST("/user/modifyPassword")
+    Observable<ChangePasswordInfo> getChangePasswordInfo(@Field("userId")int userId,
+                                                         @Field("oldPassword")String oldPassword,
+                                                         @Field("newPassword")String newPassword);
 
 
-    @FormUrlEncoded
-    @POST
+    /**
+     *用户在个人信息页面修改信息（暂只有手机号）
+     * @param partList
+     * @return
+     */
+    @Multipart
+    @POST("/user/updateUser")
     Observable<ChangePasswordInfo> getChangeMsgInfo(@Part List<MultipartBody.Part> partList);
 
     /**

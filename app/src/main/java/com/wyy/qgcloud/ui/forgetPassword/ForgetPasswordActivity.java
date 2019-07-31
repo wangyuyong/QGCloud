@@ -1,8 +1,10 @@
 package com.wyy.qgcloud.ui.forgetPassword;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,15 +38,17 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
     @BindView(R.id.btn_finish_set_new_password)
     Button btnFinishSetNewPassword;
     private ForgetPasswordContract.ForgetPasswordPresent forgetPasswordPresent;
+    public static Activity mForgetPasswordActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         ButterKnife.bind(this);
+        mForgetPasswordActivity = this;
         forgetPasswordPresent = new ForgetPasswordPresent();
         forgetPasswordPresent.bindView(this);
-        edtForgetNewPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        edtForgetNewPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         btnFinishSetNewPassword.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
@@ -70,6 +74,7 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
             case R.id.imv_forget_back:
                 Intent intent1 = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
                 startActivity(intent1);
+                finish();
                 break;
                 default:
                     break;

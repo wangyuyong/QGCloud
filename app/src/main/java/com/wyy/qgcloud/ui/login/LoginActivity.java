@@ -1,5 +1,6 @@
 package com.wyy.qgcloud.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.wyy.qgcloud.ui.personalMsg.PersonalMsgActivity;
 import com.wyy.qgcloud.util.MyToast;
 import com.wyy.qgcloud.R;
 
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     @BindView(R.id.btn_login)
     Button loginBtn;
 
+    public static Activity mLoginActivity;
     private LoginContract.LoginPresent loginPresent = new LoginPresent();
 
     @Override
@@ -45,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mLoginActivity = this;
         loginPresent = new LoginPresent();
         loginPresent.bindView(this);
         loginPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -90,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 login();
             }
         });
+
     }
 
     @Override
@@ -103,12 +108,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_forget_password:
-                Intent intent1 = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                Intent intent1 = new Intent(LoginActivity.this, PersonalMsgActivity.class);
                 startActivity(intent1);
+                finish();
                 break;
             case R.id.btn_to_register:
                 Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent2);
+                finish();
                 break;
         }
     }

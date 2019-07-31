@@ -4,8 +4,8 @@ public class ChangePasswordInfo {
 
 
     /**
-     * status : 成功返回 true  错误返回false
-     * message : 错误的信息
+     * status : true 修改成功， false 修改失败
+     * message :
      * data : null
      */
 
