@@ -110,24 +110,17 @@
             android:textSize="20sp"
             android:textColor="@color/colorTextBlack"/>
 
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="@dimen/dp_32"
-                android:gravity="center">
-
-                <EditText
-                    android:id="@+id/edt_change_phone"
-                    android:layout_width="170dp"
-                    android:layout_height="@dimen/dp_32"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical|right"
-                    android:background="@null"/>
-            </LinearLayout>
+        <TextView
+            android:id="@+id/tv_change_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/dp_44"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorTextBlack"/>
 
     </RelativeLayout>
 

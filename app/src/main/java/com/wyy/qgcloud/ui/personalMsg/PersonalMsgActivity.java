@@ -3,6 +3,7 @@ package com.wyy.qgcloud.ui.personalMsg;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,11 +13,12 @@ import com.bumptech.glide.Glide;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.base.BaseActivity;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.ui.dialog.ConfigOnClickedListener;
 import com.wyy.qgcloud.ui.my.MyFragment;
+import com.wyy.qgcloud.util.ChangePhoneDialog;
 import com.wyy.qgcloud.util.MyToast;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -34,73 +36,60 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
     CircleImageView imvPersonalIcon;
     @BindView(R.id.tv_personal_name)
     TextView tvPersonalName;
+    @BindView(R.id.tv_change_phone)
+    TextView tvChangePhone;
     @BindView(R.id.tv_personal_email)
     TextView tvPersonalEmail;
-    @BindView(R.id.edt_change_phone)
-    EditText edtChangePhone;
     private PersonalMsgContract.PersonalMsgPresent personalMsgPresent;
     LoginInfo.DataBean user;
-    private LoginInfo.DataBean dataBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_msg);
-        Intent intent = getIntent();
-        dataBean = (LoginInfo.DataBean) intent.getSerializableExtra("data");
-
         ButterKnife.bind(this);
         personalMsgPresent = new PersonalMsgPresent();
         personalMsgPresent.bindView(this);
-//        Intent intent = getIntent();
-//        user = (LoginInfo.DataBean) intent.getSerializableExtra("user");
+        Intent intent = getIntent();
+        user = (LoginInfo.DataBean) intent.getSerializableExtra("user");
         showPersonalMsg();
-//        edtChangePhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    //失去焦点
-//                    edtChangePhone.setBackground(null);
-//                    File icon = new File(dataBean.getIcon());
-//                    String phone = getEdt(edtChangePhone);
-//                    String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
-//                    boolean format = Pattern.matches(regex, phone);
-//                    if (format){
-//                        personalMsgPresent.getChangeMsgInfo(PersonalMsgActivity.this, dataBean.getUserId(), dataBean.getEmail(), icon, phone, dataBean.getGroupName());
-//                    }
-//                }
-//            }
-//        });
-    }
-
-    @OnClick({R.id.imv_personal_back, R.id.imv_personal_icon, R.id.edt_change_phone})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.imv_personal_back:
-                Intent intent = new Intent(this, MyFragment.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.imv_personal_icon:  //暂未上线修改头像功能
-                break;
-            case R.id.edt_change_phone:
+        tvChangePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 //弹出修改框
-                break;
-        }
+                final ChangePhoneDialog dialog = new ChangePhoneDialog(PersonalMsgActivity.this, R.style.dialog);
+                dialog.setListener(new ConfigOnClickedListener() {
+                    @Override
+                    public void onClick(String info) {
+                        dialog.cancel();
+                        String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
+                        boolean format = Pattern.matches(regex, info);
+                        if(format){
+                            personalMsgPresent.getChangeMsgInfo(PersonalMsgActivity.this, user.getUserId(), user.getEmail(), info);
+                            //dialog.dismiss();
+
+                        }else {
+                            //输入格式不正确
+                        }
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     @Override
     public void showPersonalMsg() {
         //显示头像
         Glide.with(this)
-                .load(dataBean.getIcon())
+                .load(user.getIcon())
                 .into(imvPersonalIcon);
         //显示姓名
-        tvPersonalName.setText(dataBean.getUserName());
+        tvPersonalName.setText(user.getUserName());
         //显示手机
-        edtChangePhone.setText(dataBean.getPhone());
+        tvChangePhone.setText(user.getPhone());
         //显示邮箱
-        tvPersonalEmail.setText(dataBean.getEmail());
+        tvPersonalEmail.setText(user.getEmail());
     }
 
     @Override
@@ -117,5 +106,20 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
     @Override
     public void showSuccess(String msg) {
         MyToast.getMyToast().ToastShow(PersonalMsgActivity.this, null, R.drawable.ic_happy, msg);
+    }
+
+
+    @OnClick({R.id.imv_personal_back, R.id.imv_personal_icon})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.imv_personal_back:
+                Intent intent = new Intent(this, MyFragment.class);
+                startActivity(intent);
+                finish();
+                break;
+            //暂未上线修改头像功能
+            case R.id.imv_personal_icon:
+                break;
+        }
     }
 }

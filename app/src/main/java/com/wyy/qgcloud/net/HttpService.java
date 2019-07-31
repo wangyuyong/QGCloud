@@ -1,7 +1,6 @@
 package com.wyy.qgcloud.net;
 
-import android.content.Context;
-
+import com.wyy.qgcloud.enity.GroupAllInfo;
 import com.wyy.qgcloud.enity.ChangePasswordInfo;
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.FileInfo;
@@ -12,7 +11,6 @@ import com.wyy.qgcloud.enity.RegisterInfo;
 import com.wyy.qgcloud.enity.SetNewPasswordInfo;
 import com.wyy.qgcloud.enity.ValidateCodeInfo;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -93,13 +91,26 @@ public interface HttpService {
 
 
     /**
-     *用户在个人信息页面修改信息（暂只有手机号）
-     * @param partList
+     * 用户在个人信息页面修改信息（暂只有手机号）
+     * @param userId
+     * @param email
+     * @param phone
      * @return
      */
-    @Multipart
+    @FormUrlEncoded
     @POST("/user/updateUser")
-    Observable<ChangePasswordInfo> getChangeMsgInfo(@Part List<MultipartBody.Part> partList);
+    Observable<ChangePasswordInfo> getChangeMsgInfo(@Field("userId")int userId,
+                                                    @Field("email")String email,
+                                                    @Field("phone")String phone);
+
+    /**
+     * 一次性加载所有数据
+     * @return
+     */
+    @FormUrlEncoded
+    @GET("/user/findAll")
+    Observable<GroupAllInfo> getGroupAllInfo();
+
 
     /**
      * 询问是否有对文件进行读或写的权限

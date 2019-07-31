@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.ui.personalMsg;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.wyy.qgcloud.enity.ChangePasswordInfo;
 
@@ -27,11 +28,10 @@ public class PersonalMsgPresent implements PersonalMsgContract.PersonalMsgPresen
     }
 
     @Override
-    public void getChangeMsgInfo(Context context, int userId, String email, File icon, String phone, String groupName) {
-        personalMsgModel.getChangeMsgInfo(context, userId, email, icon, phone, groupName).subscribe(new Observer<ChangePasswordInfo>() {
+    public void getChangeMsgInfo(Context context, int userId, String email, String phone) {
+        personalMsgModel.getChangeMsgInfo(context, userId, email, phone).subscribe(new Observer<ChangePasswordInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
-
             }
 
             @Override

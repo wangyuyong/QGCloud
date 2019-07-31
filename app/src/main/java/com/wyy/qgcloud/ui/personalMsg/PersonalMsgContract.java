@@ -22,10 +22,10 @@ public interface PersonalMsgContract {
     }
 
     interface PersonalMsgModel{
-        Observable<ChangePasswordInfo> getChangeMsgInfo(Context context, int userId, String email, File icon, String phone, String groupName);
+        Observable<ChangePasswordInfo> getChangeMsgInfo(Context context, int userId, String email, String phone);
     }
 
     interface PersonalMsgPresent extends BasePresent<PersonalMsgView> {
-        void getChangeMsgInfo(Context context, int userId, String email, File icon, String phone, String groupName);;
+        void getChangeMsgInfo(Context context, int userId, String email, String phone);;
     }
 }
