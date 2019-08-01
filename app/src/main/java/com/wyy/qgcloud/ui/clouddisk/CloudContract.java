@@ -4,6 +4,7 @@ import com.wyy.qgcloud.base.BasePresent;
 import com.wyy.qgcloud.base.BaseView;
 import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
+import com.wyy.qgcloud.enity.RenameInfo;
 
 import java.util.List;
 
@@ -25,12 +26,6 @@ public interface CloudContract {
         void showError(String message);
 
         /**
-         * 新建一个文件夹
-         * @param dir 文件夹信息
-         */
-        void makeDir(FileInfo.DataBean dir);
-
-        /**
          * 隐藏返回键
          */
         void hideHomePage();
@@ -39,6 +34,12 @@ public interface CloudContract {
          * 显示返回按钮
          */
         void showHomePage();
+
+        /**
+         * 显示详细信息
+         * @param dataBean 文件信息
+         */
+        void showDetail(FileInfo.DataBean dataBean);
     }
 
     interface CloudPresent extends BasePresent<CloudView>{
@@ -68,6 +69,20 @@ public interface CloudContract {
          * @param userId 用户Id
          */
         void back(int userId);
+
+        /**
+         * 查看文件夹的详细信息
+         * @param position 查看的位置
+         */
+        void queryDetail(int position);
+
+        /**
+         * 重命名文件名
+         * @param userId 用户Id
+         * @param fileName 新文件名
+         * @param position 位置
+         */
+        void rename(int userId,String fileName,int position);
     }
 
     interface CloudModel{
@@ -86,5 +101,14 @@ public interface CloudContract {
          * @return Observable<MakeDirInfo>
          */
         Observable<MakeDirInfo> requestMakeDir(int userId,String filePath,String fileName);
+
+        /**
+         * 重命名文件夹
+         * @param userId 用户Id
+         * @param fileId 文件Id
+         * @param fileName 文件名
+         * @return Observable<RenameInfo>
+         */
+        Observable<RenameInfo> requestRename(int userId,int fileId,String fileName);
     }
 }

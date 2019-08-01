@@ -6,90 +6,72 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.wyy.qgcloud.net.DownloadListener;
+import com.wyy.qgcloud.constant.Directory;
 import com.wyy.qgcloud.net.DownloadTask;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * 开启服务下载文件
+ */
 public class DownloadService extends Service {
 
     private static final String TAG = "DownloadService";
 
-    private DownloadTask task;
-
-    private String downloadUrl;
-
-    private String fileName;
+    private List<DownloadTask> downloadTasks;
+    private List<String> downloadUrls;
 
     private DownloadBinder mBinder = new DownloadBinder();
 
-    private DownloadListener listener = new DownloadListener() {
-        @Override
-        public void onProgress(int progress) {
-            Log.d(TAG,"" + progress);
-        }
-
-        @Override
-        public void onSuccess() {
-            Log.d(TAG,"success");
-        }
-
-        @Override
-        public void onFailed() {
-            task = null;
-            Toast.makeText(DownloadService.this,"下载失败",Toast.LENGTH_LONG).show();
-            Log.d(TAG,"faild");
-        }
-
-        @Override
-        public void onPaused() {
-            task = null;
-            Toast.makeText(DownloadService.this,"暂停下载",Toast.LENGTH_LONG).show();
-            Log.d(TAG,"paused");
-        }
-
-        @Override
-        public void onCanceled() {
-            task = null;
-            Toast.makeText(DownloadService.this,"取消下载",Toast.LENGTH_LONG).show();
-            Log.d(TAG,"cancel");
-        }
-    };
-
     public DownloadService() {
+        downloadTasks = new ArrayList<>();
+        downloadUrls = new ArrayList<>();
     }
 
-    class DownloadBinder extends Binder{
-        public void startDownload(String url,String name){
-            if (task == null){
-                downloadUrl = url;
-                fileName = name;
-                task = new DownloadTask(listener,fileName);
+    public class DownloadBinder extends Binder{
+        public void startDownload(DownloadTask task,String downloadUrl){
+            if (task != null){
+                //加入下载线程组
+                downloadTasks.add(task);
+                downloadUrls.add(downloadUrl);
+                //开始下载
                 task.execute(downloadUrl);
                 Log.d(TAG,"开始下载");
             }
         }
 
-        public void pauseDownload(){
-            if (task != null){
+        public void pauseDownload(int position){
+            if (!downloadTasks.isEmpty()){
+                //取出对应下载线程
+                DownloadTask task = downloadTasks.get(position);
                 task.pauseDownload();
             }
         }
 
-        public void cancelDownload(){
-            if (task != null){
+        public void resumeDownload(int position){
+            DownloadTask task = downloadTasks.get(position);
+            task.execute(downloadUrls.get(position));
+        }
+
+        public void cancelDownload(int position){
+            if (!downloadTasks.isEmpty()){
+                //取出对应线程
+                DownloadTask task = downloadTasks.get(position);
                 task.cancelDownload();
-            }
-            if (fileName != null){
-                String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-                File file = new File(directory + fileName);
+                //删除取消下载的文件
+                String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + Directory.CONST_SAVE_DIRECTORY;
+                File file = new File(directory + "/" + task.getFileName());
                 if (file.exists()){
                     file.delete();
                 }
-                Log.d(TAG,"cancel");
+                //从线程组中移除
+                downloadTasks.remove(position);
+                downloadUrls.remove(position);
             }
+            Log.d(TAG,"cancel");
         }
     }
 

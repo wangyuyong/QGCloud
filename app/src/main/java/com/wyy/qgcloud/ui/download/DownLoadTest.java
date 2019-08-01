@@ -31,20 +31,6 @@ public class DownLoadTest extends AppCompatActivity {
     @BindView(R.id.cancel)
     Button cancel;
 
-    private DownloadService.DownloadBinder downloadBinder;
-
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            downloadBinder = (DownloadService.DownloadBinder)service;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,30 +38,9 @@ public class DownLoadTest extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = new Intent(this,DownloadService.class);
         startService(intent);
-        bindService(intent,connection,BIND_AUTO_CREATE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
-    }
-
-    @OnClick({R.id.start_download, R.id.pause_download, R.id.cancel})
-    public void onViewClicked(View view) {
-        if (downloadBinder == null){
-            Log.d("Down","null");
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.start_download:
-                String url = "http://b4e2590a.ngrok.io/downloadServlet";
-                downloadBinder.startDownload(url,"/downloadServlet");
-                break;
-            case R.id.pause_download:
-                downloadBinder.pauseDownload();
-                break;
-            case R.id.cancel:
-                downloadBinder.cancelDownload();
-                break;
         }
     }
 
@@ -94,6 +59,5 @@ public class DownLoadTest extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
     }
 }

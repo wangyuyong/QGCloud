@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
+import com.wyy.qgcloud.enity.RenameInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +137,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     public void onNext(MakeDirInfo makeDirInfo) {
                         if (makeDirInfo.getStatus()){
                             //有权限，则刷新文件列表
-                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.size() - 1).getFolderId())
+                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
                                     .subscribe(new Observer<FileInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
@@ -146,6 +147,9 @@ public class CloudPresent implements CloudContract.CloudPresent {
                                         @Override
                                         public void onNext(FileInfo fileInfo) {
                                             view.updataDir(fileInfo.getData());
+                                            //更新fileInfo容器
+                                            fileInfoList.remove(fileInfoList.size() - 1);
+                                            fileInfoList.add(fileInfo);
                                         }
 
                                         @Override
@@ -225,6 +229,69 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     });
         }
 
+    }
+
+    @Override
+    public void queryDetail(int position) {
+        FileInfo.DataBean dataBean = fileInfoList.get(fileInfoList.size() - 1).getData().get(position);
+        view.showDetail(dataBean);
+    }
+
+    @Override
+    public void rename(final int userId, String fileName, int position) {
+        int fileId = fileInfoList.get(fileInfoList.size() - 1).getData().get(position).getFileId();
+        model.requestRename(userId,fileId,fileName)
+                .subscribe(new Observer<RenameInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RenameInfo renameInfo) {
+                        if (renameInfo.getStatus()){
+                            //有权限，刷新列表
+                            int fileID = fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId();
+                            model.requestOpenDir(userId,fileID)
+                                    .subscribe(new Observer<FileInfo>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(FileInfo fileInfo) {
+                                            fileInfoList.remove(fileInfoList.size() - 1);
+                                            fileInfoList.add(fileInfo);
+                                            view.updataDir(fileInfo.getData());
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    });
+                        }else {
+                            //无权限，弹出错误信息
+                            view.showError(renameInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

@@ -18,7 +18,9 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     private List<FileInfo.DataBean> fileLists;
 
-    private OnItemClickedListener listener;
+    private OnItemClickedListener itemListener;
+
+    private OnItemMenuClickedListener menuListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -62,18 +64,20 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         viewHolder.fileNameTv.setText(fileName);
         viewHolder.fileTimeTv.setText(fileTime);
 
-        viewHolder.menuIv.setOnClickListener(new View.OnClickListener() {
+        viewHolder.menuIv.setOnClickListener(new OnMultiClickListener() {
             @Override
-            public void onClick(View v) {
-                //待写
+            public void onMultiClick(View v) {
+                if (menuListener != null){
+                    menuListener.onClick(i);
+                }
             }
         });
 
-        viewHolder.fileLl.setOnClickListener(new View.OnClickListener() {
+        viewHolder.fileLl.setOnClickListener(new OnMultiClickListener() {
             @Override
-            public void onClick(View v) {
-                if (listener != null){
-                    listener.onItemClick(i);
+            public void onMultiClick(View v) {
+                if (itemListener != null){
+                    itemListener.onItemClick(i);
                 }
             }
         });
@@ -85,7 +89,11 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         return fileLists.size();
     }
 
-    public void setListener(OnItemClickedListener listener) {
-        this.listener = listener;
+    public void setItemListener(OnItemClickedListener itemListener) {
+        this.itemListener = itemListener;
+    }
+
+    public void setMenuListener(OnItemMenuClickedListener menuListener){
+        this.menuListener = menuListener;
     }
 }

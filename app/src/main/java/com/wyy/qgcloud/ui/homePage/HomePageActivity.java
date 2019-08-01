@@ -15,8 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomePageActivity extends AppCompatActivity {
-    @BindView(R.id.btn_my)
-    Button btnMy;
+
     private LoginInfo.DataBean dataBean;
 
     @Override
@@ -36,9 +35,5 @@ public class HomePageActivity extends AppCompatActivity {
         return dataBean;
     }
 
-    @OnClick(R.id.btn_my)
-    public void onViewClicked() {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        startActivity(intent);
-    }
+
 }

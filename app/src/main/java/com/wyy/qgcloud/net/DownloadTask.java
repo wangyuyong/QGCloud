@@ -4,29 +4,46 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.wyy.qgcloud.constant.Directory;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class DownloadTask extends AsyncTask<String,Integer,Integer> {
-    //下载成功
+    /**
+     * 下载成功
+     */
     public static final int CONST_SUCCESS = 0;
-    //下载失败
+    /**
+     * 下载失败
+     */
     public static final int CONST_FAILED = 1;
-    //暂停下载
+    /**
+     * 暂停下载
+     */
     public static final int CONST_PAUSED = 2;
-    //取消下载
+    /**
+     * 取消下载
+     */
     public static final int CONST_CANCELED = 3;
 
     /**
      * 监听下载状态
      */
     private DownloadListener listener;
+
+    //获取文件总长度
+    long contentLength;
 
     private boolean isCanceled = false;
     private boolean isPaused = false;
@@ -51,26 +68,42 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
             //记录下载长度
             long downloadedLength = 0;
             String downloadUrl = strings[0];
-            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            file = new File(directory + fileName);
+            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + Directory.CONST_SAVE_DIRECTORY;
+            File myFile = new File(directory);
+            if (!myFile.exists()){
+                myFile.mkdir();
+            }
+            file = new File(directory + "/" + fileName);
+            Log.d("DownloadTask",directory);
             //文件存在，记录下载的长度
             if (file.exists()){
                 downloadedLength = file.length();
             }
-            //获取文件总长度
-            long contentLength = getContentLength(downloadUrl);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .writeTimeout(10000,TimeUnit.MILLISECONDS)
+                    .readTimeout(10000,TimeUnit.MILLISECONDS)
+                    .addNetworkInterceptor(new Interceptor() {
+                        @NotNull
+                        @Override
+                        public Response intercept(@NotNull Chain chain) throws IOException {
+                            Response response = chain.proceed(chain.request());
+                            contentLength = Integer.valueOf(response.header("Content-Length ","0"));
+                            return response;
+                        }
+                    })
+                    .build();
+            Request request = new Request.Builder()
+                    .addHeader("Range","bytes=" + downloadedLength + "-")
+                    .url(downloadUrl)
+                    .build();
+            Response response = client.newCall(request).execute();
+            Log.d("DownloadTask","" + contentLength);
             if (contentLength == 0){
                 //文件总长度为0,下载失败
                 return CONST_FAILED;
             }else if (contentLength == downloadedLength){
                 return CONST_SUCCESS;
             }
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .addHeader("Range","bytes=" + downloadedLength + "-")
-                    .url(downloadUrl)
-                    .build();
-            Response response = client.newCall(request).execute();
             if (response != null){
                 is = response.body().byteStream();
                 //随机读写文件
@@ -78,7 +111,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
                 //跳过已下载的字节
                 saveFile.seek(downloadedLength);
                 //一次读取的字节数
-                byte[] bytes = new byte[1024];
+                byte[] bytes = new byte[1024 * 8];
                 //下载总数
                 int total = 0;
                 int len;
@@ -179,7 +212,8 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
             if (response != null && response.isSuccessful()){
                 Log.d(TAG,"链接成功");
                 //获取文件总大小
-                contentLength = response.body().contentLength();
+                contentLength = Integer.valueOf(response.header("Content-Length","0"));
+                Log.d("DownloadTask","" + contentLength);
             }else {
                 Log.d(TAG,"链接失败");
             }
@@ -189,5 +223,9 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
             response.body().close();
         }
         return contentLength;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }
