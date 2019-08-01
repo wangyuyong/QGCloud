@@ -6,24 +6,26 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_30"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_20"
         android:background="@drawable/bg_person_card"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imv_my_icon"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_100"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/dp_30"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_16"
             android:orientation="vertical"
             android:layout_gravity="center">
 
@@ -60,14 +62,14 @@
     <LinearLayout
         android:id="@+id/layout_personal_msg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_66"
+        android:layout_height="@dimen/dp_58"
         android:layout_marginTop="@dimen/dp_25"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_gravity="center"
             android:src="@drawable/ic_personal_msg"
             />
@@ -75,7 +77,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_14"
             android:layout_gravity="center"
             android:text="@string/personal_msg"
             android:textColor="@color/colorTextBlack"
@@ -92,13 +94,13 @@
     <LinearLayout
         android:id="@+id/layout_change_password"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_66"
+        android:layout_height="@dimen/dp_58"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_gravity="center"
             android:src="@drawable/ic_change_password"
             />
@@ -123,13 +125,13 @@
     <LinearLayout
         android:id="@+id/layout_setting"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_66"
+        android:layout_height="@dimen/dp_58"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_gravity="center"
             android:src="@drawable/ic_setting"
             />
@@ -154,13 +156,13 @@
     <LinearLayout
         android:id="@+id/layout_exit"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_66"
+        android:layout_height="@dimen/dp_58"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_28"
-            android:layout_marginStart="@dimen/dp_42"
+            android:layout_marginStart="@dimen/dp_22"
             android:layout_gravity="center"
             android:src="@drawable/ic_exit"
             />

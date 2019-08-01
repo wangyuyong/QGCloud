@@ -7,6 +7,22 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_62"
+        android:background="@color/colorBtn"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/transmit_list"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="25sp"/>
+
+    </android.support.v7.widget.Toolbar>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tb_transfer"
         android:layout_width="match_parent"

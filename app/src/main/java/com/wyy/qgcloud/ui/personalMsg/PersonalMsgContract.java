@@ -16,9 +16,10 @@ public interface PersonalMsgContract {
 
     interface PersonalMsgView extends BaseView {
         void showPersonalMsg();
-        String getEdt(EditText editText);
         void showError(String msg);
         void showSuccess(String msg);
+        void changePassword(String phone);
+
     }
 
     interface PersonalMsgModel{
@@ -26,6 +27,6 @@ public interface PersonalMsgContract {
     }
 
     interface PersonalMsgPresent extends BasePresent<PersonalMsgView> {
-        void getChangeMsgInfo(Context context, int userId, String email, String phone);;
+        void getChangeMsgInfo(Context context, int userId, String email, String phone);
     }
 }

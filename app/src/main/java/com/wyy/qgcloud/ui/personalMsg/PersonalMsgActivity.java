@@ -66,10 +66,9 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
                         boolean format = Pattern.matches(regex, info);
                         if(format){
                             personalMsgPresent.getChangeMsgInfo(PersonalMsgActivity.this, user.getUserId(), user.getEmail(), info);
-                            //dialog.dismiss();
-
                         }else {
                             //输入格式不正确
+                            showError("手机号格式不正确！请重新输入。");
                         }
                     }
                 });
@@ -92,11 +91,6 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
         tvPersonalEmail.setText(user.getEmail());
     }
 
-    @Override
-    public String getEdt(EditText editText) {
-        String editMsg = editText.getText().toString();
-        return editMsg;
-    }
 
     @Override
     public void showError(String msg) {
@@ -106,6 +100,11 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
     @Override
     public void showSuccess(String msg) {
         MyToast.getMyToast().ToastShow(PersonalMsgActivity.this, null, R.drawable.ic_happy, msg);
+    }
+
+    @Override
+    public void changePassword(String phone) {
+        tvChangePhone.setText(phone);
     }
 
 

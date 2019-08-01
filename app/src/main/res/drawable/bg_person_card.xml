@@ -3,10 +3,7 @@
     android:shape="rectangle"
     android:useLevel="true">
 
-    <size
-        android:width="360dp"
-        android:height="160dp"
-        />
+
     <solid
         android:color="@color/colorPerson"/>
 

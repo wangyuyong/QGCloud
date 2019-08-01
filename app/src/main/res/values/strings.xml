@@ -25,6 +25,9 @@
     <string name="change_phone">更改手机</string>
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
+    <string name="cloud_disk">云盘</string>
+    <string name="my">我的</string>
+    <string name="transmit_list">传输列表</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

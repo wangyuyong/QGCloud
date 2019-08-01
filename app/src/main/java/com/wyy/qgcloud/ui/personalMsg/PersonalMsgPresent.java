@@ -28,7 +28,7 @@ public class PersonalMsgPresent implements PersonalMsgContract.PersonalMsgPresen
     }
 
     @Override
-    public void getChangeMsgInfo(Context context, int userId, String email, String phone) {
+    public void getChangeMsgInfo(Context context, int userId, String email, final String phone) {
         personalMsgModel.getChangeMsgInfo(context, userId, email, phone).subscribe(new Observer<ChangePasswordInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -38,6 +38,7 @@ public class PersonalMsgPresent implements PersonalMsgContract.PersonalMsgPresen
             public void onNext(ChangePasswordInfo changePasswordInfo) {
                 if(changePasswordInfo.getStatus()){
                     personalMsgView.showSuccess("修改成功！");
+                    personalMsgView.changePassword(phone);
                 }else {
                     personalMsgView.showError(changePasswordInfo.getMessage());
                 }

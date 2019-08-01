@@ -16,7 +16,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_gravity="center"
-            android:src="@drawable/ic_group"/>
+            android:src="@mipmap/ic_group"/>
 
         <TextView
             android:id="@+id/group_name"
