@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.ui.clouddisk;
 
 import com.wyy.qgcloud.enity.FileInfo;
+import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RenameInfo;
 import com.wyy.qgcloud.net.RetrofitManager;
@@ -34,6 +35,15 @@ public class CloudModel implements CloudContract.CloudModel {
         return RetrofitManager.getInstance()
                 .getHttpService()
                 .getRenameInfo(userId,fileId,fileName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<FileValidInfo> requestDelete(int userId, int fileId) {
+        return RetrofitManager.getInstance()
+                .getHttpService()
+                .deleteFile(userId,fileId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

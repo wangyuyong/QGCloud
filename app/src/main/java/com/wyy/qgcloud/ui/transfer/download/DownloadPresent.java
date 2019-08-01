@@ -27,13 +27,6 @@ public class DownloadPresent implements DownloadContract.DownloadPresent {
     }
 
     @Override
-    public void resume(int position) {
-        if (binder != null){
-            binder.resumeDownload(position);
-        }
-    }
-
-    @Override
     public void cancel(int position) {
         if (binder != null){
             binder.cancelDownload(position);

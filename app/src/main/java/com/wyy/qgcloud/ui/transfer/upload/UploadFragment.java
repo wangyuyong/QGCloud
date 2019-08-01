@@ -56,9 +56,9 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload,container,false);
+        EventBus.getDefault().register(this);
         uploadFileRv = view.findViewById(R.id.rv_upload_file);
         init();
-        EventBus.getDefault().register(this);
 
         return view;
     }
@@ -103,12 +103,12 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
         UploadRequestBody body = null;
+        File file = new File(msg.getUploadFile());
         if (count == CONST_FIRST){
-            body = new UploadRequestBody(msg.getUploadFile(),new UploadFile(uploadFileMessageList.size() - 1,msg));
+            body = new UploadRequestBody(file,new UploadFile(uploadFileMessageList.size() - 1,msg));
         }else {
-            body = new UploadRequestBody(msg.getUploadFile(),new UploadFile(count,msg));
+            body = new UploadRequestBody(file,new UploadFile(count,msg));
         }
-
         //第一次将请求体加入列表
         if (count == CONST_FIRST){
             bodyList.add(body);
@@ -116,16 +116,16 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
             //不是第一次请求，将该请求替换原来的请求
             bodyList.set(count,body);
         }
-
-
         builder.addFormDataPart("userId",msg.getUserId() + "");
+        Log.d("UploadFragment","userId:" + msg.getUserId());
         builder.addFormDataPart("filePath",msg.getFilePath());
-        MultipartBody.Part part = MultipartBody.Part.create(body);
+        Log.d("UploadFragment","filePath:" + msg.getFilePath());
+        builder.addFormDataPart("upload",msg.getFileName(),body);
+        Log.d("UploadFragment","fileName:" + msg.getFileName());
         List<MultipartBody.Part> parts = builder.build().parts();
-        parts.add(part);
 
         //已下载长度
-        int length = SharedPerencesUtil.getLength(msg.getUploadFile().getName());
+        int length = SharedPerencesUtil.getLength(msg.getUploadFile());
 
         RetrofitManager.getInstance()
                 .getHttpService()
@@ -141,7 +141,7 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
                     @Override
                     public void onNext(FileValidInfo fileValidInfo) {
                         if (fileValidInfo.getStatus()){
-                            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,fileValidInfo.getMessage());
+                            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,fileValidInfo.getMessage());
                         }else {
                             MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,fileValidInfo.getMessage());
                         }

@@ -1,10 +1,8 @@
 package com.wyy.qgcloud.enity;
 
-import java.io.File;
-
 public class UploadFileMessage {
 
-    private File uploadFile;
+    private String uploadFile;
 
     private String fileName;
 
@@ -16,19 +14,19 @@ public class UploadFileMessage {
 
     public UploadFileMessage(){}
 
-    public UploadFileMessage(File uploadFile, String fileName, String fileUploadTime, int userId,String filePath) {
+    public UploadFileMessage(String uploadFile, String fileName, String fileUploadTime, int userId,String filePath) {
         this.uploadFile = uploadFile;
         this.fileName = fileName;
-        this.fileUploadTime = fileUploadTime;
         this.userId = userId;
         this.filePath = filePath;
+        this.fileUploadTime = fileUploadTime;
     }
 
-    public File getUploadFile() {
+    public String getUploadFile() {
         return uploadFile;
     }
 
-    public void setUploadFile(File uploadFile) {
+    public void setUploadFile(String uploadFile) {
         this.uploadFile = uploadFile;
     }
 

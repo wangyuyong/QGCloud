@@ -51,8 +51,8 @@ public class DownloadService extends Service {
             }
         }
 
-        public void resumeDownload(int position){
-            DownloadTask task = downloadTasks.get(position);
+        public void resumeDownload(DownloadTask task,int position){
+            downloadTasks.set(position,task);
             task.execute(downloadUrls.get(position));
         }
 

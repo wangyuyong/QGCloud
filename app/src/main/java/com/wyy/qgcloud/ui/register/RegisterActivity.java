@@ -153,30 +153,30 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 }
             }
         });
-        registerPasswordEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = getEdt(registerPasswordEdt);
-                String regex = "^[^[x00-xff]]{6,15}$";
-                boolean format = Pattern.matches(regex, email);
-                if (!format) {
-                    //格式不正确，底边变色
-                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
-                } else {
-                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-                }
-            }
-        });
+//        registerPasswordEdt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String email = getEdt(registerPasswordEdt);
+//                String regex = "^[^[x00-xff]]{6,15}$";
+//                boolean format = Pattern.matches(regex, email);
+//                if (!format) {
+//                    //格式不正确，底边变色
+//                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
+//                } else {
+//                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+//                }
+//            }
+//        });
         registerBtn.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {

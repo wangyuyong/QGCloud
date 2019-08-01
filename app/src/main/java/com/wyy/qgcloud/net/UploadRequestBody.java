@@ -10,11 +10,13 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 public class UploadRequestBody extends RequestBody {
     /**
@@ -30,7 +32,7 @@ public class UploadRequestBody extends RequestBody {
     /**
      * 暂停下载
      */
-    private boolean isPaused = false;
+    private boolean isPaused = true;
 
     public UploadRequestBody(File file,UploadListener listener) {
         this.file = file;
@@ -44,8 +46,37 @@ public class UploadRequestBody extends RequestBody {
     }
 
     @Override
+    public long contentLength() throws IOException {
+        return file.length();
+    }
+
+    @Override
     public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
-        //文件总长度
+
+        Source source = null;
+        try {
+            source = Okio.source(file);
+            long total = 0;
+            long read;
+            long length = file.length();
+
+            while ((read = source.read(bufferedSink.getBuffer(),1024 * 10)) != -1){
+                total += read;
+                bufferedSink.flush();
+                if (listener != null){
+                    listener.onProgress((int) (total/length));
+                }
+            }
+        }catch (Exception e){
+            if (listener != null){
+                listener.onFailed();
+            }
+            e.printStackTrace();
+        }finally {
+            Util.closeQuietly(source);
+        }
+
+        /*//文件总长度
         long fileTotal = file.length();
         //已上传长度
         int uploadLength = SharedPerencesUtil.getLength(file.getName());
@@ -72,8 +103,10 @@ public class UploadRequestBody extends RequestBody {
             listener.onFailed();
             e.printStackTrace();
         }finally {
-            inputStream.close();
-        }
+            if (inputStream != null){
+                inputStream.close();
+            }
+        }*/
     }
 
     public void paused(){

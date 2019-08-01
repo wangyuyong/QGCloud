@@ -75,6 +75,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
             }
             file = new File(directory + "/" + fileName);
             Log.d("DownloadTask",directory);
+            Log.d("DownloadTask",downloadUrl);
             //文件存在，记录下载的长度
             if (file.exists()){
                 downloadedLength = file.length();

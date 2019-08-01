@@ -2,6 +2,7 @@ package com.wyy.qgcloud.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +95,9 @@ public class UploadAdapter extends RecyclerView.Adapter<UploadAdapter.ViewHolder
     }
 
     public void setProgress(int position,int progress){
-        ViewHolder viewHolder = viewHolderList.get(position);
-        viewHolder.fileUploadPb.setProgress(progress);
+        Log.d("UploadAdapter","position:" + position);
+        /*ViewHolder viewHolder = viewHolderList.get(position);
+        viewHolder.fileUploadPb.setProgress(progress);*/
     }
 
     public void setListener(OnItemClickedListener listener) {

@@ -16,16 +16,17 @@ public interface PersonalMsgContract {
 
     interface PersonalMsgView extends BaseView {
         void showPersonalMsg();
-        String getEdt(EditText editText);
         void showError(String msg);
         void showSuccess(String msg);
+        void changePassword(String phone);
+
     }
 
     interface PersonalMsgModel{
-        Observable<ChangePasswordInfo> getChangeMsgInfo(Context context, int userId, String email, File icon, String phone, String groupName);
+        Observable<ChangePasswordInfo> getChangeMsgInfo(Context context, int userId, String email, String phone);
     }
 
     interface PersonalMsgPresent extends BasePresent<PersonalMsgView> {
-        void getChangeMsgInfo(Context context, int userId, String email, File icon, String phone, String groupName);;
+        void getChangeMsgInfo(Context context, int userId, String email, String phone);
     }
 }

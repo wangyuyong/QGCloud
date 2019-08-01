@@ -33,7 +33,7 @@ public class ChangePasswordActivity extends BaseActivity implements ChangePasswo
     @BindView(R.id.btn_change_password)
     Button btnChangePassword;
     private ChangePasswordContract.ChangePasswordPresent changePasswordPresent;
-    private int userId;
+    private LoginInfo.DataBean user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class ChangePasswordActivity extends BaseActivity implements ChangePasswo
         changePasswordPresent = new ChangePasswordPresent();
         changePasswordPresent.bindView(this);
         Intent intent = getIntent();
-        userId = intent.getIntExtra("userId", 0);
+        user = (LoginInfo.DataBean)intent.getSerializableExtra("user");
         edtChangeOldPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         edtChangeNewPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         edtCheckPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -94,7 +94,7 @@ public class ChangePasswordActivity extends BaseActivity implements ChangePasswo
     private void changePassword(){
         String oldPassword = getEdt(edtChangeOldPassword);
         String newPassword = getEdt(edtChangeNewPassword);
-        changePasswordPresent.getChangePasswordInfo(this, userId, oldPassword, newPassword);
+        changePasswordPresent.getChangePasswordInfo(this, user.getUserId(), oldPassword, newPassword);
     }
 
 }

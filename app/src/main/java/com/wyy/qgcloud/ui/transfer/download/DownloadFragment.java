@@ -96,7 +96,8 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
                         viewHolder.setPaused();
                         viewHolder.reserveStart();
                     }else {
-                        downloadBinder.resumeDownload(position);
+                        DownloadTask task = new DownloadTask(new DownloadClass(position),fileMessageList.get(position).getFileName());
+                        downloadBinder.resumeDownload(task,position);
                         viewHolder.setStart();
                         viewHolder.reserveStart();
                     }
@@ -150,7 +151,7 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
         public void onSuccess() {
             fileMessageList.remove(position);
             adapter.notifyDataSetChanged();
-            Toast.makeText(MyApplication.getContext(),fileMessageList.get(position).getFileName() + "下载成功",Toast.LENGTH_SHORT);
+            Toast.makeText(MyApplication.getContext(),"下载成功",Toast.LENGTH_SHORT);
         }
 
         @Override
@@ -160,12 +161,12 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
 
         @Override
         public void onPaused() {
-            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,"暂停成功");
+            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_happy,"暂停成功");
         }
 
         @Override
         public void onCanceled() {
-            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,"暂停成功");
+            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_happy,"下载取消");
         }
     }
 }

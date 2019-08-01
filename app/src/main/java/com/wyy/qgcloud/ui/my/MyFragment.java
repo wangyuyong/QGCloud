@@ -45,11 +45,10 @@ public class MyFragment extends Fragment implements MyContract.MyView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
-        ButterKnife.bind(view);
+        ButterKnife.bind(this,view);
         myPresent = new MyPresent();
         myPresent.bindView(this);
         HomePageActivity homePageActivity = (HomePageActivity) getActivity();
-        userId = homePageActivity.getUserId();  //获取用户id
         user = homePageActivity.getUser();      //获取整个用户对象
         showPersonalMsg();  //显示个人信息
         return view;
@@ -89,6 +88,19 @@ public class MyFragment extends Fragment implements MyContract.MyView {
         //显示组别
         tvMyGroup.setText(user.getGroupName());
         //显示身份
-        tvMyPosition.setText(user.getRole());
+        int role = user.getRole();
+        switch (role){
+            case 0:
+                tvMyPosition.setText("普通用户");
+                break;
+            case 1:
+                tvMyPosition.setText("组长");
+                break;
+            case 2:
+                tvMyPosition.setText("工作室负责人");
+                break;
+                default:
+                    break;
+        }
     }
 }

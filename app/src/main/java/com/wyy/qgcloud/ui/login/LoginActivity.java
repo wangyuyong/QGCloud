@@ -1,7 +1,11 @@
 package com.wyy.qgcloud.ui.login;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -52,29 +56,29 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginPresent = new LoginPresent();
         loginPresent.bindView(this);
         loginPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        loginEmailEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = getEdt(loginEmailEdt);
-                String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-                boolean format = Pattern.matches(regex, email);
-                if(!format){
-                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
-                }else{
-                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-                }
-            }
-        });
+//        loginEmailEdt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String email = getEdt(loginEmailEdt);
+//                String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+//                boolean format = Pattern.matches(regex, email);
+//                if(!format){
+//                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
+//                }else{
+//                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+//                }
+//            }
+//        });
         loginEmailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -94,7 +98,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                 login();
             }
         });
-
+        if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
     }
 
     @Override
@@ -152,6 +158,23 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         String email = getEdt(loginEmailEdt);
         String password = getEdt(loginPasswordEdt);
         loginPresent.getLoginInfo(this, email, password);
+    }
+
+
+    //权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                   finish();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_address"
+        android:icon="@mipmap/ic_group"
+        android:title="@string/address_list"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/menu_item_cloud"
+        android:icon="@mipmap/ic_cloud_disk"
+        android:title="@string/cloud_disk"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/menu_item_transmit"
+        android:icon="@mipmap/ic_transmit"
+        android:title="@string/transmit_list"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/menu_item_my"
+        android:icon="@mipmap/ic_my"
+        android:title="@string/my"
+        android:enabled="true"
+        />
+
+</menu>

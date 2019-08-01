@@ -57,12 +57,14 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
 
         FileInfo.DataBean file = fileLists.get(i);
-        Log.d("adapter","" + i);
         String fileName = file.getFileName();
         String fileTime = file.getUploadTime();
 
         viewHolder.fileNameTv.setText(fileName);
         viewHolder.fileTimeTv.setText(fileTime);
+        if (!file.getFileType().equals("dir")){
+            viewHolder.fileIconIv.setImageResource(R.mipmap.ic_word);
+        }
 
         viewHolder.menuIv.setOnClickListener(new OnMultiClickListener() {
             @Override
