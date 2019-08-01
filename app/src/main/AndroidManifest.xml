@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.forgetPassword.ForgetPasswordActivity"></activity>
         <activity android:name=".app.DemoActivity">
-        </activity>
         <activity android:name=".ui.personalMsg.PersonalMsgActivity"></activity>
         <activity android:name=".ui.changePassword.ChangePasswordActivity" />
         <activity android:name=".ui.homePage.HomePageActivity" />
@@ -36,6 +35,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
         </activity>
 
         <provider

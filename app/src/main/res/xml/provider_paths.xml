@@ -3,4 +3,16 @@
 
     <external-path name="external_files" path="."/>
 
+    <external-path
+        name="files_root"
+        path="Android/data/com/wyy/qgcloud/" />
+
+    <external-path
+        name="external_storage_root"
+        path="." />
+
+    <files-path
+        name="my_files"
+        path="storage/emulated/0/" />
+
 </paths>

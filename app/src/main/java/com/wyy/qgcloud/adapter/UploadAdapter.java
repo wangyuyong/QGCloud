@@ -10,42 +10,37 @@ import android.widget.TextView;
 
 import com.qmuiteam.qmui.widget.QMUIProgressBar;
 import com.wyy.qgcloud.R;
-import com.wyy.qgcloud.enity.FileMessage;
+import com.wyy.qgcloud.enity.UploadFileMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHolder>{
+public class UploadAdapter extends RecyclerView.Adapter<UploadAdapter.ViewHolder> {
 
-    private List<FileMessage> fileMessageList;
-
+    private List<UploadFileMessage> uploadFileMessageList;
+    private List<ViewHolder> viewHolderList = new ArrayList<>();
     private OnItemClickedListener listener;
 
-    private List<ViewHolder> viewHolderList = new ArrayList<>();
-
-    public DownloadAdapter(List<FileMessage> fileMessageList){
-        this.fileMessageList = fileMessageList;
+    public UploadAdapter(List<UploadFileMessage> uploadFileMessageList) {
+        this.uploadFileMessageList = uploadFileMessageList;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private QMUIProgressBar downloadPb;
-        private ImageView fileIv;
-        private TextView fileNameTv;
-        private TextView fileUploadTimeTv;
+        ImageView fileIv;
+        TextView fileNameTv;
+        TextView fileUploadTimeTv;
+        QMUIProgressBar fileUploadPb;
+
         private boolean isStart = true;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            downloadPb = itemView.findViewById(R.id.pb_download);
+            fileUploadPb = itemView.findViewById(R.id.pb_download);
             fileIv = itemView.findViewById(R.id.iv_download_file);
             fileNameTv = itemView.findViewById(R.id.tv_download_file_name);
             fileUploadTimeTv = itemView.findViewById(R.id.tv_download_file_upload_time);
-        }
-
-        public void setProgress(int progress){
-            downloadPb.setProgress(progress);
         }
 
         public void reserveStart(){
@@ -61,11 +56,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
         }
 
         public void setPaused(){
-            downloadPb.setBackgroundResource(R.mipmap.ic_start);
+            fileUploadPb.setBackgroundResource(R.mipmap.ic_start);
         }
 
         public void setStart(){
-            downloadPb.setBackgroundResource(R.mipmap.ic_stop);
+            fileUploadPb.setBackgroundResource(R.mipmap.ic_stop);
         }
     }
 
@@ -73,17 +68,16 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_adapter_download,viewGroup,false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
 
-        return viewHolder;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        FileMessage message = fileMessageList.get(i);
-        viewHolder.fileNameTv.setText(message.getFileName());
-        viewHolder.fileUploadTimeTv.setText(message.getFileUploadTime());
-        viewHolder.downloadPb.setOnClickListener(new OnMultiClickListener() {
+        viewHolder.fileNameTv.setText(uploadFileMessageList.get(i).getFileName());
+        viewHolder.fileUploadTimeTv.setText(uploadFileMessageList.get(i).getFileUploadTime());
+        viewHolder.fileUploadPb.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 if (listener != null){
@@ -91,21 +85,20 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
                 }
             }
         });
-
         viewHolderList.add(viewHolder);
     }
 
     @Override
     public int getItemCount() {
-        return fileMessageList.size();
-    }
-
-    public void setListener(OnItemClickedListener listener) {
-        this.listener = listener;
+        return uploadFileMessageList.size();
     }
 
     public void setProgress(int position,int progress){
         ViewHolder viewHolder = viewHolderList.get(position);
-        viewHolder.downloadPb.setProgress(progress);
+        viewHolder.fileUploadPb.setProgress(progress);
+    }
+
+    public void setListener(OnItemClickedListener listener) {
+        this.listener = listener;
     }
 }
