@@ -123,7 +123,7 @@ public class HomePageActivity extends AppCompatActivity {
                 int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String file = cursor.getString(index);
-                String fileName = file.substring(path.lastIndexOf("/"));
+                String fileName = file.substring(file.lastIndexOf("/") + 1);
                 SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
                 String time = format.format(new Date());
                 int userId = dataBean.getUserId();

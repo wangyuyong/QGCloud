@@ -26,7 +26,7 @@ public class UploadAdapter extends RecyclerView.Adapter<UploadAdapter.ViewHolder
         this.uploadFileMessageList = uploadFileMessageList;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView fileIv;
         TextView fileNameTv;
@@ -96,8 +96,10 @@ public class UploadAdapter extends RecyclerView.Adapter<UploadAdapter.ViewHolder
 
     public void setProgress(int position,int progress){
         Log.d("UploadAdapter","position:" + position);
-        /*ViewHolder viewHolder = viewHolderList.get(position);
-        viewHolder.fileUploadPb.setProgress(progress);*/
+        ViewHolder viewHolder = viewHolderList.get(position);
+        if (viewHolder.fileUploadPb.getProgress() < progress){
+            viewHolder.fileUploadPb.setProgress(progress);
+        }
     }
 
     public void setListener(OnItemClickedListener listener) {

@@ -73,10 +73,10 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
             @Override
             public void onItemClick(int position) {
                 int firstItem = manager.findFirstVisibleItemPosition();
-                DownloadAdapter.ViewHolder viewHolder = null;
+                UploadAdapter.ViewHolder viewHolder = null;
                 View view =  uploadFileRv.getChildAt(position - firstItem);
                 if (null != uploadFileRv.getChildViewHolder(view)){
-                    viewHolder = (DownloadAdapter.ViewHolder)uploadFileRv.getChildViewHolder(view);
+                    viewHolder = (UploadAdapter.ViewHolder)uploadFileRv.getChildViewHolder(view);
                     if (viewHolder.isStart()){
                         viewHolder.reserveStart();
                         viewHolder.setPaused();
@@ -102,34 +102,41 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
         //创建请求体
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
-        UploadRequestBody body = null;
         File file = new File(msg.getUploadFile());
+        RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+        /*if (file.exists()){
+            Log.d("UploadFragment","exit");
+        }else {
+            Log.d("UploadFragment","noexit");
+        }
         if (count == CONST_FIRST){
             body = new UploadRequestBody(file,new UploadFile(uploadFileMessageList.size() - 1,msg));
         }else {
             body = new UploadRequestBody(file,new UploadFile(count,msg));
-        }
+        }*/
         //第一次将请求体加入列表
-        if (count == CONST_FIRST){
+        /*if (count == CONST_FIRST){
             bodyList.add(body);
         }else {
             //不是第一次请求，将该请求替换原来的请求
             bodyList.set(count,body);
-        }
+        }*/
         builder.addFormDataPart("userId",msg.getUserId() + "");
         Log.d("UploadFragment","userId:" + msg.getUserId());
         builder.addFormDataPart("filePath",msg.getFilePath());
         Log.d("UploadFragment","filePath:" + msg.getFilePath());
+        builder.addFormDataPart("fileSize",file.length() + "");
         builder.addFormDataPart("upload",msg.getFileName(),body);
         Log.d("UploadFragment","fileName:" + msg.getFileName());
         List<MultipartBody.Part> parts = builder.build().parts();
 
-        //已下载长度
-        int length = SharedPerencesUtil.getLength(msg.getUploadFile());
+        //
+        long length = SharedPerencesUtil.getLength(file.getName());
+        Log.d("UploadFragment","断点长度:" + length);
 
         RetrofitManager.getInstance()
                 .getHttpService()
-                .uploadFile(parts,length)
+                .uploadFile("bytes=" + length + "-",parts)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<FileValidInfo>() {
@@ -149,8 +156,8 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
 
                     @Override
                     public void onError(Throwable e) {
+
                         e.printStackTrace();
-                        MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"未知错误");
                     }
 
                     @Override
@@ -158,6 +165,8 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
 
                     }
                 });
+
+
     }
 
     @Override
@@ -177,19 +186,24 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
         }
 
         @Override
-        public void onProgress(int progress) {
-            Log.d("UploadFragment","progress:" + progress);
-            adapter.setProgress(position,progress);
+        public void onProgress(final int progress) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("UploadFragment","progress:" + progress);
+                    adapter.setProgress(position,progress);
+                }
+            });
         }
 
         @Override
         public void onFailed() {
-            getActivity().runOnUiThread(new Runnable() {
+            /*getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"未知错误");
                 }
-            });
+            });*/
         }
 
         @Override
@@ -197,9 +211,18 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getActivity(),message.getFileName() + "上传成功",Toast.LENGTH_SHORT).show();
                     uploadFileMessageList.remove(position);
                     adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        @Override
+        public void onPaused() {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"暂停成功");
                 }
             });
         }

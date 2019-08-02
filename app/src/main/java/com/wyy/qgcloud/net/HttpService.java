@@ -27,6 +27,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 
 public interface HttpService {
 
@@ -177,12 +178,12 @@ public interface HttpService {
     /**
      * 上传文件夹
      * @param parts 文件
-     * @param length 文件已下载的长度
      * @return Observable<FileValidInfo>
      */
+
     @Multipart
     @POST("file/upload")
-    Observable<FileValidInfo> uploadFile(@Part List<MultipartBody.Part> parts, @Header("Range")int length);
+    Observable<FileValidInfo> uploadFile(@Header("Range")String length,@Part List<MultipartBody.Part> parts);
 
     /**
      * 删除文件
