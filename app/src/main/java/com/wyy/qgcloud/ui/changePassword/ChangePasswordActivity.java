@@ -69,8 +69,6 @@ public class ChangePasswordActivity extends BaseActivity implements ChangePasswo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imv_change_back:
-                Intent intent = new Intent(this, MyFragment.class);
-                startActivity(intent);
                 finish();
                 break;
             case R.id.btn_change_password:

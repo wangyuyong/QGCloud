@@ -100,6 +100,9 @@ public class MyFragment extends Fragment implements MyContract.MyView {
             case 2:
                 tvMyPosition.setText("工作室负责人");
                 break;
+            case 3:
+                tvMyPosition.setText("超级管理员");
+                break;
                 default:
                     break;
         }

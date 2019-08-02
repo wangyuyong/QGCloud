@@ -56,29 +56,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginPresent = new LoginPresent();
         loginPresent.bindView(this);
         loginPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//        loginEmailEdt.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                String email = getEdt(loginEmailEdt);
-//                String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-//                boolean format = Pattern.matches(regex, email);
-//                if(!format){
-//                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
-//                }else{
-//                    loginEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-//                }
-//            }
-//        });
         loginEmailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -109,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         return editMsg;
     }
 
-
     @OnClick({ R.id.btn_forget_password, R.id.btn_to_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -121,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             case R.id.btn_to_register:
                 Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent2);
-                finish();
                 break;
         }
     }
@@ -137,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         switch (kind){
             //爆红提示
             case 1:
-                loginEmailEdt.setBackgroundColor(getResources().getColor(R.color.colorError));
+                loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
                 Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                 break;
             //弹窗提示
@@ -159,7 +134,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         String password = getEdt(loginPasswordEdt);
         loginPresent.getLoginInfo(this, email, password);
     }
-
 
     //权限回调
     @Override

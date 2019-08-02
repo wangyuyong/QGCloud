@@ -49,25 +49,25 @@ public class JoinGroupDialog extends Dialog {
                     int chooseId = rgUserPosition.getCheckedRadioButtonId();
                     switch (chooseId) {
                         case R.id.rb_user_position_one:
-                            listener.onClick(0);
-                            break;
-                        case R.id.rb_user_position_two:
                             listener.onClick(1);
                             break;
-                        case R.id.rb_user_position_three:
+                        case R.id.rb_user_position_two:
                             listener.onClick(2);
                             break;
-                        case R.id.rb_user_position_four:
+                        case R.id.rb_user_position_three:
                             listener.onClick(3);
                             break;
-                        case R.id.rb_user_position_five:
+                        case R.id.rb_user_position_four:
                             listener.onClick(4);
                             break;
-                        case R.id.rb_user_position_six:
+                        case R.id.rb_user_position_five:
                             listener.onClick(5);
                             break;
-                        case R.id.rb_user_position_seven:
+                        case R.id.rb_user_position_six:
                             listener.onClick(6);
+                            break;
+                        case R.id.rb_user_position_seven:
+                            listener.onClick(7);
                             break;
                         default:
                             break;
@@ -78,7 +78,6 @@ public class JoinGroupDialog extends Dialog {
     }
 
     public void setListener(UserOnClickListener listener) {
-        Log.d("wx","dialog");
         this.listener = listener;
     }
 }
