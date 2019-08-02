@@ -58,11 +58,11 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cloud, container, false);
-
+        int userID;
         User = ((HomePageActivity)(getActivity())).getUser();
-
-        final int userID = User.getUserId();
-
+        if(User != null) {
+            userID = User.getUserId();
+        }
         present = new CloudPresent();
         present.bindView(this);
 

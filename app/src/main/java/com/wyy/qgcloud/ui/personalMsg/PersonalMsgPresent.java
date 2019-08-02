@@ -9,6 +9,7 @@ import java.io.File;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Request;
 
 public class PersonalMsgPresent implements PersonalMsgContract.PersonalMsgPresent {
 
@@ -20,6 +21,7 @@ public class PersonalMsgPresent implements PersonalMsgContract.PersonalMsgPresen
         this.personalMsgView = view;
         personalMsgModel = new PersonalMsgModel();
     }
+
 
     @Override
     public void unbindView() {

@@ -22,6 +22,7 @@ import com.wyy.qgcloud.adapter.DownloadAdapter;
 import com.wyy.qgcloud.adapter.OnItemClickedListener;
 import com.wyy.qgcloud.app.MyApplication;
 import com.wyy.qgcloud.constant.Api;
+import com.wyy.qgcloud.enity.CheckFile;
 import com.wyy.qgcloud.enity.FileMessage;
 import com.wyy.qgcloud.net.DownloadListener;
 import com.wyy.qgcloud.net.DownloadTask;
@@ -152,6 +153,8 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
             fileMessageList.remove(position);
             adapter.notifyDataSetChanged();
             Toast.makeText(MyApplication.getContext(),"下载成功",Toast.LENGTH_SHORT);
+            CheckFile checkFile = new CheckFile(fileMessageList.get(position).getFileName());
+            EventBus.getDefault().post(checkFile);
         }
 
         @Override

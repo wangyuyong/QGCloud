@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         switch (kind){
             //爆红提示
             case 1:
-                loginEmailEdt.setBackgroundColor(getResources().getColor(R.color.colorError));
+                loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
                 Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                 break;
             //弹窗提示

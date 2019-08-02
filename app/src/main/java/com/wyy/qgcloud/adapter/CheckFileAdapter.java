@@ -28,7 +28,6 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
         LinearLayout checkFileLl;
         ImageView checkFileIv;
         TextView fileNameTv;
-        TextView fileUploadTimeTv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -36,7 +35,6 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
             checkFileLl = itemView.findViewById(R.id.ll_check_file);
             checkFileIv = itemView.findViewById(R.id.iv_check_file);
             fileNameTv = itemView.findViewById(R.id.tv_check_file_name);
-            fileUploadTimeTv = itemView.findViewById(R.id.tv_check_upload_time);
         }
     }
 
