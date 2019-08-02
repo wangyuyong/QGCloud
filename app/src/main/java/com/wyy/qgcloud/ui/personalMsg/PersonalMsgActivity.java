@@ -14,6 +14,7 @@ import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.base.BaseActivity;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.ui.dialog.ConfigOnClickedListener;
+import com.wyy.qgcloud.ui.homePage.HomePageActivity;
 import com.wyy.qgcloud.ui.my.MyFragment;
 import com.wyy.qgcloud.util.ChangePhoneDialog;
 import com.wyy.qgcloud.util.MyToast;
@@ -115,7 +116,6 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
             case R.id.imv_personal_back:
                 Intent intent = new Intent(this, MyFragment.class);
                 startActivity(intent);
-                finish();
                 break;
             //暂未上线修改头像功能
             case R.id.imv_personal_icon:

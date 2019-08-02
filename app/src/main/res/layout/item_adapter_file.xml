@@ -9,8 +9,7 @@
 
     <RelativeLayout
         android:layout_height="@dimen/dp_58"
-        android:layout_width="match_parent"
-        >
+        android:layout_width="match_parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,7 +53,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
         <ImageView
             android:id="@+id/iv_file_menu"
