@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_address_child"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="54dp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_54">
 
     <LinearLayout
 
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/dp_54"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/group_member_icon"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            android:layout_marginStart="@dimen/dp_13"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_15"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/dp_10"
             android:src="@drawable/ic_head"/>
 
         <TextView
             android:id="@+id/group_member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
             android:layout_gravity="center"
             android:textSize="18sp"
             android:textColor="@color/colorTextBlack"
-            android:textStyle="normal"/>
+            android:textStyle="normal"
+            android:text="叶舒桦"/>
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/group_member_more"
-        android:layout_width="@dimen/dp_14"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_more"
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/dp_15"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/dp_15"
-        android:gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:src="@mipmap/ic_item_menu"/>
 
 </RelativeLayout>
+
+</LinearLayout>

@@ -43,6 +43,7 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
     private PersonalMsgContract.PersonalMsgPresent personalMsgPresent;
     LoginInfo.DataBean user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

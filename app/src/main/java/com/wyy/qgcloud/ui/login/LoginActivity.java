@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_forget_password:
-                Intent intent1 = new Intent(LoginActivity.this, PersonalMsgActivity.class);
+                Intent intent1 = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent1);
                 finish();
                 break;

@@ -24,8 +24,7 @@
     <ExpandableListView
         android:id="@+id/expand_address_list"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layoutDirection="rtl" >
+        android:layout_height="match_parent">
 
     </ExpandableListView>
 

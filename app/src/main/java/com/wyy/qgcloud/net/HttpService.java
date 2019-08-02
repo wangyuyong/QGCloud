@@ -6,6 +6,7 @@ import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.GetEmailCodeInfo;
+import com.wyy.qgcloud.enity.MemberChangeInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RegisterInfo;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -121,11 +121,39 @@ public interface HttpService {
                                                     @Field("phone")String phone);
 
     /**
-     * 一次性加载所有数据
+     * 一次性加载通讯录所有数据
      * @return
      */
     @GET("/user/findAll")
     Observable<GroupInfo> getGroupInfo();
+
+
+    /**
+     * 在通讯录界面对用户进行分组
+     * @param userId
+     * @param toUserId
+     * @param groupId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/group/joinGroup")
+    Observable<MemberChangeInfo> getJoinGroupInfo(@Field("userId")int userId,
+                                                  @Field("toUserId")int toUserId,
+                                                  @Field("groupId")int groupId);
+
+
+    /**
+     * 通讯录界面修改用户身份
+     * @param userId
+     * @param toUserId
+     * @param role
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/setUser")
+    Observable<MemberChangeInfo> getUserPositionInfo(@Field("userId")int userId,
+                                                     @Field("toUserId")int toUserId,
+                                                     @Field("role")int role);
 
 
     /**

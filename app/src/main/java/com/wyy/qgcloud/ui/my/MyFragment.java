@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.ui.changePassword.ChangePasswordActivity;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
 import com.wyy.qgcloud.ui.personalMsg.PersonalMsgActivity;
 
@@ -70,8 +71,8 @@ public class MyFragment extends Fragment implements MyContract.MyView {
                 startActivity(intent1);
                 break;
             case R.id.layout_change_password:
-                Intent intent2 = new Intent(getActivity(), PersonalMsgActivity.class);
-                intent2.putExtra("userId", user.getUserId());
+                Intent intent2 = new Intent(getActivity(), ChangePasswordActivity.class);
+                intent2.putExtra("user", user);
                 startActivity(intent2);
                 break;
         }
