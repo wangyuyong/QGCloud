@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/change_password_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_62"
+        android:layout_height="@dimen/dp_55"
         android:background="@color/colorBtn">
 
         <TextView
@@ -24,7 +24,8 @@
     <ExpandableListView
         android:id="@+id/expand_address_list"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl" >
 
     </ExpandableListView>
 

@@ -1,6 +1,6 @@
 package com.wyy.qgcloud.net;
 
-import com.wyy.qgcloud.enity.GroupAllInfo;
+import com.wyy.qgcloud.enity.GroupInfo;
 import com.wyy.qgcloud.enity.ChangePasswordInfo;
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.FileInfo;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -48,13 +49,18 @@ public interface HttpService {
                                        @Field("password")String password);
 
     /**
-     * 用户注册时点击右侧框，发送网络请求获取验证码图片
+     * 用户注册时发送网络请求获取验证码图片
      * @return Observable<ValidateCodeInfo>
      */
     @GET("user/requestCode")
     Observable<ValidateCodeInfo> getValidateCodeInfo();
 
 
+    /**
+     * 用户进行注册
+     * @param partList
+     * @return
+     */
     @Multipart
     @POST("user/register")
     Observable<RegisterInfo> getRegisterInfo(@Part List<MultipartBody.Part> partList);
@@ -70,6 +76,13 @@ public interface HttpService {
     Observable<GetEmailCodeInfo> getEmailCodeInfo(@Field("email")String email);
 
 
+    /**
+     * 用户忘记密码重新设置
+     * @param code
+     * @param email
+     * @param password
+     * @return
+     */
     @FormUrlEncoded
     @POST("user/doForget")
     Observable<SetNewPasswordInfo> getNewPasswordInfo(@Field("code")String code,
@@ -108,9 +121,8 @@ public interface HttpService {
      * 一次性加载所有数据
      * @return
      */
-    @FormUrlEncoded
     @GET("/user/findAll")
-    Observable<GroupAllInfo> getGroupAllInfo();
+    Observable<GroupInfo> getGroupInfo();
 
 
     /**

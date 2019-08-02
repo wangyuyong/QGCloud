@@ -99,13 +99,8 @@ public class HomePageActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    public int getUserId() {
-        return dataBean.getUserId();
-    }
-
     public LoginInfo.DataBean getUser() {
         return dataBean;
     }
-
 
 }

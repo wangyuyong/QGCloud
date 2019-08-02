@@ -2,6 +2,7 @@ package com.wyy.qgcloud.ui.my;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,17 +40,15 @@ public class MyFragment extends Fragment implements MyContract.MyView {
     @BindView(R.id.imv_my_icon)
     CircleImageView imvMyIcon;
     private MyContract.MyPresent myPresent;
-    private int userId;
     private LoginInfo.DataBean user;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this,view);
         myPresent = new MyPresent();
         myPresent.bindView(this);
         HomePageActivity homePageActivity = (HomePageActivity) getActivity();
-        userId = homePageActivity.getUserId();  //获取用户id
         user = homePageActivity.getUser();      //获取整个用户对象
         showPersonalMsg();  //显示个人信息
         return view;
@@ -72,7 +71,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
                 break;
             case R.id.layout_change_password:
                 Intent intent2 = new Intent(getActivity(), PersonalMsgActivity.class);
-                intent2.putExtra("userId", userId);
+                intent2.putExtra("userId", user.getUserId());
                 startActivity(intent2);
                 break;
         }
