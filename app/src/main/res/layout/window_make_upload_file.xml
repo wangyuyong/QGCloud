@@ -5,8 +5,8 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_112"
         android:background="@android:color/transparent"
         android:src="@mipmap/bg_popup_window"
         />
@@ -20,23 +20,24 @@
             android:id="@+id/ll_new_dir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_38"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_15"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="25dp"
                 android:src="@mipmap/ic_dir_whirte"
-                android:layout_marginLeft="25dp"
                 android:background="@android:color/transparent"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp_16"
                 android:textColor="@color/colorTextWhite"
-                android:textSize="30sp"
+                android:textSize="18sp"
                 android:text="新建文件夹"
                 />
 
@@ -45,37 +46,37 @@
         <View
             android:layout_height="1dp"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_12"
             android:background="@color/colorTextWhite"
             />
-
 
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_12"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/ll_upload_file"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_height="@dimen/dp_28"
                     android:src="@mipmap/ic_upload_file"
-                    android:layout_marginLeft="32dp"
                     android:background="@android:color/transparent"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
+                    android:layout_marginLeft="19dp"
                     android:textColor="@color/colorTextWhite"
-                    android:textSize="30sp"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
                     android:text="上传文件"
                     />
 
