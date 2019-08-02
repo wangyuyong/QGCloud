@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.DownloadAdapter;
 import com.wyy.qgcloud.adapter.OnItemClickedListener;
+import com.wyy.qgcloud.app.MyApplication;
 import com.wyy.qgcloud.constant.Api;
 import com.wyy.qgcloud.enity.FileMessage;
 import com.wyy.qgcloud.net.DownloadListener;
@@ -94,7 +96,8 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
                         viewHolder.setPaused();
                         viewHolder.reserveStart();
                     }else {
-                        downloadBinder.resumeDownload(position);
+                        DownloadTask task = new DownloadTask(new DownloadClass(position),fileMessageList.get(position).getFileName());
+                        downloadBinder.resumeDownload(task,position);
                         viewHolder.setStart();
                         viewHolder.reserveStart();
                     }
@@ -112,6 +115,12 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void startDownload(FileMessage message){
+        for (FileMessage temp : fileMessageList){
+            if (temp.getFileId() == message.getFileId()){
+                MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,"文件已在下载列表");
+                return;
+            }
+        }
         //将文件添加到下载列表
         fileMessageList.add(message);
         adapter.notifyDataSetChanged();
@@ -135,12 +144,14 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
         @Override
         public void onProgress(int progress) {
             Log.d("DownloadFragment","" + Thread.currentThread().getName() + ":" + progress);
+            adapter.setProgress(position,progress);
         }
 
         @Override
         public void onSuccess() {
             fileMessageList.remove(position);
             adapter.notifyDataSetChanged();
+            Toast.makeText(MyApplication.getContext(),"下载成功",Toast.LENGTH_SHORT);
         }
 
         @Override
@@ -150,14 +161,12 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
 
         @Override
         public void onPaused() {
-            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,"暂停成功");
+            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_happy,"暂停成功");
         }
 
         @Override
         public void onCanceled() {
-            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_sad,"暂停成功");
+            MyToast.getMyToast().ToastShow(getActivity(),null,R.drawable.ic_happy,"下载取消");
         }
     }
-
-
 }

@@ -25,12 +25,6 @@ public interface DownloadContract {
         void paused(int position);
 
         /**
-         * 恢复下载
-         * @param position 位置
-         */
-        void resume(int position);
-
-        /**
          * 取消下载
          * @param position 位置
          */

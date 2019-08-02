@@ -3,6 +3,7 @@ package com.wyy.qgcloud.ui.clouddisk;
 import com.wyy.qgcloud.base.BasePresent;
 import com.wyy.qgcloud.base.BaseView;
 import com.wyy.qgcloud.enity.FileInfo;
+import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RenameInfo;
 
@@ -59,10 +60,10 @@ public interface CloudContract {
 
         /**
          * 创建文件夹
-         * @param userId 用户Id
+         * @param userID 用户Id
          * @param fileName 文件名称
          */
-        void makeDir(int userId,String fileName);
+        void makeDir(int userID,String fileName);
 
         /**
          * 返回上一级目录
@@ -83,6 +84,19 @@ public interface CloudContract {
          * @param position 位置
          */
         void rename(int userId,String fileName,int position);
+
+        /**
+         * 上传文件
+         * @param userId 用户Id
+         */
+        void upload(int userId);
+
+        /**
+         * 删除文件
+         * @param userId 用户Id
+         * @param position 点击位置
+         */
+        void deleteFile(int userId,int position);
     }
 
     interface CloudModel{
@@ -110,5 +124,14 @@ public interface CloudContract {
          * @return Observable<RenameInfo>
          */
         Observable<RenameInfo> requestRename(int userId,int fileId,String fileName);
+
+        /**
+         * 请求删除文件
+         * @param userId 用户Id
+         * @param fileId 文件Id
+         * @return Observable<FileValidInfo>
+         */
+        Observable<FileValidInfo> requestDelete(int userId,int fileId);
+
     }
 }

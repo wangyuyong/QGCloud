@@ -2,9 +2,16 @@ package com.wyy.qgcloud.ui.clouddisk;
 
 import android.util.Log;
 
+import com.wyy.qgcloud.R;
+import com.wyy.qgcloud.app.MyApplication;
 import com.wyy.qgcloud.enity.FileInfo;
+import com.wyy.qgcloud.enity.FilePathMessge;
+import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
 import com.wyy.qgcloud.enity.RenameInfo;
+import com.wyy.qgcloud.util.MyToast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +120,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
     }
 
     @Override
-    public void makeDir(final int userId, final String fileName) {
+    public void makeDir(final int userID, final String fileName) {
         //获取文件的全路径
         StringBuffer filePath = new StringBuffer("/");
         for (int i = 0; i < positionList.size(); i++){
@@ -123,10 +130,12 @@ public class CloudPresent implements CloudContract.CloudPresent {
             filePath.append(file.getFileName() + "/");
         }
         //去掉最后一个'/'
-        filePath.deleteCharAt(filePath.length() - 1);
+        if (filePath.length() > 1){
+            filePath.deleteCharAt(filePath.length() - 1);
+        }
         String path = filePath.toString();
         Log.d("CloudPresent",path);
-        model.requestMakeDir(userId,path,fileName)
+        model.requestMakeDir(userID,path,fileName)
                 .subscribe(new Observer<MakeDirInfo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -137,7 +146,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     public void onNext(MakeDirInfo makeDirInfo) {
                         if (makeDirInfo.getStatus()){
                             //有权限，则刷新文件列表
-                            model.requestOpenDir(userId,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
+                            model.requestOpenDir(userID,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
                                     .subscribe(new Observer<FileInfo>() {
                                         @Override
                                         public void onSubscribe(Disposable d) {
@@ -251,31 +260,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     public void onNext(RenameInfo renameInfo) {
                         if (renameInfo.getStatus()){
                             //有权限，刷新列表
-                            int fileID = fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId();
-                            model.requestOpenDir(userId,fileID)
-                                    .subscribe(new Observer<FileInfo>() {
-                                        @Override
-                                        public void onSubscribe(Disposable d) {
-
-                                        }
-
-                                        @Override
-                                        public void onNext(FileInfo fileInfo) {
-                                            fileInfoList.remove(fileInfoList.size() - 1);
-                                            fileInfoList.add(fileInfo);
-                                            view.updataDir(fileInfo.getData());
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
-
-                                        }
-                                    });
+                            updataList(userId);
                         }else {
                             //无权限，弹出错误信息
                             view.showError(renameInfo.getMessage());
@@ -295,6 +280,21 @@ public class CloudPresent implements CloudContract.CloudPresent {
     }
 
     @Override
+    public void upload(int userId) {
+        StringBuffer path = new StringBuffer("/");
+        for (int i = 0; i < positionList.size(); i++){
+            //取出每一级所点击的路径
+            FileInfo.DataBean dataBean = fileInfoList.get(i).getData().get(positionList.get(i));
+            path.append(dataBean.getFileName() + "/");
+        }
+        if (path.length() > 1){
+            path.deleteCharAt(path.length() - 1);
+        }
+        FilePathMessge msg = new FilePathMessge(userId,path.toString());
+        EventBus.getDefault().post(msg);
+    }
+
+    @Override
     public void bindView(CloudContract.CloudView view) {
         this.view = view;
     }
@@ -302,5 +302,71 @@ public class CloudPresent implements CloudContract.CloudPresent {
     @Override
     public void unbindView() {
         view = null;
+    }
+
+    @Override
+    public void deleteFile(final int userId,int position) {
+        int fileId = fileInfoList.get(fileInfoList.size() - 1).getData().get(position).getFileId();
+        model.requestDelete(userId,fileId)
+                .subscribe(new Observer<FileValidInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FileValidInfo fileValidInfo) {
+                        if (fileValidInfo.getStatus()){
+                            //重新刷新界面
+                            updataList(userId);
+                        }else {
+                            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null, R.drawable.ic_sad,fileValidInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"未知错误");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 刷新当前所在列表
+     * @param userId 用户Id
+     */
+    private void updataList(int userId){
+        int fileID = fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId();
+        model.requestOpenDir(userId,fileID)
+                .subscribe(new Observer<FileInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(FileInfo fileInfo) {
+                        fileInfoList.remove(fileInfoList.size() - 1);
+                        fileInfoList.add(fileInfo);
+                        view.updataDir(fileInfo.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"未知错误");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

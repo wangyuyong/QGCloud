@@ -4,6 +4,7 @@ import com.wyy.qgcloud.enity.GroupInfo;
 import com.wyy.qgcloud.enity.ChangePasswordInfo;
 import com.wyy.qgcloud.enity.EmailInfo;
 import com.wyy.qgcloud.enity.FileInfo;
+import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.GetEmailCodeInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.MakeDirInfo;
@@ -21,6 +22,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -171,5 +173,25 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("file/updateFile")
     Observable<RenameInfo> getRenameInfo(@Field("userId")int userId,@Field("fileId")int fileId,@Field("fileName")String fileName);
+
+    /**
+     * 上传文件夹
+     * @param parts 文件
+     * @param length 文件已下载的长度
+     * @return Observable<FileValidInfo>
+     */
+    @Multipart
+    @POST("file/upload")
+    Observable<FileValidInfo> uploadFile(@Part List<MultipartBody.Part> parts, @Header("Range")int length);
+
+    /**
+     * 删除文件
+     * @param userId 用户Id
+     * @param fileId 文件Id
+     * @return Observable<FileValidInfo>
+     */
+    @FormUrlEncoded
+    @POST("file/delete")
+    Observable<FileValidInfo> deleteFile(@Field("userId")int userId,@Field("fileId")int fileId);
 }
 

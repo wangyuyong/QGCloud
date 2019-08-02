@@ -1,22 +1,36 @@
 package com.wyy.qgcloud.ui.homePage;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.ViewPagerAdapter;
+import com.wyy.qgcloud.enity.FilePathMessge;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.enity.UploadFileMessage;
 import com.wyy.qgcloud.ui.addressList.AddressListFragment;
 import com.wyy.qgcloud.ui.clouddisk.CloudFragment;
 import com.wyy.qgcloud.ui.my.MyFragment;
 import com.wyy.qgcloud.ui.transfer.TransferFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,12 +43,14 @@ public class HomePageActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private LoginInfo.DataBean dataBean;
     private MenuItem menuItem;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         dataBean = (LoginInfo.DataBean) intent.getSerializableExtra("data");
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -79,13 +95,6 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
-        // 取消滑动
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
         setViewPager(viewPager);
     }
 
@@ -103,4 +112,39 @@ public class HomePageActivity extends AppCompatActivity {
         return dataBean;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                //获取文件并将文件转化为file对象
+                Uri uri = data.getData();
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(uri,proj,null,null,null);
+                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String file = cursor.getString(index);
+                String fileName = file.substring(path.lastIndexOf("/"));
+                SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
+                String time = format.format(new Date());
+                int userId = dataBean.getUserId();
+                UploadFileMessage msg = new UploadFileMessage(file,fileName,time,userId,path);
+                EventBus.getDefault().post(msg);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void openFile(FilePathMessge msg){
+        path = msg.getFilePath();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
