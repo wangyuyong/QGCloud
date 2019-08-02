@@ -93,8 +93,8 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void startUpload(UploadFileMessage msg){
-        uploadFileMessageList.add(msg);
-        adapter.notifyDataSetChanged();
+       /* uploadFileMessageList.add(msg);
+        adapter.notifyDataSetChanged();*/
         getFile(msg,CONST_FIRST);
     }
 

@@ -28,7 +28,6 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
         LinearLayout checkFileLl;
         ImageView checkFileIv;
         TextView fileNameTv;
-        TextView fileUploadTimeTv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

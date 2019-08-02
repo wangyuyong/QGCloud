@@ -22,6 +22,10 @@ import com.wyy.qgcloud.constant.Directory;
 import com.wyy.qgcloud.enity.CheckFile;
 import com.wyy.qgcloud.util.DirectoryUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,7 @@ public class CheckFileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_check_file,container,false);
+        EventBus.getDefault().register(this);
         checkFileRv = view.findViewById(R.id.rv_check_file);
         init();
 
@@ -46,11 +51,16 @@ public class CheckFileFragment extends Fragment {
     public void init(){
         checkFileList = new ArrayList<>();
         File fileName = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + Directory.CONST_SAVE_DIRECTORY);
+        if (!fileName.exists()){
+            fileName.exists();
+        }
         String[] fileList = fileName.list();
 
-        for (String temp : fileList){
-            CheckFile checkFile = new CheckFile(temp);
-            checkFileList.add(checkFile);
+        if(fileList != null) {
+            for (String temp : fileList){
+                CheckFile checkFile = new CheckFile(temp);
+                checkFileList.add(checkFile);
+            }
         }
         manager = new LinearLayoutManager(getActivity());
         adapter = new CheckFileAdapter(checkFileList);
@@ -68,5 +78,17 @@ public class CheckFileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updataList(CheckFile message){
+        checkFileList.add(message);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 }

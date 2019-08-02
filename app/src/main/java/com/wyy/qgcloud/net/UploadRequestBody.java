@@ -61,7 +61,7 @@ public class UploadRequestBody extends RequestBody {
 
             while ((read = source.read(bufferedSink.getBuffer(), 1024 * 10)) != -1) {
                 total += read;
-                bufferedSink.flush();
+                bufferedSink.emit();
                 if (listener != null) {
                     listener.onProgress((int) (100 * total / length));
                 }
@@ -86,7 +86,6 @@ public class UploadRequestBody extends RequestBody {
                 bufferedSink.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.w("淇淇关流失败!","墉墉死了");
             }
         }
     }

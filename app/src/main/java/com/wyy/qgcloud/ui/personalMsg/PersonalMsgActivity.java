@@ -115,6 +115,8 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
         switch (view.getId()) {
             case R.id.imv_personal_back:
                 finish();
+                Intent intent = new Intent(this, HomePageActivity.class);
+                startActivity(intent);
                 break;
             //暂未上线修改头像功能
             case R.id.imv_personal_icon:
