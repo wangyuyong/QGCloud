@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.ViewPagerAdapter;
+import com.wyy.qgcloud.app.MyApplication;
 import com.wyy.qgcloud.enity.FilePathMessge;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.enity.UploadFileMessage;
@@ -26,6 +27,7 @@ import com.wyy.qgcloud.ui.addressList.AddressListFragment;
 import com.wyy.qgcloud.ui.clouddisk.CloudFragment;
 import com.wyy.qgcloud.ui.my.MyFragment;
 import com.wyy.qgcloud.ui.transfer.TransferFragment;
+import com.wyy.qgcloud.util.MyToast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -121,12 +123,24 @@ public class HomePageActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
                 //获取文件并将文件转化为file对象
                 Uri uri = data.getData();
+                if (uri == null){
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这张图片");
+                    return;
+                }
                 String[] proj = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(uri,proj,null,null,null);
+                if (cursor == null){
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这个文件");
+                    return;
+                }
                 int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String file = cursor.getString(index);
-                String fileName = file.substring(path.lastIndexOf("/"));
+                if (file == null){
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这个文件");
+                    return;
+                }
+                String fileName = file.substring(file.lastIndexOf("/") + 1);
                 SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
                 String time = format.format(new Date());
                 int userId = dataBean.getUserId();

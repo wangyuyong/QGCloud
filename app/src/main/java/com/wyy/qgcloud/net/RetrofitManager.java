@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.net;
 
-import com.google.gson.Gson;
+import android.util.Log;
+
 import com.wyy.qgcloud.constant.Api;
 
 import org.jetbrains.annotations.NotNull;

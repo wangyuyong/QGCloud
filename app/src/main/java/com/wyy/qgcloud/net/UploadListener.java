@@ -17,4 +17,9 @@ public interface UploadListener {
      * 上传成功
      */
     void onSucceed();
+
+    /**
+     * 暂停
+     */
+    void onPaused();
 }

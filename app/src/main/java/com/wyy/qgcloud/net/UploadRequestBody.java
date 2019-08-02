@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -32,7 +31,7 @@ public class UploadRequestBody extends RequestBody {
     /**
      * 暂停下载
      */
-    private boolean isPaused = true;
+    private boolean isPaused;
 
     public UploadRequestBody(File file,UploadListener listener) {
         this.file = file;
@@ -51,62 +50,45 @@ public class UploadRequestBody extends RequestBody {
     }
 
     @Override
-    public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
-
+    public void writeTo(@NotNull BufferedSink bufferedSink){
         Source source = null;
         try {
             source = Okio.source(file);
-            long total = 0;
+            long total = SharedPerencesUtil.getLength(file.getName());
+            Log.d("UploadRequestBody", "断点长度:" + total);
             long read;
             long length = file.length();
 
-            while ((read = source.read(bufferedSink.getBuffer(),1024 * 10)) != -1){
+            while ((read = source.read(bufferedSink.getBuffer(), 1024 * 10)) != -1) {
                 total += read;
                 bufferedSink.flush();
-                if (listener != null){
-                    listener.onProgress((int) (total/length));
+                if (listener != null) {
+                    listener.onProgress((int) (100 * total / length));
                 }
-            }
-        }catch (Exception e){
-            if (listener != null){
-                listener.onFailed();
-            }
-            e.printStackTrace();
-        }finally {
-            Util.closeQuietly(source);
-        }
-
-        /*//文件总长度
-        long fileTotal = file.length();
-        //已上传长度
-        int uploadLength = SharedPerencesUtil.getLength(file.getName());
-
-        byte[] bytes = new byte[1024 * 10];
-        FileInputStream inputStream = new FileInputStream(file);
-
-        try {
-            int len;
-            while ((len = inputStream.read(bytes)) != -1){
-                if (!isPaused){
-                    SharedPerencesUtil.saveLength(file.getName(),uploadLength);
-                    Log.d("UploadRequestBody","断点长度:" + uploadLength);
+                if (isPaused){
+                    SharedPerencesUtil.saveLength(file.getName(),total);
+                    listener.onPaused();
                     return;
                 }
-                bufferedSink.write(bytes,0,len);
-                uploadLength += len;
-                if (listener != null){
-                    listener.onProgress((int) (100 * uploadLength / fileTotal));
+            }
+                listener.onSucceed();
+                SharedPerencesUtil.deleteLength(file.getName());
+        } catch (Exception e) {
+            if (listener != null) {
+                if (!isPaused) {
+                    listener.onFailed();
                 }
             }
-            listener.onSucceed();
-        }catch (Exception e){
-            listener.onFailed();
             e.printStackTrace();
-        }finally {
-            if (inputStream != null){
-                inputStream.close();
+        } finally {
+            try {
+                Util.closeQuietly(source);
+                bufferedSink.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.w("淇淇关流失败!","墉墉死了");
             }
-        }*/
+        }
     }
 
     public void paused(){
