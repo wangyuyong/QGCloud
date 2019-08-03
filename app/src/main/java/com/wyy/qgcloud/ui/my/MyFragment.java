@@ -15,6 +15,7 @@ import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.ui.changePassword.ChangePasswordActivity;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
+import com.wyy.qgcloud.ui.login.LoginActivity;
 import com.wyy.qgcloud.ui.personalMsg.PersonalMsgActivity;
 
 import butterknife.BindView;
@@ -46,7 +47,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         myPresent = new MyPresent();
         myPresent.bindView(this);
         HomePageActivity homePageActivity = (HomePageActivity) getActivity();
@@ -62,21 +63,6 @@ public class MyFragment extends Fragment implements MyContract.MyView {
         myPresent.unbindView();
     }
 
-    @OnClick({R.id.layout_personal_msg, R.id.layout_change_password})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.layout_personal_msg:
-                Intent intent1 = new Intent(getActivity(), PersonalMsgActivity.class);
-                intent1.putExtra("user", user);
-                startActivity(intent1);
-                break;
-            case R.id.layout_change_password:
-                Intent intent2 = new Intent(getActivity(), ChangePasswordActivity.class);
-                intent2.putExtra("user", user);
-                startActivity(intent2);
-                break;
-        }
-    }
 
     @Override
     public void showPersonalMsg() {
@@ -90,7 +76,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
         tvMyGroup.setText(user.getGroupName());
         //显示身份
         int role = user.getRole();
-        switch (role){
+        switch (role) {
             case 0:
                 tvMyPosition.setText("普通用户");
                 break;
@@ -103,8 +89,32 @@ public class MyFragment extends Fragment implements MyContract.MyView {
             case 3:
                 tvMyPosition.setText("超级管理员");
                 break;
-                default:
-                    break;
+            default:
+                break;
+        }
+    }
+
+    @OnClick({R.id.layout_personal_msg, R.id.layout_change_password, R.id.layout_setting, R.id.layout_exit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.layout_personal_msg:
+                Intent intent1 = new Intent(getActivity(), PersonalMsgActivity.class);
+                intent1.putExtra("user", user);
+                startActivity(intent1);
+                break;
+            case R.id.layout_change_password:
+                Intent intent2 = new Intent(getActivity(), ChangePasswordActivity.class);
+                intent2.putExtra("user", user);
+                startActivity(intent2);
+                break;
+            case R.id.layout_setting:
+                break;
+            case R.id.layout_exit:
+                Intent intent3 = new Intent(getActivity(), LoginActivity.class);
+                intent3.putExtra("user", user);
+                startActivity(intent3);
+                HomePageActivity.mHomePageActivity.finish();
+                break;
         }
     }
 }

@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
                     boolean format = Pattern.matches(regex, email);
                     if(format) {
                         loginPresent.getEmailInfo(LoginActivity.this, email);
+                    }else{
+                        showError("邮箱格式不正确！请重新输入。", 1);
                     }
                 }
             }
@@ -92,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             case R.id.btn_forget_password:
                 Intent intent1 = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent1);
-                finish();
                 break;
             case R.id.btn_to_register:
                 Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -113,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             //爆红提示
             case 1:
                 loginEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
-                Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                MyToast.getMyToast().ToastShow(LoginActivity.this,null, R.drawable.ic_sad, msg);
                 break;
             //弹窗提示
             case 2:

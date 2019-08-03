@@ -81,108 +81,63 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         registerPresent.getValidateCodeInfo(RegisterActivity.this);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         registerPasswordEdt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        nameEdt.addTextChangedListener(new TextWatcher() {
+
+        nameEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = getEdt(nameEdt);
-                String regex = "^[\\u4e00-\\u9fa5]{2,4}$";
-                boolean format = Pattern.matches(regex, email);
-                if (!format) {
-                    //格式不正确，底边变色
-                    nameEdt.setTextColor(getResources().getColor(R.color.colorError));
-                } else {
-                    nameEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String email = getEdt(nameEdt);
+                    String regex = "^[\\u4e00-\\u9fa5]{2,4}$";
+                    boolean format = Pattern.matches(regex, email);
+                    if (!format) {
+                        //格式不正确，字体变色
+                        nameEdt.setTextColor(getResources().getColor(R.color.colorError));
+                    } else {
+                        nameEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+                    }
                 }
             }
         });
-        phoneNumberEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String phone = getEdt(phoneNumberEdt);
-                String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
-                boolean format = Pattern.matches(regex, phone);
-                if (!format) {
-                    //格式不正确，底边变色
-                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
-                } else {
-                    phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-                }
-            }
-        });
-        registerEmailEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = getEdt(registerEmailEdt);
-                String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-                boolean format = Pattern.matches(regex, email);
-                if (!format) {
-                    //格式不正确，底边变色
-                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
-                } else {
-                    registerEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-                }
-            }
-        });
-//        registerPasswordEdt.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                String email = getEdt(registerPasswordEdt);
-//                String regex = "^[^[x00-xff]]{6,15}$";
-//                boolean format = Pattern.matches(regex, email);
-//                if (!format) {
-//                    //格式不正确，底边变色
-//                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorError));
-//                } else {
-//                    registerPasswordEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
-//                }
-//            }
-//        });
+       phoneNumberEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+           @Override
+           public void onFocusChange(View v, boolean hasFocus) {
+               if(!hasFocus) {
+                   String phone = getEdt(phoneNumberEdt);
+                   String regex = "^[1][3,4,5,7,8,9][0-9]{9}$";
+                   boolean format = Pattern.matches(regex, phone);
+                   if (!format) {
+                       //格式不正确，字体变色
+                       phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorError));
+                   } else {
+                       phoneNumberEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+                   }
+               }
+           }
+       });
+       registerEmailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+           @Override
+           public void onFocusChange(View v, boolean hasFocus) {
+               if(!hasFocus){
+                   String email = getEdt(registerEmailEdt);
+                   String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+                   boolean format = Pattern.matches(regex, email);
+                   if (!format) {
+                       //格式不正确，底边变色
+                       registerEmailEdt.setTextColor(getResources().getColor(R.color.colorError));
+                   } else {
+                       registerEmailEdt.setTextColor(getResources().getColor(R.color.colorTextBlack));
+                   }
+               }
+           }
+       });
+        //注册按钮点击注册
         registerBtn.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
                 register();
             }
         });
+        //点击获取验证码
         validateCodeImv.setOnClickListener(new OnMultiClickListener() {
             @Override
             public void onMultiClick(View v) {
@@ -235,6 +190,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
             //弹窗提示
             case 2:
                 MyToast.getMyToast().ToastShow(RegisterActivity.this, null, R.drawable.ic_sad, msg);
+                registerPresent.getValidateCodeInfo(this);
                 break;
             default:
                 break;
@@ -254,7 +210,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         String phone = getEdt(phoneNumberEdt);
         String code = getEdt(editValidateCode);
         String path = pref.getString("path", "");
-        Log.d("wx", path);
         File icon = new File(path);
         registerPresent.getRegisterInfo(this, email, password, icon, userName, phone, code);
     }
@@ -398,7 +353,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         if (imagePath != null) {
             editor = pref.edit();
             editor.putString("path", imagePath);
-            Log.d("wx", imagePath);
             editor.apply();
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //设置图片
@@ -407,10 +361,9 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                     .centerCrop()
                     .into(imvIcon);
         } else {
-            Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "未选择图片，请选择。", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -418,7 +371,4 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         super.onDestroy();
     }
 
-    @OnClick(R.id.imv_register_back)
-    public void onViewClicked() {
-    }
 }

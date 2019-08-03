@@ -18,6 +18,7 @@ public interface AddressListContract {
         void initList(GroupInfo.DataBean dataBean);
         void showError(String msg);
         void showSuccess(String msg);
+        void refreshList();
     }
 
     interface AddressListModel{
@@ -30,5 +31,6 @@ public interface AddressListContract {
         void getGroupInfo();
         void getJoinGroupInfo(Context context, int userId, int toUserId, int groupId);
         void getUserPositionInfo(Context context, int userId, int toUserId, int role);
+
     }
 }

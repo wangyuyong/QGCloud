@@ -262,8 +262,6 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
                     }
                 });
                 break;
-                default:
-                    break;
         }
         return convertView;
     }
@@ -287,29 +285,33 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
 
     //传入参数为被操作者的id
     private void showBottomSheetList(final int toUserId){
-        new QMUIBottomSheet.BottomListSheetBuilder(mContext)
-                .addItem(mContext.getDrawable(R.mipmap.ic_user_grouping),"用户分组")
-                .addItem(mContext.getDrawable(R.mipmap.ic_give_position),"身份赋予")
-                .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                       dialog.dismiss();
-                        switch (position){
-                            case 0:
-                                //用户分组
-                                bottomSheetOnClickListener.bottomSheetOnClick(0,toUserId);
-                                break;
-                            case 1:
-                                //身份赋予
-                                bottomSheetOnClickListener.bottomSheetOnClick(1, toUserId);
-                                break;
+            new QMUIBottomSheet.BottomListSheetBuilder(mContext)
+                    .addItem(mContext.getDrawable(R.mipmap.ic_user_grouping), "用户分组")
+                    .addItem(mContext.getDrawable(R.mipmap.ic_give_position), "身份赋予")
+                    .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+                        @Override
+                        public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                            dialog.dismiss();
+                            switch (position) {
+                                case 0:
+                                    //用户分组
+                                    if (bottomSheetOnClickListener != null) {
+                                        bottomSheetOnClickListener.bottomSheetOnClick(0, toUserId);
+                                    }
+                                    break;
+                                case 1:
+                                    //身份赋予
+                                    if(bottomSheetOnClickListener != null) {
+                                        bottomSheetOnClickListener.bottomSheetOnClick(1, toUserId);
+                                    }
+                                    break;
                                 default:
                                     break;
+                            }
                         }
-                    }
-                })
-                .build()
-                .show();
+                    })
+                    .build()
+                    .show();
     }
 
     public void setBottomSheetOnClickListener(BottomSheetOnClickListener bottomSheetOnClickListener){

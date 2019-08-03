@@ -138,4 +138,13 @@ public class AddressListFragment extends Fragment implements AddressListContract
         MyToast.getMyToast().ToastShow(getActivity(), null, R.drawable.ic_happy, msg);
     }
 
+
+    @Override
+    public void refreshList() {
+        groupMemberList.clear();
+        addressListPresent.getGroupInfo();
+        initGroupMemberList();
+        initView();
+
+    }
 }

@@ -24,6 +24,7 @@
             android:id="@+id/edt_change_phone"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:textSize="17sp"
             android:textColor="@color/colorTextBlack"
             android:textStyle="normal"/>

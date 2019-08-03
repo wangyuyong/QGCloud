@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QGCloud</string>
+    <string name="app_name">QG云盘</string>
     <string name="email">邮箱</string>
     <string name="password">密码</string>
     <string name="login">登录</string>

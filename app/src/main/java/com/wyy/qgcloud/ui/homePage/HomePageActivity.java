@@ -49,12 +49,14 @@ public class HomePageActivity extends AppCompatActivity {
     private LoginInfo.DataBean dataBean;
     private MenuItem menuItem;
     private String path;
+    public static Activity mHomePageActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         ButterKnife.bind(this);
+        mHomePageActivity = this;
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
         dataBean = (LoginInfo.DataBean) intent.getSerializableExtra("data");

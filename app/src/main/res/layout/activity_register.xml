@@ -10,8 +10,8 @@
         android:id="@+id/imv_register_back"
         android:layout_marginTop="30dp"
         android:layout_marginStart="20sp"
-        android:layout_width="20dp"
-        android:layout_height="30dp"
+        android:layout_width="15dp"
+        android:layout_height="@dimen/dp_25"
         android:src="@drawable/ic_backblack"/>
 
 
@@ -45,6 +45,7 @@
             android:id="@+id/edt_name"
             android:layout_width="266dp"
             android:layout_height="60dp"
+            android:maxLines="1"
             android:textColor="@color/colorTextBlack"
             android:textSize="16sp"
             android:textStyle="normal"
@@ -71,6 +72,7 @@
             android:id="@+id/edt_phone_number"
             android:layout_width="266dp"
             android:layout_height="60dp"
+            android:maxLines="1"
             android:textColor="@color/colorTextBlack"
             android:textSize="16sp"
             android:textStyle="normal"/>
@@ -95,6 +97,7 @@
             android:id="@+id/edt_register_email"
             android:layout_width="266dp"
             android:layout_height="60dp"
+            android:maxLines="1"
             android:textColor="@color/colorTextBlack"
             android:textSize="16sp"
             android:textStyle="normal"/>
@@ -119,6 +122,7 @@
             android:id="@+id/edt_register_password"
             android:layout_width="266dp"
             android:layout_height="60dp"
+            android:maxLines="1"
             android:hint="@string/password_limit"
             android:textColor="@color/colorTextBlack"
             android:textSize="16sp"
@@ -145,6 +149,7 @@
             android:id="@+id/edit_validate_code"
             android:layout_width="116dp"
             android:layout_height="60dp"
+            android:maxLines="1"
             android:textColor="@color/colorTextBlack"
             android:textSize="16sp"
             android:textStyle="normal"/>

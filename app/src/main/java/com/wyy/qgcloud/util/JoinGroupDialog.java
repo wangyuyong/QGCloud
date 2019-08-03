@@ -2,10 +2,11 @@ package com.wyy.qgcloud.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.wyy.qgcloud.R;
@@ -21,6 +22,20 @@ public class JoinGroupDialog extends Dialog {
     Button btnJoinGroupCancel;
     @BindView(R.id.btn_join_group_sure)
     Button btnJoinGroupSure;
+    @BindView(R.id.rb_user_position_one)
+    RadioButton rbUserPositionOne;
+    @BindView(R.id.rb_user_position_two)
+    RadioButton rbUserPositionTwo;
+    @BindView(R.id.rb_user_position_three)
+    RadioButton rbUserPositionThree;
+    @BindView(R.id.rb_user_position_four)
+    RadioButton rbUserPositionFour;
+    @BindView(R.id.rb_user_position_five)
+    RadioButton rbUserPositionFive;
+    @BindView(R.id.rb_user_position_six)
+    RadioButton rbUserPositionSix;
+    @BindView(R.id.rb_user_position_seven)
+    RadioButton rbUserPositionSeven;
     private UserOnClickListener listener;
 
     public JoinGroupDialog(Context context) {
@@ -45,7 +60,7 @@ public class JoinGroupDialog extends Dialog {
                 cancel();
                 break;
             case R.id.btn_join_group_sure:
-                if(listener != null) {
+                if (listener != null) {
                     int chooseId = rgUserPosition.getCheckedRadioButtonId();
                     switch (chooseId) {
                         case R.id.rb_user_position_one:

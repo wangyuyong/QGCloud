@@ -9,11 +9,11 @@
     android:splitMotionEvents="false"
     >
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_head"
+        android:src="@drawable/ic_head"
         android:layout_marginTop="133dp"
         />
 
@@ -37,6 +37,7 @@
             android:id="@+id/edt_login_email"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textColor="@color/colorTextBlack"
             android:textSize="20sp"
             android:textStyle="normal"/>
@@ -60,6 +61,7 @@
             android:id="@+id/edt_login_password"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textColor="@color/colorTextBlack"
             android:textSize="20sp"
             android:textStyle="normal"

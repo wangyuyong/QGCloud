@@ -30,7 +30,6 @@ public class AddressListPresent implements AddressListContract.AddressListPresen
 
     @Override
     public void getGroupInfo() {
-        Log.d("wx", "1");
         addressListModel.getGroupInfo().subscribe(new Observer<GroupInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -65,7 +64,9 @@ public class AddressListPresent implements AddressListContract.AddressListPresen
             @Override
             public void onNext(MemberChangeInfo memberChangeInfo) {
                 if(memberChangeInfo.getStatus()){
-                    addressListView.showSuccess("设置成功！");
+                    addressListView.showSuccess("分组设置成功！");
+                    addressListView.refreshList();
+
                 }else {
                     addressListView.showError(memberChangeInfo.getMessage());
                 }
@@ -111,4 +112,6 @@ public class AddressListPresent implements AddressListContract.AddressListPresen
             }
         });
     }
+
+
 }

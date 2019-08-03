@@ -26,14 +26,18 @@
             android:id="@+id/rg_user_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/rb_user_position_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="后台组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -41,8 +45,11 @@
                 android:id="@+id/rb_user_position_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="前端组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -50,8 +57,11 @@
                 android:id="@+id/rb_user_position_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="移动组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -59,8 +69,11 @@
                 android:id="@+id/rb_user_position_four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="数据挖掘组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -68,8 +81,11 @@
                 android:id="@+id/rb_user_position_five"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="嵌入式组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -77,8 +93,11 @@
                 android:id="@+id/rb_user_position_six"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="设计组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -86,8 +105,11 @@
                 android:id="@+id/rb_user_position_seven"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="图形组"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 

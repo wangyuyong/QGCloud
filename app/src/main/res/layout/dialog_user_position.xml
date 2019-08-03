@@ -25,14 +25,19 @@
             android:id="@+id/rg_user_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_8"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/rb_user_position_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="所在组组长"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
@@ -40,8 +45,11 @@
                 android:id="@+id/rb_user_position_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:button="@null"
+                android:drawableStart="@drawable/ic_dialog_choose_selector"
                 android:text="工作室负责人"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorTextBlack"
                 android:textStyle="normal"/>
 
