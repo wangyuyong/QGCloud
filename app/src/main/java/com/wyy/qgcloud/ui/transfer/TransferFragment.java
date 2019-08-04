@@ -36,7 +36,6 @@ public class TransferFragment extends Fragment {
         transferTb = view.findViewById(R.id.tb_transfer);
         transferVp = view.findViewById(R.id.vp_transfer);
         init();
-
         return view;
     }
 

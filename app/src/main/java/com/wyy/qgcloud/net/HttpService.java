@@ -157,6 +157,22 @@ public interface HttpService {
 
 
     /**
+     * 用户针对某个文件对某个用户赋予某种权限
+     * @param userId 执行修改权限用户的ID
+     * @param fileId  文件ID
+     * @param authority  权限类型
+     * @param told  被赋予权限的用户的ID
+     * @return  设置是否成功
+     */
+    @FormUrlEncoded
+    @POST("file/updateAuthority")
+    Observable<ChangePasswordInfo> getUpdateAuthorityInfo(@Field("userId")int userId,
+                                                          @Field("fileId")int fileId,
+                                                          @Field("authority")int authority,
+                                                          @Field("told")int told);
+
+
+    /**
      * 询问是否有对文件进行读或写的权限
      * @param userId 用户Id
      * @param fileId 文件Id
@@ -171,6 +187,7 @@ public interface HttpService {
                                     @Field("operation")String operation,
                                     @Field("filePath")String filePath);
 
+
     /**
      * 请求创建文件
      * @param userId 用户Id
@@ -182,15 +199,16 @@ public interface HttpService {
     @POST("file/createFile")
     Observable<MakeDirInfo> getMakeDirInfo(@Field("userId")int userId,@Field("filePath")String filePath,@Field("fileName")String fileName);
 
+
     /**
      * 获取是否可以打开用户文件夹的信息
      * @param userId 用户ID
      * @param fileId 文件夹Id
      * @return Observable<FileInfo>
      */
-
     @GET("file/findAll")
     Observable<FileInfo> getFileInfi(@Query("userId") int userId,@Query("fileId") int fileId);
+
 
     /**
      * 重新命名文件夹
@@ -203,6 +221,7 @@ public interface HttpService {
     @POST("file/updateFile")
     Observable<RenameInfo> getRenameInfo(@Field("userId")int userId,@Field("fileId")int fileId,@Field("fileName")String fileName);
 
+
     /**
      * 上传文件夹
      * @param parts 文件
@@ -212,6 +231,7 @@ public interface HttpService {
     @Multipart
     @POST("file/upload")
     Observable<FileValidInfo> uploadFile(@Header("Range")String length,@Part List<MultipartBody.Part> parts);
+
 
     /**
      * 删除文件
