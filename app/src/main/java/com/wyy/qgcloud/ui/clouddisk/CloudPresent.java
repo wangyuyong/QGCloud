@@ -203,6 +203,9 @@ public class CloudPresent implements CloudContract.CloudPresent {
             //移除记录
             fileInfoList.remove(fileInfoList.size() - 1);
             positionList.remove(positionList.size() - 1);
+            if (folderId == 1){
+                folderId = 0;
+            }
             //发送网络请求
             model.requestOpenDir(userId,folderId)
                     .subscribe(new Observer<FileInfo>() {

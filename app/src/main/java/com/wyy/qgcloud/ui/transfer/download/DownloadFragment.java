@@ -150,10 +150,10 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
 
         @Override
         public void onSuccess() {
+            CheckFile checkFile = new CheckFile(fileMessageList.get(position).getFileName());
             fileMessageList.remove(position);
             adapter.notifyDataSetChanged();
             Toast.makeText(MyApplication.getContext(),"下载成功",Toast.LENGTH_SHORT);
-            CheckFile checkFile = new CheckFile(fileMessageList.get(position).getFileName());
             EventBus.getDefault().post(checkFile);
         }
 

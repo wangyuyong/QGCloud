@@ -1,31 +1,34 @@
 package com.wyy.qgcloud.ui.clouddisk;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.FileAdapter;
 import com.wyy.qgcloud.adapter.OnItemClickedListener;
 import com.wyy.qgcloud.adapter.OnItemMenuClickedListener;
 import com.wyy.qgcloud.adapter.OnMultiClickListener;
 import com.wyy.qgcloud.app.MyApplication;
+import com.wyy.qgcloud.constant.Api;
 import com.wyy.qgcloud.enity.FileInfo;
 import com.wyy.qgcloud.enity.FileMessage;
+import com.wyy.qgcloud.enity.FileValidInfo;
 import com.wyy.qgcloud.enity.LoginInfo;
+import com.wyy.qgcloud.enity.PowerMessage;
+import com.wyy.qgcloud.net.RetrofitManager;
 import com.wyy.qgcloud.ui.dialog.ConfigOnClickedListener;
 import com.wyy.qgcloud.ui.dialog.DetailDialog;
+import com.wyy.qgcloud.ui.dialog.LimitedDialog.LimitDialog;
 import com.wyy.qgcloud.ui.dialog.MakeUploadDirWindow;
 import com.wyy.qgcloud.ui.dialog.TransferFileDialog;
 import com.wyy.qgcloud.ui.dialog.WindowClickedListener;
@@ -34,9 +37,22 @@ import com.wyy.qgcloud.ui.homePage.HomePageActivity;
 import com.wyy.qgcloud.util.MyToast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CloudFragment extends Fragment implements CloudContract.CloudView {
 
@@ -48,6 +64,7 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     List<FileInfo.DataBean> fileInfos = new ArrayList<>();
     LinearLayoutManager manager;
     BottomSheet bottomSheet;
+    private FileValidInfo info;
 
     /**
      * 获取从activity得到的用户信息
@@ -58,6 +75,7 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cloud, container, false);
+        EventBus.getDefault().register(this);
         int userID;
         User = ((HomePageActivity)(getActivity())).getUser();
         if(User != null) {
@@ -136,6 +154,7 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     public void onDestroyView() {
         super.onDestroyView();
         present.unbindView();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -197,6 +216,14 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
                         present.deleteFile(User.getUserId(),position);
                     }
                 });
+                bottomSheet.setPowerListener(new OnMultiClickListener() {
+                    @Override
+                    public void onMultiClick(View v) {
+                        LimitDialog limitDialog = new LimitDialog();
+                        limitDialog.setPosition(position);
+                        limitDialog.show(getActivity().getSupportFragmentManager(),"limt");
+                    }
+                });
                 bottomSheet.show(getActivity().getSupportFragmentManager(),"show");
             }
         });
@@ -220,5 +247,64 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     public void showDetail(FileInfo.DataBean dataBean) {
         DetailDialog detailDialog = new DetailDialog(getActivity(),R.style.dialog,dataBean);
         detailDialog.show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void modifypermission(PowerMessage msg){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .writeTimeout(8000, TimeUnit.MILLISECONDS)
+                .readTimeout(8000,TimeUnit.MILLISECONDS)
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
+
+                    }
+
+                    @NotNull
+                    @Override
+                    public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
+                        return RetrofitManager.cookieStore.get(httpUrl.host());
+                    }
+                })
+                .build();
+        FormBody.Builder bodyBuilder = new FormBody.Builder()
+                .add("userId",User.getUserId() + "")
+                .add("fileId",fileInfos.get(msg.getPosition()).getFileId() + "")
+                .add("authority",msg.getAuthority() + "");
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(Api.CONST_BASE_URL + "file/updateAuthority");
+        List<Integer> toIdList = msg.getToId();
+        for (int i = 0; i < toIdList.size(); i++){
+            RequestBody body = bodyBuilder.add("toId","" + toIdList.get(i)).build();
+            Request request = requestBuilder.post(body).build();
+            Response response = null;
+            try {
+                response = client.newCall(request).execute();
+                Gson gson = new Gson();
+                info = gson.fromJson(response.body().string(),FileValidInfo.class);
+                if (!info.getStatus()){
+                    break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                response.close();
+            }
+        }
+        if (info.getStatus()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"设置权限成功");
+                }
+            });
+        }else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,info.getMessage());
+                }
+            });
+        }
     }
 }

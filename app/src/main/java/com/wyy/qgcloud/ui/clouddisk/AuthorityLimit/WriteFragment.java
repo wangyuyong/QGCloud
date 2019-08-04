@@ -90,4 +90,8 @@ public class WriteFragment extends Fragment implements AuthorityContract.Authori
         super.onDestroyView();
         authorityPresent.unbindView();
     }
+
+    public List<Integer> getToId(){
+        return adapter.getToId();
+    }
 }

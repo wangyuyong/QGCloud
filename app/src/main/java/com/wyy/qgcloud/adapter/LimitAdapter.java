@@ -1,11 +1,13 @@
 package com.wyy.qgcloud.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.enity.GroupInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LimitAdapter extends BaseExpandableListAdapter {
@@ -20,8 +23,14 @@ public class LimitAdapter extends BaseExpandableListAdapter {
     private List<GroupInfo.DataBean> groupMember;
     private List<String> groupList;
     private Context mContext;
+    private List<List<CheckBox>> childCheckBox = new ArrayList<>();
+    private List<CheckBox> groudCheckBox = new ArrayList<>();
+
 
     public LimitAdapter(List<GroupInfo.DataBean> groupMember, List<String> groupList, Context mContext) {
+        for (int i = 0; i < groupList.size(); i++){
+            childCheckBox.add(new ArrayList<CheckBox>());
+        }
         this.groupMember = groupMember;
         this.groupList = groupList;
         this.mContext = mContext;
@@ -50,8 +59,11 @@ public class LimitAdapter extends BaseExpandableListAdapter {
             case 6:
                 return groupMember.get(0).getGraphics().size();
             case 7:
-                return groupMember.get(0).getUngrouped().size(); }
-        return 0;
+                return groupMember.get(0).getUngrouped().size();
+            default:
+                return 0;
+        }
+
     }
 
     @Override
@@ -78,8 +90,9 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 return groupMember.get(0).getGraphics().get(childPosition);
             case 7:
                 return groupMember.get(0).getUngrouped().get(childPosition);
+            default:
+                return 0;
         }
-        return 0;
     }
 
     @Override
@@ -98,14 +111,24 @@ public class LimitAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupHolder groupHolder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_address_parent,null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_limit_parent,null);
             groupHolder = new GroupHolder();
             groupHolder.groupCheckBox = convertView.findViewById(R.id.ckb_item_limit_parent);
             groupHolder.groupName = convertView.findViewById(R.id.tv_item_limit_parent);
             groupHolder.groupIndicator = convertView.findViewById(R.id.imv_item_limit_indicator);
+            groupHolder.groupCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    List<CheckBox> powerBox = childCheckBox.get(groupPosition);
+                    for (int i = 0; i < powerBox.size(); i++){
+                        powerBox.get(i).setChecked(isChecked);
+                    }
+                }
+            });
+            groudCheckBox.add(groupHolder.groupCheckBox);
             convertView.setTag(groupHolder);
         }else {
             groupHolder = (GroupHolder)convertView.getTag();
@@ -124,11 +147,18 @@ public class LimitAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildHolder childHolder = null;
         if(convertView == null){
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_address_child,null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_limit_child,null);
             childHolder = new ChildHolder();
             childHolder.memberCheckBox = convertView.findViewById(R.id.ckb_item_limit_child);
-            childHolder.memberIcon = convertView.findViewById(R.id.group_member_icon);
-            childHolder.memberName = convertView.findViewById(R.id.group_member_name);
+            childHolder.memberCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+            childCheckBox.get(groupPosition).add(childHolder.memberCheckBox);
+            childHolder.memberIcon = convertView.findViewById(R.id.imv_item_limit_child);
+            childHolder.memberName = convertView.findViewById(R.id.tv_item_limit_child);
             convertView.setTag(childHolder);
         }else {
             childHolder = (ChildHolder) convertView.getTag();
@@ -136,31 +166,28 @@ public class LimitAdapter extends BaseExpandableListAdapter {
         switch (groupPosition) {
             case 0:
                 childHolder.memberName.setText(groupMember.get(0).getBackground().get(childPosition).getUserName());
+                Log.d("LimitAdapter",groupMember.get(0).getBackground().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getBackground().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);
-
                 break;
             case 1:
                 childHolder.memberName.setText(groupMember.get(0).getFrontend().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getFrontend().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);
-
                 break;
             case 2:
                 childHolder.memberName.setText(groupMember.get(0).getMobile().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getMobile().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);
-
                 break;
             case 3:
                 childHolder.memberName.setText(groupMember.get(0).getDataMining().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getDataMining().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);
-
                 break;
             case 4:
                 childHolder.memberName.setText(groupMember.get(0).getEmbedded().get(childPosition).getUserName());
@@ -188,15 +215,15 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 Glide.with(mContext)
                         .load(groupMember.get(0).getUngrouped().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);
-
                 break;
+            default:
         }
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     private class GroupHolder{
@@ -209,5 +236,48 @@ public class LimitAdapter extends BaseExpandableListAdapter {
         CheckBox memberCheckBox;
         ImageView memberIcon;
         TextView memberName;
+    }
+
+    public List<Integer> getToId(){
+        List<Integer> integerList = new ArrayList<>();
+        for (int i = 0; i < childCheckBox.size(); i++){
+            List<CheckBox> boxList = childCheckBox.get(i);
+            for (int j = 0; j < boxList.size(); j++){
+                CheckBox box = boxList.get(j);
+                if (box.isChecked()){
+                    GroupInfo.DataBean data = groupMember.get(0);
+                    Integer toId = null;
+                    switch (i){
+                        case 0:
+                            toId = data.getBackground().get(j).getUserId();
+                            break;
+                        case 1:
+                            toId = data.getFrontend().get(j).getUserId();
+                            break;
+                        case 2:
+                            toId = data.getMobile().get(j).getUserId();
+                            break;
+                        case 3:
+                            toId = data.getDataMining().get(j).getUserId();
+                            break;
+                        case 4:
+                            toId = data.getEmbedded().get(j).getUserId();
+                            break;
+                        case 5:
+                            toId = data.getDesign().get(j).getUserId();
+                            break;
+                        case 6:
+                            toId = data.getGraphics().get(j).getUserId();
+                            break;
+                        case 7:
+                            toId = data.getUngrouped().get(j).getUserId();
+                            break;
+                        default:
+                    }
+                integerList.add(toId);
+                }
+            }
+        }
+        return integerList;
     }
 }

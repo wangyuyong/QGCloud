@@ -12,8 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -81,6 +85,18 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
                 downloadedLength = file.length();
             }
             OkHttpClient client = new OkHttpClient.Builder()
+                    .cookieJar(new CookieJar() {
+                        @Override
+                        public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
+
+                        }
+
+                        @NotNull
+                        @Override
+                        public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
+                            return RetrofitManager.cookieStore.get(httpUrl.host());
+                        }
+                    })
                     .writeTimeout(10000,TimeUnit.MILLISECONDS)
                     .readTimeout(10000,TimeUnit.MILLISECONDS)
                     .addNetworkInterceptor(new Interceptor() {
