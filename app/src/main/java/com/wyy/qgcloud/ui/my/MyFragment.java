@@ -1,8 +1,10 @@
 package com.wyy.qgcloud.ui.my;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.wyy.qgcloud.R;
+import com.wyy.qgcloud.app.MyApplication;
 import com.wyy.qgcloud.enity.LoginInfo;
 import com.wyy.qgcloud.ui.changePassword.ChangePasswordActivity;
 import com.wyy.qgcloud.ui.homePage.HomePageActivity;
@@ -67,8 +74,9 @@ public class MyFragment extends Fragment implements MyContract.MyView {
     @Override
     public void showPersonalMsg() {
         //显示头像
-        Glide.with(this)
+        Glide.with(MyApplication.getContext())
                 .load(user.getIcon())
+                .error(R.mipmap.ic_head)
                 .into(imvMyIcon);
         //显示姓名
         tvMyName.setText(user.getUserName());
