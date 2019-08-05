@@ -52,6 +52,11 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
 
     private static final int CONST_FIRST = -1;
 
+    /**
+     * 能上传文件的最大长度
+     */
+    public static final int CONST_MAX_LENGTH = 10 * 1024 * 1024;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,10 +104,15 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
     }
 
     private void getFile(UploadFileMessage msg,int count){
+        File file = new File(msg.getUploadFile());
+        //文件过大,禁止上传
+        if (file.length() >= CONST_MAX_LENGTH){
+            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"不支持上传大于10M的文件");
+            return;
+        }
         //创建请求体
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
-        File file = new File(msg.getUploadFile());
         RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"),file);
         /*if (file.exists()){
             Log.d("UploadFragment","exit");

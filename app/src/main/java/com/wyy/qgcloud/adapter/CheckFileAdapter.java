@@ -17,7 +17,8 @@ import java.util.List;
 public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.ViewHolder> {
 
     private List<CheckFile> checkFileList;
-    private OnItemClickedListener listener;
+    private OnItemClickedListener checkListener;
+    private OnItemClickedListener deleteListener;
 
     public CheckFileAdapter(List<CheckFile> checkFileList){
         this.checkFileList = checkFileList;
@@ -28,6 +29,7 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
         LinearLayout checkFileLl;
         ImageView checkFileIv;
         TextView fileNameTv;
+        ImageView deleteFileIv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -35,6 +37,7 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
             checkFileLl = itemView.findViewById(R.id.ll_check_file);
             checkFileIv = itemView.findViewById(R.id.iv_check_file);
             fileNameTv = itemView.findViewById(R.id.tv_check_file_name);
+            deleteFileIv = itemView.findViewById(R.id.imv_check_file_delete);
         }
     }
 
@@ -53,8 +56,16 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
         viewHolder.checkFileLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null){
-                    listener.onItemClick(i);
+                if (checkListener != null){
+                    checkListener.onItemClick(i);
+                }
+            }
+        });
+        viewHolder.deleteFileIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteListener != null){
+                    deleteListener.onItemClick(i);
                 }
             }
         });
@@ -65,7 +76,11 @@ public class CheckFileAdapter extends RecyclerView.Adapter<CheckFileAdapter.View
         return checkFileList.size();
     }
 
-    public void setListener(OnItemClickedListener listener) {
-        this.listener = listener;
+    public void setCheckListener(OnItemClickedListener checkListener) {
+        this.checkListener = checkListener;
+    }
+
+    public void setDeleteListener(OnItemClickedListener deleteListener){
+        this.deleteListener = deleteListener;
     }
 }

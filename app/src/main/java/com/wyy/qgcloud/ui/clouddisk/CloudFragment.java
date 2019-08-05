@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.wyy.qgcloud.R;
@@ -59,11 +61,12 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     CloudContract.CloudPresent present;
     RecyclerView fileRv;
     ImageView makeDirIv;
-    ImageView backIv;
+    LinearLayout backLl;
     FileAdapter adapter;
     List<FileInfo.DataBean> fileInfos = new ArrayList<>();
     LinearLayoutManager manager;
     BottomSheet bottomSheet;
+    LinearLayout noDirLl;
     private FileValidInfo info;
 
     /**
@@ -85,14 +88,14 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
         present.bindView(this);
 
         fileRv = view.findViewById(R.id.rv_file);
-        backIv = view.findViewById(R.id.iv_back);
+        backLl = view.findViewById(R.id.ll_back);
         makeDirIv = view.findViewById(R.id.iv_make_dir);
         bottomSheet = new BottomSheet();
+        noDirLl = view.findViewById(R.id.ll_no_dir);
         //返回按钮点击事件
-        backIv.setOnClickListener(new View.OnClickListener() {
+        backLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("CloudPresent","点击");
                 present.back(User.getUserId());
             }
         });
@@ -142,10 +145,12 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
     public void updataDir(List<FileInfo.DataBean> fileList) {
         fileInfos.clear();
         fileInfos.addAll(fileList);
-        for (FileInfo.DataBean temp: fileList){
-            Log.d("CloudFragment",temp.getFileName());
-        }
         adapter.notifyDataSetChanged();
+        if (fileInfos.isEmpty()){
+            noDirLl.setVisibility(View.VISIBLE);
+        }else {
+            noDirLl.setVisibility(View.GONE);
+        }
     }
 
 
@@ -235,12 +240,12 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
 
     @Override
     public void hideHomePage() {
-        backIv.setVisibility(View.GONE);
+        backLl.setVisibility(View.GONE);
     }
 
     @Override
     public void showHomePage() {
-        backIv.setVisibility(View.VISIBLE);
+        backLl.setVisibility(View.VISIBLE);
     }
 
     @Override

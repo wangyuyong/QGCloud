@@ -64,6 +64,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         viewHolder.fileTimeTv.setText(fileTime);
         if (!file.getFileType().equals("dir")){
             viewHolder.fileIconIv.setImageResource(R.mipmap.ic_word);
+        }else {
+            viewHolder.fileIconIv.setImageResource(R.mipmap.ic_dir);
         }
 
         viewHolder.menuIv.setOnClickListener(new OnMultiClickListener() {

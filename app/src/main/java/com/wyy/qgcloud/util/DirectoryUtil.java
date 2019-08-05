@@ -1,8 +1,12 @@
 package com.wyy.qgcloud.util;
 
+import android.content.Context;
+import android.content.Intent;
+
+import java.io.File;
+
 /**
- * 文件的所有类型
- * ps:从网上copy的
+ * 从网上copy的工具类，用于打开查看文件
  */
 public class DirectoryUtil {
     public static final String[][] MIME_MapTable = {
@@ -444,9 +448,7 @@ public class DirectoryUtil {
             {"", "*/*"}
     };
 
-    /**
-     * --获取文件类型 --
-     */
+
     public static String getMIMEType(String filePath) {
         String type = "*/*";
         String fName = filePath;

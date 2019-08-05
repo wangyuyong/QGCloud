@@ -16,16 +16,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="15dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_15"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_white_back"
-                android:visibility="visible"
-                />
+            <LinearLayout
+                android:id="@+id/ll_back"
+                android:layout_height="match_parent"
+                android:layout_width="@dimen/dp_40">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="15dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_15"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_white_back"
+                    android:visibility="visible"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -55,11 +62,44 @@
 
     </RelativeLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_file"
-        android:layout_width="match_parent"
+    <FrameLayout
         android:layout_height="match_parent"
-        />
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_no_dir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/ic_grievance"
+                android:layout_marginTop="140dp"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_16"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/colorTextBlack"
+                android:text="这里没有文件"
+                android:textStyle="normal"
+                />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_file"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </FrameLayout>
 
 </LinearLayout>

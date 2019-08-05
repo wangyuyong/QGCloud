@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.wyy.qgcloud.R;
@@ -42,6 +43,7 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
     RecyclerView downloadRv;
     LinearLayoutManager manager;
     DownloadAdapter adapter;
+    LinearLayout noDownloadLl;
     /**
      * 记录下载列表的长度
      */
@@ -72,6 +74,7 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
         getActivity().bindService(intent,connection, Context.BIND_AUTO_CREATE);
 
         downloadRv = view.findViewById(R.id.rv_download_list);
+        noDownloadLl = view.findViewById(R.id.ll_no_download);
         init();
 
         return view;
@@ -105,6 +108,9 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
                 }
             }
         });
+        if (fileMessageList.isEmpty()){
+            noDownloadLl.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -125,6 +131,9 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
         //将文件添加到下载列表
         fileMessageList.add(message);
         adapter.notifyDataSetChanged();
+        if (!fileMessageList.isEmpty()){
+            noDownloadLl.setVisibility(View.GONE);
+        }
         //开始下载文件
         String fileName = message.getFileName();
         String fileUploadTime = message.getFileUploadTime();
@@ -154,6 +163,9 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
             fileMessageList.remove(position);
             adapter.notifyDataSetChanged();
             Toast.makeText(MyApplication.getContext(),"下载成功",Toast.LENGTH_SHORT);
+            if (fileMessageList.isEmpty()){
+                noDownloadLl.setVisibility(View.VISIBLE);
+            }
             EventBus.getDefault().post(checkFile);
         }
 

@@ -126,20 +126,20 @@ public class HomePageActivity extends AppCompatActivity {
                 //获取文件并将文件转化为file对象
                 Uri uri = data.getData();
                 if (uri == null){
-                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这张图片");
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"无法获取这份文件");
                     return;
                 }
                 String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(uri,proj,null,null,null);
+                Cursor cursor = getContentResolver().query(uri,null,null,null,null);
                 if (cursor == null){
-                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这个文件");
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"无法获取这份文件");
                     return;
                 }
                 int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String file = cursor.getString(index);
                 if (file == null){
-                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"你没有权限获得这个文件");
+                    MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"无法获取这份文件");
                     return;
                 }
                 String fileName = file.substring(file.lastIndexOf("/") + 1);

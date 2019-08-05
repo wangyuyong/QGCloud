@@ -1,7 +1,6 @@
 package com.wyy.qgcloud.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,14 @@ public class LimitAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<List<CheckBox>> childCheckBox = new ArrayList<>();
     private List<CheckBox> groudCheckBox = new ArrayList<>();
-
+    private boolean[] allChildSlected = new boolean[8];
 
     public LimitAdapter(List<GroupInfo.DataBean> groupMember, List<String> groupList, Context mContext) {
         for (int i = 0; i < groupList.size(); i++){
             childCheckBox.add(new ArrayList<CheckBox>());
+        }
+        for (int i = 0; i < allChildSlected.length; i++){
+            allChildSlected[i] = false;
         }
         this.groupMember = groupMember;
         this.groupList = groupList;
@@ -122,10 +124,8 @@ public class LimitAdapter extends BaseExpandableListAdapter {
             groupHolder.groupCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    List<CheckBox> powerBox = childCheckBox.get(groupPosition);
-                    for (int i = 0; i < powerBox.size(); i++){
-                        powerBox.get(i).setChecked(isChecked);
-                    }
+                    allChildSlected[groupPosition] = isChecked;
+                    notifyDataSetChanged();
                 }
             });
             groudCheckBox.add(groupHolder.groupCheckBox);
@@ -144,29 +144,27 @@ public class LimitAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildHolder childHolder = null;
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_limit_child,null);
             childHolder = new ChildHolder();
             childHolder.memberCheckBox = convertView.findViewById(R.id.ckb_item_limit_child);
-            childHolder.memberCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                }
-            });
-            childCheckBox.get(groupPosition).add(childHolder.memberCheckBox);
             childHolder.memberIcon = convertView.findViewById(R.id.imv_item_limit_child);
             childHolder.memberName = convertView.findViewById(R.id.tv_item_limit_child);
+            childCheckBox.get(groupPosition).add(childHolder.memberCheckBox);
             convertView.setTag(childHolder);
         }else {
             childHolder = (ChildHolder) convertView.getTag();
         }
+        if (allChildSlected[groupPosition]){
+            childHolder.memberCheckBox.setChecked(true);
+        }else {
+            childHolder.memberCheckBox.setChecked(false);
+        }
         switch (groupPosition) {
             case 0:
                 childHolder.memberName.setText(groupMember.get(0).getBackground().get(childPosition).getUserName());
-                Log.d("LimitAdapter",groupMember.get(0).getBackground().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getBackground().get(childPosition).getIcon())
                         .into(childHolder.memberIcon);

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.wyy.qgcloud.constant.Api;
 import com.wyy.qgcloud.constant.Directory;
 
 import org.jetbrains.annotations.NotNull;
@@ -94,6 +95,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Integer> {
                         @NotNull
                         @Override
                         public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
+                            Log.d("DownloadTask",httpUrl.host());
                             return RetrofitManager.cookieStore.get(httpUrl.host());
                         }
                     })

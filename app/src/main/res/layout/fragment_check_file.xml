@@ -4,6 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/ll_no_file"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/ic_grievance"
+            android:layout_marginTop="140dp"
+            />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_16"
+            android:textSize="@dimen/sp_18"
+            android:textColor="@color/colorTextBlack"
+            android:text="这里没有文件"
+            android:textStyle="normal"
+            />
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_check_file"
         android:layout_width="match_parent"
