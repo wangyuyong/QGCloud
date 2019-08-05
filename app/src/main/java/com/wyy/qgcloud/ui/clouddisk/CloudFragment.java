@@ -258,6 +258,13 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void modifypermission(PowerMessage msg){
+        List<Integer> toIdList = msg.getToId();
+        for (int temp : toIdList){
+            if (temp == User.getUserId()){
+                MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,"不能给自己设置权限");
+                return;
+            }
+        }
         OkHttpClient client = new OkHttpClient.Builder()
                 .writeTimeout(8000, TimeUnit.MILLISECONDS)
                 .readTimeout(8000,TimeUnit.MILLISECONDS)
@@ -280,7 +287,6 @@ public class CloudFragment extends Fragment implements CloudContract.CloudView {
                 .add("authority",msg.getAuthority() + "");
         Request.Builder requestBuilder = new Request.Builder()
                 .url(Api.CONST_BASE_URL + "file/updateAuthority");
-        List<Integer> toIdList = msg.getToId();
         for (int i = 0; i < toIdList.size(); i++){
             RequestBody body = bodyBuilder.add("toId","" + toIdList.get(i)).build();
             Request request = requestBuilder.post(body).build();
