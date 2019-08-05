@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class DownloadFragment extends Fragment implements DownloadContract.Downl
         manager = new LinearLayoutManager(getActivity());
         downloadRv.setLayoutManager(manager);
         downloadRv.setAdapter(adapter);
+        downloadRv.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
         adapter.setListener(new OnItemClickedListener() {
             @Override
             public void onItemClick(int position) {

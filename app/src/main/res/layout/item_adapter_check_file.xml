@@ -22,7 +22,7 @@
                 android:layout_height="@dimen/dp_25"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dp_12"
-                android:src="@mipmap/ic_dir"
+                android:src="@mipmap/ic_word"
                 />
 
             <TextView

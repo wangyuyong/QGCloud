@@ -77,6 +77,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
         Glide.with(MyApplication.getContext())
                 .load(user.getIcon())
                 .error(R.mipmap.ic_head)
+                .dontAnimate()
                 .into(imvMyIcon);
         //显示姓名
         tvMyName.setText(user.getUserName());
@@ -123,6 +124,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
                 startActivity(intent3);
                 HomePageActivity.mHomePageActivity.finish();
                 break;
+            default:
         }
     }
 }
