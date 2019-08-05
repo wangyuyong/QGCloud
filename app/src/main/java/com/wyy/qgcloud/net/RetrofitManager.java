@@ -30,11 +30,11 @@ public class RetrofitManager {
     private static RetrofitManager retrofitManager;
     private Retrofit retrofit;
     private HttpService service;
+    public final static HashMap<String,List<Cookie>> cookieStore = new HashMap<>();
 
     private RetrofitManager(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
-                    private final HashMap<String,List<Cookie>> cookieStore = new HashMap<>();
                     @Override
                     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
                         cookieStore.put(httpUrl.host(),list);

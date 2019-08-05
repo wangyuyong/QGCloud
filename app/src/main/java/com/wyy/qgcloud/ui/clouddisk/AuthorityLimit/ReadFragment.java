@@ -2,10 +2,12 @@ package com.wyy.qgcloud.ui.clouddisk.AuthorityLimit;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.wyy.qgcloud.R;
 import com.wyy.qgcloud.adapter.LimitAdapter;
@@ -22,26 +24,26 @@ import butterknife.ButterKnife;
 
 public class ReadFragment extends Fragment implements AuthorityContract.AuthorityView {
 
-    @BindView(R.id.expand_is_read)
     ExpandableListView readExpandList;
     private AuthorityContract.AuthorityPresent authorityPresent;
     private List<GroupInfo.DataBean> groupMemberList;
-    private List<String> groupList;  //父项数据来源
+    private List<String> groupList;     //父项数据来源
     private LimitAdapter adapter;
     private LoginInfo.DataBean user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_is_read, container, false);
-        ButterKnife.bind(this, view);
         authorityPresent = new AuthorityPresent();
         authorityPresent.bindView(this);
         HomePageActivity homePageActivity = (HomePageActivity) getActivity();
         user = homePageActivity.getUser();      //获取整个用户对象
+        readExpandList = view.findViewById(R.id.expand_is_read);
         initGroupList();
         authorityPresent.getGroupInfo();
         initGroupMemberList();
         initView();
+
         return view;
     }
 
@@ -88,5 +90,9 @@ public class ReadFragment extends Fragment implements AuthorityContract.Authorit
     public void onDestroyView() {
         super.onDestroyView();
         authorityPresent.unbindView();
+    }
+
+    public List<Integer> getToId(){
+        return adapter.getToId();
     }
 }

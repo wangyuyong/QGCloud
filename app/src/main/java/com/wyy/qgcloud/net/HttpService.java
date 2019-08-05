@@ -171,23 +171,6 @@ public interface HttpService {
                                                           @Field("authority")int authority,
                                                           @Field("told")int told);
 
-
-    /**
-     * 询问是否有对文件进行读或写的权限
-     * @param userId 用户Id
-     * @param fileId 文件Id
-     * @param operation 操作类型
-     * @param filePath 文件路径
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(".")
-    Observable<LoginInfo> getRWInfo(@Field("userId")String userId,
-                                    @Field("fileId")String fileId,
-                                    @Field("operation")String operation,
-                                    @Field("filePath")String filePath);
-
-
     /**
      * 请求创建文件
      * @param userId 用户Id

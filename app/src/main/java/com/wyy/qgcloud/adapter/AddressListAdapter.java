@@ -61,8 +61,10 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
             case 6:
                 return groupMember.get(0).getGraphics().size();
             case 7:
-                return groupMember.get(0).getUngrouped().size(); }
-        return 0;
+                return groupMember.get(0).getUngrouped().size();
+            default:
+                return 0;
+        }
     }
 
     //获得某个父项
@@ -91,8 +93,9 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
                 return groupMember.get(0).getGraphics().get(childPosition);
             case 7:
                 return groupMember.get(0).getUngrouped().get(childPosition);
+            default:
+                return 0;
         }
-        return 0;
     }
 
     //获得某个父项的id
@@ -262,6 +265,7 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
                     }
                 });
                 break;
+            default:
         }
         return convertView;
     }

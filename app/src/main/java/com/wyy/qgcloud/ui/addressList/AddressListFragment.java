@@ -109,7 +109,7 @@ public class AddressListFragment extends Fragment implements AddressListContract
         groupList.add("设计组");
         groupList.add("图形组");
         groupList.add("未分组");
-    }   //父项列表
+    }
 
     private void initGroupMemberList(){
         groupMemberList = new ArrayList<>();
@@ -125,6 +125,7 @@ public class AddressListFragment extends Fragment implements AddressListContract
     @Override
     public void initList(GroupInfo.DataBean dataBean) {
         groupMemberList.add(dataBean);
+        expandAddressList.setAdapter(adapter);
     }
 
 
@@ -144,6 +145,5 @@ public class AddressListFragment extends Fragment implements AddressListContract
         addressListPresent.getGroupInfo();
         initGroupMemberList();
         initView();
-
     }
 }

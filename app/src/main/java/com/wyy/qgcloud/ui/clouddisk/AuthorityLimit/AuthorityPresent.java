@@ -1,6 +1,7 @@
 package com.wyy.qgcloud.ui.clouddisk.AuthorityLimit;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.wyy.qgcloud.enity.ChangePasswordInfo;
 import com.wyy.qgcloud.enity.GroupInfo;
@@ -53,6 +54,9 @@ public class AuthorityPresent implements AuthorityContract.AuthorityPresent {
             @Override
             public void onNext(GroupInfo groupInfo) {
                 authorityView.initList(groupInfo.getData());
+                for (GroupInfo.DataBean.BackgroundBean temp : groupInfo.getData().getBackground()){
+                    Log.d("AuthorityPresent",temp.getUserName());
+                }
             }
 
             @Override
