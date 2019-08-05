@@ -101,7 +101,7 @@ public interface HttpService {
      * @return  修改是否成功
      */
     @FormUrlEncoded
-    @POST("/user/modifyPassword")
+    @POST("user/modifyPassword")
     Observable<ChangePasswordInfo> getChangePasswordInfo(@Field("userId")int userId,
                                                          @Field("oldPassword")String oldPassword,
                                                          @Field("newPassword")String newPassword);
@@ -115,7 +115,7 @@ public interface HttpService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/user/updateUser")
+    @POST("user/updateUser")
     Observable<ChangePasswordInfo> getChangeMsgInfo(@Field("userId")int userId,
                                                     @Field("email")String email,
                                                     @Field("phone")String phone);
@@ -124,7 +124,7 @@ public interface HttpService {
      * 一次性加载通讯录所有数据
      * @return
      */
-    @GET("/user/findAll")
+    @GET("user/findAll")
     Observable<GroupInfo> getGroupInfo();
 
 
@@ -136,7 +136,7 @@ public interface HttpService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/group/joinGroup")
+    @POST("group/joinGroup")
     Observable<MemberChangeInfo> getJoinGroupInfo(@Field("userId")int userId,
                                                   @Field("toUserId")int toUserId,
                                                   @Field("groupId")int groupId);

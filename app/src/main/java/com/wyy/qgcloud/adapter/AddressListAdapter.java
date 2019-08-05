@@ -45,6 +45,9 @@ public class AddressListAdapter extends BaseExpandableListAdapter {
     //获得某个父项的子项数目
     @Override
     public int getChildrenCount(int groupPosition) {
+        if (groupMember.size() == 0){
+            return 0;
+        }
         switch (groupPosition) {
             case 0:
                 return groupMember.get(0).getBackground().size();

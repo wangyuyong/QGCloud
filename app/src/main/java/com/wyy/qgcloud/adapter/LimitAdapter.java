@@ -45,6 +45,9 @@ public class LimitAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        if (groupMember.size() == 0){
+            return 0;
+        }
         switch (groupPosition) {
             case 0:
                 return groupMember.get(0).getBackground().size();
