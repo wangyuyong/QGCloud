@@ -35,6 +35,8 @@ import com.wyy.qgcloud.adapter.OnMultiClickListener;
 import com.wyy.qgcloud.base.BaseActivity;
 import com.wyy.qgcloud.ui.login.LoginActivity;
 import com.wyy.qgcloud.util.MyToast;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -242,7 +244,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 }
                 break;
 //            case CUT_PHOTO:
-//                setView(data);
+//                startCrop(data.getStringExtra("path"));
 //                break;
             default:
                 break;
@@ -291,7 +293,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
             imagePath = uri.getPath();
         }
-        //传入路径来进行展示
+        Intent intent = new Intent();
+        intent.putExtra("path", imagePath);
         displayImage(imagePath);
     }
 
@@ -370,5 +373,19 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
         registerPresent.unbindView();
         super.onDestroy();
     }
+
+//    private void startCrop(String path){
+//        UCrop.Options options = new UCrop.Options();
+//        Uri sourceUri = Uri.parse(path);
+//        Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "CropImage.jpeg"));
+//        UCrop uCrop = UCrop.of(sourceUri, destinationUri)
+//                .withAspectRatio(1,1);
+//        options.setAllowedGestures(UCropActivity.ALL, UCropActivity.NONE, UCropActivity.ALL);
+//        options.setOvalDimmedLayer(true);
+//        options.setShowCropFrame(false);
+//        uCrop.withOptions(options);
+//        uCrop.start(this);
+//        displayImage(destinationUri.getPath());
+//    }
 
 }
