@@ -169,30 +169,35 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 Log.d("LimitAdapter",groupMember.get(0).getBackground().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getBackground().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
                 break;
             case 1:
                 childHolder.memberName.setText(groupMember.get(0).getFrontend().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getFrontend().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
                 break;
             case 2:
                 childHolder.memberName.setText(groupMember.get(0).getMobile().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getMobile().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
                 break;
             case 3:
                 childHolder.memberName.setText(groupMember.get(0).getDataMining().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getDataMining().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
                 break;
             case 4:
                 childHolder.memberName.setText(groupMember.get(0).getEmbedded().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getEmbedded().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
 
                 break;
@@ -200,6 +205,7 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 childHolder.memberName.setText(groupMember.get(0).getDesign().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getDesign().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
 
                 break;
@@ -207,6 +213,7 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 childHolder.memberName.setText(groupMember.get(0).getGraphics().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getGraphics().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
 
                 break;
@@ -214,6 +221,7 @@ public class LimitAdapter extends BaseExpandableListAdapter {
                 childHolder.memberName.setText(groupMember.get(0).getUngrouped().get(childPosition).getUserName());
                 Glide.with(mContext)
                         .load(groupMember.get(0).getUngrouped().get(childPosition).getIcon())
+                        .error(R.mipmap.ic_head)
                         .into(childHolder.memberIcon);
                 break;
             default:

@@ -361,6 +361,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
             //设置图片
             Glide.with(this)
                     .load(bitmap)
+                    .error(R.mipmap.ic_head)
                     .centerCrop()
                     .into(imvIcon);
         } else {

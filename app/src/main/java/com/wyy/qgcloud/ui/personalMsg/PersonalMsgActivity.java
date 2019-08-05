@@ -84,6 +84,7 @@ public class PersonalMsgActivity extends BaseActivity implements PersonalMsgCont
         //显示头像
         Glide.with(this)
                 .load(user.getIcon())
+                .error(R.mipmap.ic_head)
                 .into(imvPersonalIcon);
         //显示姓名
         tvPersonalName.setText(user.getUserName());

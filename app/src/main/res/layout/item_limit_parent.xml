@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_60"
+    android:padding="@dimen/dp_4"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatCheckBox
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginStart="@dimen/dp_8"
         android:focusable="false"/>
 
     <ImageView
