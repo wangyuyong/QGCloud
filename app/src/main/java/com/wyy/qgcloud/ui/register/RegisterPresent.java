@@ -72,8 +72,6 @@ public class RegisterPresent implements RegisterContract.RegisterPresent {
                 if(registerInfo.getStatus()){
                     //注册成功
                     registerView.showSuccess("注册成功！请登录。");
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
                     RegisterActivity.mRegisterActivity.finish();
                 }else{
                     //注册失败

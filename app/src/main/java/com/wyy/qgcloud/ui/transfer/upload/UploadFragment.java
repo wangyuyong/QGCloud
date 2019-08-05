@@ -158,7 +158,7 @@ public class UploadFragment extends Fragment implements DownloadContract.Downloa
                     @Override
                     public void onNext(FileValidInfo fileValidInfo) {
                         if (fileValidInfo.getStatus()){
-                            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,fileValidInfo.getMessage());
+                            MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"上传成功，请重新进入此目录");
                         }else {
                             MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_sad,fileValidInfo.getMessage());
                         }

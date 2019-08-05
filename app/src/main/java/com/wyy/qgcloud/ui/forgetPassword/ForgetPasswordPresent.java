@@ -66,6 +66,7 @@ public class ForgetPasswordPresent implements ForgetPasswordContract.ForgetPassw
             public void onNext(SetNewPasswordInfo setNewPasswordInfo) {
                 if(setNewPasswordInfo.getStatus()){
                     forgetPasswordView.showSuccess("新密码设置成功！请登录。");
+                    ForgetPasswordActivity.mForgetPasswordActivity.finish();
                 }else {
                     forgetPasswordView.showError(setNewPasswordInfo.getMessage());
                 }

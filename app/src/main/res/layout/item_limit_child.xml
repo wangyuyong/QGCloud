@@ -6,10 +6,12 @@
     android:padding="@dimen/dp_4"
     android:orientation="horizontal">
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <CheckBox
         android:id="@+id/ckb_item_limit_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_dialog_choose_selector"
+        android:button="@null"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/dp_8"
         android:focusable="false"/>

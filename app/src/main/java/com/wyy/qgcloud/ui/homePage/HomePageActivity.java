@@ -130,7 +130,7 @@ public class HomePageActivity extends AppCompatActivity {
                     return;
                 }
                 String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+                Cursor cursor = getContentResolver().query(uri,proj,null,null,null);
                 if (cursor == null){
                     MyToast.getMyToast().ToastShow(MyApplication.getContext(),null,R.drawable.ic_happy,"无法获取这份文件");
                     return;

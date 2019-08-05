@@ -72,8 +72,6 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
     public void onViewClicked(View view){
         switch (view.getId()){
             case R.id.imv_forget_back:
-                Intent intent1 = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
-                startActivity(intent1);
                 finish();
                 break;
                 default:

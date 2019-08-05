@@ -160,8 +160,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.R
                 }
                 break;
             case R.id.imv_register_back:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
                 finish();
         }
     }

@@ -76,7 +76,7 @@ public class MyFragment extends Fragment implements MyContract.MyView {
         //显示头像
         Glide.with(MyApplication.getContext())
                 .load(user.getIcon())
-                .error(R.mipmap.ic_head)
+                .placeholder(R.mipmap.ic_qg_purple)
                 .dontAnimate()
                 .into(imvMyIcon);
         //显示姓名

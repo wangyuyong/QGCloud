@@ -63,7 +63,7 @@ public class AddressListFragment extends Fragment implements AddressListContract
                 switch (item){
                         case 0:
                             //弹出用户分组dialog
-                            final JoinGroupDialog dialog1 = new JoinGroupDialog(getActivity(), R.style.dialog);
+                            final JoinGroupDialog dialog1 = new JoinGroupDialog(getContext(), R.style.dialog);
                             dialog1.setListener(new UserOnClickListener() {
                                 @Override
                                 public void onClick(int position) {
@@ -75,7 +75,7 @@ public class AddressListFragment extends Fragment implements AddressListContract
                             break;
                         case 1:
                             //弹出身份赋予dialog
-                                final UserPositionDialog dialog2 = new UserPositionDialog(getActivity() , R.style.dialog);
+                            final UserPositionDialog dialog2 = new UserPositionDialog(getContext() , R.style.dialog);
                                 dialog2.setListener(new UserOnClickListener() {
                                     @Override
                                     public void onClick(int position) {
@@ -143,7 +143,6 @@ public class AddressListFragment extends Fragment implements AddressListContract
     public void refreshList() {
         groupMemberList.clear();
         addressListPresent.getGroupInfo();
-        initGroupMemberList();
-        initView();
+        adapter.notifyDataSetChanged();
     }
 }
