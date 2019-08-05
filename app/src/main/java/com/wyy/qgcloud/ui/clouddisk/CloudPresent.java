@@ -145,32 +145,36 @@ public class CloudPresent implements CloudContract.CloudPresent {
                     @Override
                     public void onNext(MakeDirInfo makeDirInfo) {
                         if (makeDirInfo.getStatus()){
-                            //有权限，则刷新文件列表
-                            model.requestOpenDir(userID,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
-                                    .subscribe(new Observer<FileInfo>() {
-                                        @Override
-                                        public void onSubscribe(Disposable d) {
+                            if (fileInfoList.size() == 1){
+                                displayRoot(userID);
+                            }else {
+                                //有权限，则刷新文件列表
+                                model.requestOpenDir(userID,fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId())
+                                        .subscribe(new Observer<FileInfo>() {
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onNext(FileInfo fileInfo) {
-                                            view.updataDir(fileInfo.getData());
-                                            //更新fileInfo容器
-                                            fileInfoList.remove(fileInfoList.size() - 1);
-                                            fileInfoList.add(fileInfo);
-                                        }
+                                            @Override
+                                            public void onNext(FileInfo fileInfo) {
+                                                view.updataDir(fileInfo.getData());
+                                                //更新fileInfo容器
+                                                fileInfoList.remove(fileInfoList.size() - 1);
+                                                fileInfoList.add(fileInfo);
+                                            }
 
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            e.printStackTrace();
-                                        }
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                e.printStackTrace();
+                                            }
 
-                                        @Override
-                                        public void onComplete() {
+                                            @Override
+                                            public void onComplete() {
 
-                                        }
-                                    });
+                                            }
+                                        });
+                            }
                         }else {
                             view.showError(makeDirInfo.getMessage());
                         }
@@ -251,6 +255,7 @@ public class CloudPresent implements CloudContract.CloudPresent {
 
     @Override
     public void rename(final int userId, String fileName, int position) {
+
         int fileId = fileInfoList.get(fileInfoList.size() - 1).getData().get(position).getFileId();
         model.requestRename(userId,fileId,fileName)
                 .subscribe(new Observer<RenameInfo>() {
@@ -345,6 +350,10 @@ public class CloudPresent implements CloudContract.CloudPresent {
      * @param userId 用户Id
      */
     private void updataList(int userId){
+        if (fileInfoList.size() == 1){
+            displayRoot(userId);
+            return;
+        }
         int fileID = fileInfoList.get(fileInfoList.size() - 2).getData().get(positionList.get(positionList.size() - 1)).getFileId();
         model.requestOpenDir(userId,fileID)
                 .subscribe(new Observer<FileInfo>() {

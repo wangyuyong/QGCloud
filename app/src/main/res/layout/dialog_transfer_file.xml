@@ -28,6 +28,7 @@
             android:textSize="17sp"
             android:textColor="@color/colorTextBlack"
             android:textStyle="normal"
+            android:maxLength="7"
             />
 
     </LinearLayout>
